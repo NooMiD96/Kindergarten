@@ -1,0 +1,65 @@
+﻿using System;
+
+using Kindergarten.Database.Contexts;
+using Kindergarten.Database.DIServices;
+using Kindergarten.Database.Models.KindergartenIdentity;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+using static Kindergarten.Database.DIServices.DependencyInjections;
+
+namespace Kindergarten.Database
+{
+    public static class DatabaseInitialization
+    {
+        public static void SetupDatabaseSettings(IServiceCollection services, IConfiguration Configuration)
+        {
+            services
+                .AddDbContext<KindergartenContext>(options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("Kindergarten"));
+                })
+                //.AddDbContext<KindergartenIdentityContext>(options =>
+                //{
+                //    options.UseSqlServer(Configuration.GetConnectionString("Kindergarten"));
+                //})
+                ;
+            
+            //services
+            //    .AddIdentityCore<ApplicationUser>(options =>
+            //    {
+            //        options.Password.RequiredLength = 6;
+            //        options.Password.RequireNonAlphanumeric = false;
+            //        options.Password.RequireLowercase = false;
+            //        options.Password.RequireUppercase = false;
+            //        options.Password.RequireDigit = false;
+
+            //        options.User.RequireUniqueEmail = true;
+
+            //        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+            //        options.Lockout.MaxFailedAccessAttempts = 10;
+            //        options.Lockout.AllowedForNewUsers = true;
+            //    })
+                //.AddRoles<ApplicationRole>()
+                //.AddClaimsPrincipalFactory<ClaimsPrincipalFactoryDI>()
+                //.AddEntityFrameworkStores<KindergartenIdentityContext>();
+
+            //services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
+        }
+
+        public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)
+        {
+            // We cant start the both DI together 'couse we have a reference from Project to Identity context
+            //Task.WhenAll(
+            //    ProjectTodoDataBase(serviceProvider, Configuration),
+            //    IdentityDataBase(serviceProvider, Configuration)
+            //).GetAwaiter().GetResult();
+
+            //IdentityDatabase(serviceProvider, Configuration).GetAwaiter().GetResult();
+            KindergartenDatabase(serviceProvider, Configuration).GetAwaiter().GetResult();
+        }
+    }
+}

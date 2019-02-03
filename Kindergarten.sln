@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28527.54
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Kindergarten.Web\Web.csproj", "{8D842DF1-5C8F-4B7A-9568-737E3CCE6424}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Kindergarten.Database\Database.csproj", "{65E3D47B-CFD8-4041-A974-890CD6782242}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Kindergarten.Core\Core.csproj", "{70E2BB9A-F37C-4D8C-96AE-7F7897D930EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D842DF1-5C8F-4B7A-9568-737E3CCE6424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D842DF1-5C8F-4B7A-9568-737E3CCE6424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D842DF1-5C8F-4B7A-9568-737E3CCE6424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D842DF1-5C8F-4B7A-9568-737E3CCE6424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65E3D47B-CFD8-4041-A974-890CD6782242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65E3D47B-CFD8-4041-A974-890CD6782242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E3D47B-CFD8-4041-A974-890CD6782242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65E3D47B-CFD8-4041-A974-890CD6782242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E2BB9A-F37C-4D8C-96AE-7F7897D930EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E2BB9A-F37C-4D8C-96AE-7F7897D930EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E2BB9A-F37C-4D8C-96AE-7F7897D930EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E2BB9A-F37C-4D8C-96AE-7F7897D930EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BACC3377-FE17-4E39-B237-81FB69E75A89}
+	EndGlobalSection
+EndGlobal
