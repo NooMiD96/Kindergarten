@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Kindergarten.Database.Contexts
 {
     //public class KindergartenIdentityContext: IdentityDbContext<ApplicationUser, ApplicationRole, string>
-    public class KindergartenIdentityContext: IdentityDbContext<ApplicationUser>
+    public class KindergartenIdentityContext: IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public KindergartenIdentityContext(DbContextOptions<KindergartenIdentityContext> options) : base(options) { }
     }

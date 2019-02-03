@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Kindergarten
+namespace Kindergarten.Web
 {
     public class Program
     {

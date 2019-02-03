@@ -1,12 +1,14 @@
-using System;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using static Kindergarten.Database.DatabaseInitialization;
 
 namespace Kindergarten
@@ -27,12 +29,12 @@ namespace Kindergarten
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.HttpOnly         = true;
-                options.ExpireTimeSpan          = TimeSpan.FromMinutes(30);
-                options.SlidingExpiration       = true;
-                options.ReturnUrlParameter      = "";
-                options.LoginPath               = "";
-                options.AccessDeniedPath        = "";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.SlidingExpiration = true;
+                options.ReturnUrlParameter = "";
+                options.LoginPath = "";
+                options.AccessDeniedPath = "";
             });
 
             services.AddResponseCompression();
@@ -68,10 +70,10 @@ namespace Kindergarten
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacementClientOptions   = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
-                    ProjectPath                         = Path.Combine(Directory.GetCurrentDirectory(), Configuration.GetValue<string>("SpaPhysicalRootPath")),
-                    HotModuleReplacement                = true,
-                    ReactHotModuleReplacement           = true
+                    HotModuleReplacementClientOptions = new Dictionary<string, string> { { "dynamicPublicPath", "false" } },
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), Configuration.GetValue<string>("SpaPhysicalRootPath")),
+                    HotModuleReplacement = true,
+                    ReactHotModuleReplacement = true
                 });
             }
 

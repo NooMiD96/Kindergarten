@@ -17,13 +17,13 @@ namespace Kindergarten.Database.DIServices
     /// </summary>
     public static partial class DependencyInjections
     {
-        public static async Task IdentityDatabase(IServiceProvider serviceProvider, IConfiguration Configuration)
+        public static async Task IdentityInitDI(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
             using (var scope = serviceProvider.CreateScope())
             {
                 var identityContext = scope.ServiceProvider.GetRequiredService<KindergartenIdentityContext>();
                 var UserManager     = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                //var RoleManager     = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                var RoleManager     = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
                 try
                 {
                     await identityContext.Database.MigrateAsync();
@@ -33,14 +33,14 @@ namespace Kindergarten.Database.DIServices
 
                     foreach (var roleName in roleNames)
                     {
-                        //var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                        //if (!roleExist)
-                        //{
-                        //    roleResult = await RoleManager.CreateAsync(new ApplicationRole(roleName));
+                        var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                        if (!roleExist)
+                        {
+                            roleResult = await RoleManager.CreateAsync(new ApplicationRole(roleName));
 
-                        //    if (!roleResult.Succeeded)
-                        //        throw new Exception("Can't add roles in database");
-                        //}
+                            if (!roleResult.Succeeded)
+                                throw new Exception("Can't add roles in database");
+                        }
                     }
 
                     var admins = Configuration.GetSection("Admins").GetChildren();
@@ -73,8 +73,8 @@ namespace Kindergarten.Database.DIServices
                 }
                 finally
                 {
-                    //if (RoleManager != null)
-                    //    RoleManager.Dispose();
+                    if (RoleManager != null)
+                        RoleManager.Dispose();
                     if (UserManager != null)
                         UserManager.Dispose();
                     if (identityContext != null)
