@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Kindergarten.Middlewares
+namespace Kindergarten.Web.Middlewares
 {
     public class PermissionMiddleware
     {

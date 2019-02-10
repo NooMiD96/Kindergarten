@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kindergarten.Database.Models.Kindergarten
+namespace Kindergarten.Model.Kindergarten
 {
     public class Todo
     {

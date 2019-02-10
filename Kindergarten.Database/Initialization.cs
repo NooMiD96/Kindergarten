@@ -2,7 +2,7 @@
 
 using Kindergarten.Database.Contexts;
 using Kindergarten.Database.DIServices;
-using Kindergarten.Database.Models.KindergartenIdentity;
+using Kindergarten.Model.KindergartenIdentity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

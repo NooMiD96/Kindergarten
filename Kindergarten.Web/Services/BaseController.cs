@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Kindergarten.Controllers
+namespace Kindergarten.Web.Controllers
 {
     public class BaseController: ControllerBase
     {

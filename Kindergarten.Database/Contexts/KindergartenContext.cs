@@ -1,4 +1,4 @@
-﻿using Kindergarten.Database.Models.Kindergarten;
+﻿using Kindergarten.Model.Kindergarten;
 
 using Microsoft.EntityFrameworkCore;
 

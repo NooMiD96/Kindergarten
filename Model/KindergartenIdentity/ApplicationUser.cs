@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Kindergarten.Database.Models.KindergartenIdentity
+namespace Kindergarten.Model.KindergartenIdentity
 {
     public class ApplicationUser: IdentityUser
     {

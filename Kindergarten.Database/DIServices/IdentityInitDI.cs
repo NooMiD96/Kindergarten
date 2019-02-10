@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Database.Models.KindergartenIdentity;
+using Kindergarten.Model.KindergartenIdentity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

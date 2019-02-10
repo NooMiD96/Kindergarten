@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 using Kindergarten.Core.Helpers;
-using Kindergarten.Database.Models.Kindergarten;
+using Kindergarten.Model.Kindergarten;
 
-namespace Kindergarten.Controllers.AdminApi.Services
+namespace Kindergarten.Database.Service.Controllers.AdminApi
 {
     public class TodoService
     {

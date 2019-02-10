@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 using Kindergarten.Core.Helpers;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Database.Models.Kindergarten;
+using Kindergarten.Model.Kindergarten;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kindergarten.Controllers.Api
+namespace Kindergarten.Web.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]

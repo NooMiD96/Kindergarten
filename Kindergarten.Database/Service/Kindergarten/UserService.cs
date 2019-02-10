@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-using Kindergarten.Database.Models.Kindergarten;
+using Kindergarten.Model.Kindergarten;
 
 namespace Kindergarten.Database.Contexts
 {

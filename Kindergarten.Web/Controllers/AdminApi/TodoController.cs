@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
 
-using Kindergarten.Controllers.AdminApi.Services;
 using Kindergarten.Core.Constants;
 using Kindergarten.Core.Helpers;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Database.Models.Kindergarten;
+using Kindergarten.Database.Service.Controllers.AdminApi;
+using Kindergarten.Model.Kindergarten;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kindergarten.Controllers.AdminApi
+namespace Kindergarten.Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]

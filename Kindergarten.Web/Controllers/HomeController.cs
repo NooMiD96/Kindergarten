@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using static Kindergarten.Core.Antiforgery.Xsrf;
 
-namespace Kindergarten.Controllers
+namespace Kindergarten.Web.Controllers
 {
     public class HomeController: Controller
     {

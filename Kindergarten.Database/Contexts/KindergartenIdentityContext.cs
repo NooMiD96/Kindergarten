@@ -1,4 +1,4 @@
-﻿using Kindergarten.Database.Models.KindergartenIdentity;
+﻿using Kindergarten.Model.KindergartenIdentity;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

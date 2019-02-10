@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-using Kindergarten.Controllers.Api.Services;
 using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
 using Kindergarten.Database.Contexts.ProjectTodoIdentity;
-using Kindergarten.Database.Models.KindergartenIdentity;
+using Kindergarten.Database.Service.Controllers.Api;
+using Kindergarten.Model.KindergartenIdentity;
 
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 using static Kindergarten.Core.Antiforgery.Xsrf;
 
-namespace Kindergarten.Controllers.Api
+namespace Kindergarten.Web.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]

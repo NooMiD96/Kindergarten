@@ -1,4 +1,4 @@
-﻿namespace Kindergarten.Controllers.Api.Services
+﻿namespace Kindergarten.Database.Service.Controllers.Api
 {
     public class AccountService
     {
