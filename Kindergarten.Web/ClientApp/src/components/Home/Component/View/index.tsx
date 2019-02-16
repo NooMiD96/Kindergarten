@@ -1,20 +1,21 @@
 
 import { connect } from "react-redux";
 
+import { ActionCreators } from "./actions";
 import {
     TOwnProps,
     TMapStateToProps,
     TMapDispatchToProps,
-} from "./TTodoList";
+} from "./TView";
+import { ViewForm } from "./Component/View";
 import { ApplicationState } from "@src/Store";
 
-import { ActionCreators } from "./actions";
-import { TodoList } from "./Component/TodoList";
-
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-    ...state.todoList,
+    ...state.postView,
+    userName: state.account.userName,
+    userRole: state.account.userType,
     ...ownProp,
-});
+}) as TMapStateToProps;
 
 const mapDispatchToProps: TMapDispatchToProps = {
     ...ActionCreators,
@@ -23,4 +24,4 @@ const mapDispatchToProps: TMapDispatchToProps = {
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps
-)(TodoList);
+)(ViewForm as any) as any;

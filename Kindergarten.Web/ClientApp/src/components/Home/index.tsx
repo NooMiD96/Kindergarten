@@ -1,4 +1,3 @@
-
 import { connect } from "react-redux";
 
 import { ActionCreators } from "./actions";
@@ -6,14 +5,15 @@ import {
     TOwnProps,
     TMapStateToProps,
     TMapDispatchToProps,
-} from "./TAccount";
-import { Account } from "./Component/Account";
+} from "./THome";
+import { Home } from "./Component/Home";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-    ...state.account,
+    ...state.home,
+    userRole: state.account.userType,
     ...ownProp,
-});
+}) as TMapStateToProps;
 
 const mapDispatchToProps: TMapDispatchToProps = {
     ...ActionCreators,
@@ -22,4 +22,4 @@ const mapDispatchToProps: TMapDispatchToProps = {
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps
-)(Account as any);
+)(Home as any) as any;

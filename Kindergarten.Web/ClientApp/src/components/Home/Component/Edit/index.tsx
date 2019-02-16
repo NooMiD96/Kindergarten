@@ -1,25 +1,30 @@
-
 import { connect } from "react-redux";
 
 import { ActionCreators } from "./actions";
+import { ActionCreators as HomeActions } from "@components/Home/actions";
+import { ActionCreators as ViewActions } from "@components/Home/Component/View/actions";
 import {
     TOwnProps,
     TMapStateToProps,
     TMapDispatchToProps,
-} from "./TAccount";
-import { Account } from "./Component/Account";
+} from "./TEdit";
+import { EditForm } from "./Component/Edit";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-    ...state.account,
+    ...state.postEdit,
+    userRole: state.account.userType,
+    post: state.postView.post,
     ...ownProp,
-});
+}) as TMapStateToProps;
 
 const mapDispatchToProps: TMapDispatchToProps = {
     ...ActionCreators,
+    GetPosts: HomeActions.GetPosts,
+    GetPost: ViewActions.GetPost,
 };
 
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps
-)(Account as any);
+)(EditForm as any) as any;

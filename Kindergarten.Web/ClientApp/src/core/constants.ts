@@ -1,3 +1,4 @@
+//#region Route
 export const routesObject = {
   "/": 0,
   "/fetcher": 1,
@@ -6,6 +7,7 @@ export const routesObject = {
 };
 
 export const routesArray = Object.keys(routesObject);
+//#endregion
 
 export const allowToAllUserLocation = {
   "/": true,
@@ -20,6 +22,7 @@ export enum UserTypeEnums {
   Admin,
 }
 
+//#region SVG Icons
 export type TIcons =
   "loading"
   /* Main: Button */
@@ -89,3 +92,4 @@ export const getIconAsync = async (type: TIcons) => {
       throw new Error(`SVG with "${exhaustiveCheck}" type not found!`);
   }
 };
+//#endregion

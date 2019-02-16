@@ -1,17 +1,19 @@
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 
-import { TodoListState, TodoPayload } from "./ITodoListState";
-
+import { HomeState } from "./State";
 import { ActionCreators } from "./actions";
+
+import { FormComponentProps } from "@core/antd/Form";
+import { UserTypeEnums } from "@core/constants";
 // -----------------------------
 // STATE OF COMPONENT
-export type TComponentState = {
-    text: string;
-};
+export type TComponentState = { };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = TodoListState;
-export type TOwnProps = RouteComponentProps<{}>;
+export type TStateToProps = HomeState & FormComponentProps & {
+    userRole: UserTypeEnums,
+} & RouteComponentProps;
+export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
     & TOwnProps;
 // -----------------------------
@@ -24,8 +26,3 @@ export type TState = TMapStateToProps
     & TMapDispatchToProps;
 // -----------------------------
 // MODELS
-export type TTodoListModel = {
-    todoId: number,
-    label: string,
-    todoPayloads: TodoPayload[],
-};
