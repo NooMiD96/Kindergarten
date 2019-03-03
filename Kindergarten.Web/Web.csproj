@@ -17,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\AdminApi\" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <Compile Remove="Controllers\AdminApi\TodoController.cs" />
+    <Compile Remove="Controllers\Api\FetcherController.cs" />
+    <Compile Remove="Controllers\AuthorizationController.cs" />
     <Folder Include="ClientApp\public\client\" />
     <Folder Include="ClientApp\public\server\" />
   </ItemGroup>

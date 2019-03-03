@@ -15,7 +15,7 @@ namespace Kindergarten.Database
 {
     public static class DatabaseInitialization
     {
-        public const string ASSEMBLY_PATH = "Kindergarten.Web";
+        public const string ASSEMBLY_PATH = "Web";
 
         public static void SetupDatabaseSettings(IServiceCollection services, IConfiguration Configuration)
         {
@@ -47,9 +47,9 @@ namespace Kindergarten.Database
                     options.Lockout.MaxFailedAccessAttempts = 10;
                     options.Lockout.AllowedForNewUsers = true;
                 })
-            .AddRoles<ApplicationRole>()
-            .AddClaimsPrincipalFactory<ClaimsPrincipalFactoryDI>()
-            .AddEntityFrameworkStores<KindergartenIdentityContext>();
+                .AddRoles<ApplicationRole>()
+                .AddClaimsPrincipalFactory<ClaimsPrincipalFactoryDI>()
+                .AddEntityFrameworkStores<KindergartenIdentityContext>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
         }
@@ -62,8 +62,8 @@ namespace Kindergarten.Database
             //    IdentityDataBase(serviceProvider, Configuration)
             //).GetAwaiter().GetResult();
 
-            IdentityInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
-            KindergartenInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
+            //IdentityInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
+            //KindergartenInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
         }
     }
 }

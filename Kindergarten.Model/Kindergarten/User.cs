@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kindergarten.Model.Kindergarten
@@ -14,7 +13,7 @@ namespace Kindergarten.Model.Kindergarten
         public string IdentityUserId { get; set; }
 
         // Children
-        public ICollection<Todo> Todos { get; set; } = new List<Todo>();
-        public Fetcher Fetcher { get; set; }
+        //public ICollection<Todo> Todos { get; set; } = new List<Todo>();
+        //public Fetcher Fetcher { get; set; }
     }
 }

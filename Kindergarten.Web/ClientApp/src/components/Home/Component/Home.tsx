@@ -35,7 +35,7 @@ export class Home extends React.Component<TState, TComponentState> {
           onClick={() => history.push("/edit/0")}
         >
           Create new record
-                </Button>
+        </Button>
       }
       <h1>News!</h1>
       <List

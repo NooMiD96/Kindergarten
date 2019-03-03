@@ -133,6 +133,11 @@ namespace Kindergarten.Web.Controllers.Api
         [HttpPost("[action]")]
         public IActionResult ReNewXSRF([FromBody] RegistrationModel model)
         {
+            if (model == null)
+            {
+                throw new System.ArgumentNullException(nameof(model));
+            }
+
             if (_signInManager.IsSignedIn(User))
             {
                 return Ok(XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));

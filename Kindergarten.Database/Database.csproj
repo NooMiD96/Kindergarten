@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Kindergarten.Model\Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\Controllers\AdminApi\" />
+  </ItemGroup>
+
 </Project>
