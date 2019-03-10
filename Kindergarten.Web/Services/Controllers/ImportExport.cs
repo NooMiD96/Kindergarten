@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Kindergarten.Model.Kindergarten;
+using Kindergarten.Model.DB;
 
 using MyMedicine.Controllers.Services;
 

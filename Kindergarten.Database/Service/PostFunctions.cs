@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Kindergarten.Model.Kindergarten;
+using Kindergarten.Model.DB;
+using Kindergarten.Model.Identity;
 using Kindergarten.Model.UI.Post;
 
 using Microsoft.EntityFrameworkCore;
@@ -12,35 +13,40 @@ namespace Kindergarten.Database.Contexts
 {
     public partial class KindergartenContext
     {
-        public async Task<(ICollection<PreviewPost> Posts, int TotalCount)> GetPostsAndCountAsync(int page, int pageSize) => (
+        public async Task<(ICollection<PreviewPost> Posts, int TotalCount)> GetPreviewPostListAsync(int page, int pageSize) => (
             page <= 0 || pageSize <= 0 ?
-                (null, Posts.Count())
+                (null, Post.Count())
             :
-                (await Posts
+                (await Post
                     .OrderBy(p => p.PostId)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
+                    .Include(x => x.CommentList)
+                    .Include(x => x.User)
                     .Select(item => new PreviewPost()
                     {
-                        Author = item.Author,
-                        CommentsCount = item.CommentsCount,
+                        Author = item.User.UserName,
+                        CommentsCount = item.CommentList.Count,
                         Date = item.Date,
                         Header = item.Header,
                         PostId = item.PostId,
                         ImgUrl = item.ImgUrl
                     })
                     .ToListAsync(),
-                await Posts.CountAsync())
+                await Post.CountAsync())
         );
-        public async Task<Post> GetPostAsync(int postId) => await Posts
-            .Include(post => post.CommentsList)
+
+        public async Task<Post> GetPostAsync(int postId) => await Post
+            .Include(post => post.CommentList)
             .FirstOrDefaultAsync(post => post.PostId == postId);
-        public IEnumerable<Post> GetAllPosts() => Posts
-            .Include(p => p.CommentsList)
+
+        public IEnumerable<Post> GetAllPost() => Post
+            .Include(p => p.CommentList)
             .AsEnumerable();
-        public async Task<ICollection<Comment>> GetCommentAsync(int postId)
+
+        public async Task<ICollection<Comment>> GetCommentListAsync(int postId)
         {
-            var post = await Posts
+            var post = await Post
                 .Where(p => p.PostId == postId)
                 .FirstOrDefaultAsync();
 
@@ -50,56 +56,56 @@ namespace Kindergarten.Database.Contexts
             }
 
             await Entry(post)
-                .Collection(p => p.CommentsList)
+                .Collection(p => p.CommentList)
                 .LoadAsync();
 
-            return post.CommentsList.ToList();
+            return post.CommentList.ToList();
         }
 
         /// <summary>
         /// </summary>
-        /// <param name="posts"></param>
+        /// <param name="postList"></param>
         /// <param name="type">0 - add new, 1 - edit, 2 - skip</param>
         /// <returns></returns>
-        public async ValueTask<bool> ChangePostListAsync(List<Post> posts, int type)
+        public async ValueTask<bool> ChangePostListAsync(List<Post> postList, int type)
         {
-            var contextPosts = await Posts.AsNoTracking().ToListAsync();
+            var contextPostList = await Post.AsNoTracking().ToListAsync();
 
             switch (type)
             {
                 case 0:
-                    posts.ForEach(post => post.PostId = 0);
+                    postList.ForEach(post => post.PostId = 0);
 
-                    Posts.AddRange(posts.AsEnumerable());
+                    Post.AddRange(postList.AsEnumerable());
 
                     break;
 
                 case 1:
                     var index = -1;
-                    foreach (var post in posts)
+                    foreach (var post in postList)
                     {
-                        index = contextPosts.IndexOf(post);
+                        index = contextPostList.IndexOf(post);
 
                         if (index != -1)
                         {
-                            contextPosts[index] = post;
-                            Posts.Update(contextPosts[index]);
+                            contextPostList[index] = post;
+                            Post.Update(contextPostList[index]);
                         }
                         else
                         {
                             post.PostId = 0;
-                            Posts.Add(post);
+                            Post.Add(post);
                         }
                     }
 
                     break;
 
                 case 2:
-                    foreach (var post in posts)
-                        if (!contextPosts.Contains(post))
+                    foreach (var post in postList)
+                        if (!contextPostList.Contains(post))
                         {
                             post.PostId = 0;
-                            Posts.Add(post);
+                            Post.Add(post);
                         }
 
                     break;
@@ -113,10 +119,10 @@ namespace Kindergarten.Database.Contexts
             return true;
         }
 
-        public async Task<Comment> AddNewCommentAsync(int postId, string userName, string commentInner)
+        public async Task<Comment> AddNewCommentAsync(int postId, ApplicationUser user, string commentInner)
         {
             var date = DateTime.UtcNow;
-            var post = await Posts
+            var post = await Post
                 .Where(p => p.PostId == postId)
                 .FirstOrDefaultAsync();
 
@@ -127,32 +133,32 @@ namespace Kindergarten.Database.Contexts
 
             var comment = new Comment()
             {
-                CommentInner = commentInner,
+                Content = commentInner,
                 Date = date,
-                UserName = userName
+                UserId = user.Id,
             };
 
-            post.CommentsList.Add(comment);
-            post.CommentsCount++;
+            post.CommentList.Add(comment);
 
             await SaveChangesAsync();
 
             return comment;
         }
-        public async Task AddNewPostAsync(Post post, string userName)
+
+        public async Task AddNewPostAsync(Post post, ApplicationUser user)
         {
             post.PostId = 0;
-            post.Author = userName;
+            post.UserId = user.Id;
             post.Date = DateTime.UtcNow;
 
-            Posts.Add(post);
+            Post.Add(post);
 
             await SaveChangesAsync();
         }
 
         public async Task EditPostAsync(Post post, int postId)
         {
-            var contextPost = await Posts
+            var contextPost = await Post
                 .Where(p => p.PostId == postId)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
@@ -163,17 +169,17 @@ namespace Kindergarten.Database.Contexts
             }
 
             contextPost.Header = post.Header;
-            contextPost.Context = post.Context;
+            contextPost.Content = post.Content;
             contextPost.ImgUrl = post.ImgUrl;
 
-            Posts.Update(contextPost);
+            Post.Update(contextPost);
 
             await SaveChangesAsync();
         }
 
         public async Task DeletePostAsync(int postId)
         {
-            var contextPost = await Posts
+            var contextPost = await Post
                 .Where(p => p.PostId == postId)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
@@ -183,13 +189,13 @@ namespace Kindergarten.Database.Contexts
                 return;
             }
 
-            Posts.Remove(contextPost);
+            Post.Remove(contextPost);
 
             await SaveChangesAsync();
         }
-        public async Task DeleteCommentsListAsync(int postid, List<int> commentsListId)
+        public async Task DeleteCommentListAsync(int postid, List<int> commentListId)
         {
-            var post = await Posts
+            var post = await Post
                 .Where(p => p.PostId == postid)
                 .FirstOrDefaultAsync();
 
@@ -199,14 +205,13 @@ namespace Kindergarten.Database.Contexts
             }
 
             await Entry(post)
-                .Collection(p => p.CommentsList)
+                .Collection(p => p.CommentList)
                 .LoadAsync();
 
-            post.CommentsCount -= commentsListId.Count;
-            var commentsToDelete = post.CommentsList
-                .Where(c => commentsListId.IndexOf(c.CommentId) != -1);
+            var commentsToDelete = post.CommentList
+                .Where(x => commentListId.Contains(x.CommentId));
 
-            Comments.RemoveRange(commentsToDelete);
+            Comment.RemoveRange(commentsToDelete);
 
             await SaveChangesAsync();
         }

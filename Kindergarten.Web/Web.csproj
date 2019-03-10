@@ -8,7 +8,7 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +17,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\AdminApi\" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <Compile Remove="Controllers\AdminApi\TodoController.cs" />
     <Compile Remove="Controllers\Api\FetcherController.cs" />
     <Compile Remove="Controllers\AuthorizationController.cs" />
+    <Compile Remove="Controllers\ImportExportController.cs" />
+    <Compile Remove="Controllers\PostController.cs" />
+    <Compile Remove="Controllers\SymptomsController.cs" />
+    <Compile Remove="Controllers\VisitationController.cs" />
+    <Compile Remove="Services\Controllers\ImportExport.cs" />
     <Folder Include="ClientApp\public\client\" />
     <Folder Include="ClientApp\public\server\" />
   </ItemGroup>

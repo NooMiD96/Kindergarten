@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\DiseaseFunctions.cs" />
+    <Compile Remove="Service\UserService.cs" />
+    <Compile Remove="Service\VisitationFuncttions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0-preview-19075-0444" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0-preview.19074.3" />
@@ -17,10 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Kindergarten.Core\Core.csproj" />
     <ProjectReference Include="..\Kindergarten.Model\Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Service\Controllers\AdminApi\" />
   </ItemGroup>
 
 </Project>

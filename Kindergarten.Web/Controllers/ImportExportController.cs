@@ -68,7 +68,7 @@ namespace MyMedicine.Controllers
             {
                 using(var zip = new ZipArchive(memoryStream, ZipArchiveMode.Create))
                 {
-                    await WriteInFile(zip, "Posts.json", _context.GetAllPosts());
+                    await WriteInFile(zip, "Posts.json", _context.GetAllPost());
                     await WriteInFile(zip, "Symptoms.json", _context.GetAllSymptoms());
                 }
 

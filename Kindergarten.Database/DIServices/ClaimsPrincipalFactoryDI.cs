@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Kindergarten.Core.Helpers;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Model.KindergartenIdentity;
+using Kindergarten.Model.Identity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -28,8 +28,8 @@ namespace Kindergarten.Database.DIServices
         {
             var identity = await base.GenerateClaimsAsync(appUser);
 
-            var userId = _context.GetUserIdByIdentityId(appUser.Id);
-            identity.AddClaim(new Claim(ClaimHelper.ProjectTodoUserIdDefault, userId.ToString()));
+            //var userId = _context.GetUserIdByIdentityId(appUser.Id);
+            //identity.AddClaim(new Claim(ClaimHelper.ProjectTodoUserIdDefault, userId.ToString()));
 
             return identity;
         }

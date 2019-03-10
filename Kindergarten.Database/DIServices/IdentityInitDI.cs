@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Model.KindergartenIdentity;
+using Kindergarten.Model.Identity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +21,9 @@ namespace Kindergarten.Database.DIServices
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                var identityContext = scope.ServiceProvider.GetRequiredService<KindergartenIdentityContext>();
-                var UserManager     = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var RoleManager     = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+                var userManager     = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager     = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
                 try
                 {
                     await identityContext.Database.MigrateAsync();
@@ -33,10 +33,10 @@ namespace Kindergarten.Database.DIServices
 
                     foreach (var roleName in roleNames)
                     {
-                        var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                        var roleExist = await roleManager.RoleExistsAsync(roleName);
                         if (!roleExist)
                         {
-                            roleResult = await RoleManager.CreateAsync(new ApplicationRole(roleName));
+                            roleResult = await roleManager.CreateAsync(new ApplicationRole(roleName));
 
                             if (!roleResult.Succeeded)
                                 throw new Exception("Can't add roles in database");
@@ -50,7 +50,7 @@ namespace Kindergarten.Database.DIServices
                         var password = admin["Password"];
                         var email    = admin["Email"];
 
-                        var _user = await UserManager.FindByNameAsync(userName);
+                        var _user = await userManager.FindByNameAsync(userName);
                         if (_user == null)
                         {
                             var poweruser = new ApplicationUser
@@ -59,10 +59,10 @@ namespace Kindergarten.Database.DIServices
                                 Email = email
                             };
 
-                            var createPowerUser = await UserManager.CreateAsync(poweruser, password);
+                            var createPowerUser = await userManager.CreateAsync(poweruser, password);
                             if (createPowerUser.Succeeded)
                             {
-                                await UserManager.AddToRoleAsync(poweruser, UserRoles.Admin);
+                                await userManager.AddToRoleAsync(poweruser, UserRoles.Admin);
                             }
                         }
                     }
@@ -73,10 +73,10 @@ namespace Kindergarten.Database.DIServices
                 }
                 finally
                 {
-                    if (RoleManager != null)
-                        RoleManager.Dispose();
-                    if (UserManager != null)
-                        UserManager.Dispose();
+                    if (roleManager != null)
+                        roleManager.Dispose();
+                    if (userManager != null)
+                        userManager.Dispose();
                     if (identityContext != null)
                         identityContext.Dispose();
                 }

@@ -10,10 +10,8 @@ namespace Kindergarten.Core.Helpers
             NullValueHandling = NullValueHandling.Ignore,
         };
 
-        public static string Serialize(object obj) => JsonConvert
-            .SerializeObject(obj, JsonSettings);
+        public static string Serialize<T>(T obj) => JsonConvert.SerializeObject(obj, JsonSettings);
 
-        public static T Deserialize<T>(string json) => JsonConvert
-            .DeserializeObject<T>(json);
+        public static T Deserialize<T>(string json) => JsonConvert.DeserializeObject<T>(json);
     }
 }

@@ -4,7 +4,7 @@ using Kindergarten.Model.UI.Chat;
 
 namespace Kindergarten.Web.Services.ChatHelper
 {
-    public static class ChatHalper
+    public static class ChatHelper
     {
         static readonly int CountOfMessageCashed = 10;
 

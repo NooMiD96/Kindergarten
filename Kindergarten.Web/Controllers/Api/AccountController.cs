@@ -5,7 +5,7 @@ using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
 using Kindergarten.Database.Contexts.ProjectTodoIdentity;
 using Kindergarten.Database.Service.Controllers.Api;
-using Kindergarten.Model.KindergartenIdentity;
+using Kindergarten.Model.Identity;
 
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Identity;
@@ -62,7 +62,7 @@ namespace Kindergarten.Web.Controllers.Api
                     //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _context.AddNewUserAsync(user.Id);
+                    //await _context.AddNewUserAsync(user.Id);
                     await _userManager.AddToRoleAsync(user, UserRoles.User);
                     await _signInManager.SignInAsync(user, isPersistent: true);
 

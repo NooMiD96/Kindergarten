@@ -2,7 +2,7 @@
 
 using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Model.Kindergarten;
+using Kindergarten.Model.DB;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

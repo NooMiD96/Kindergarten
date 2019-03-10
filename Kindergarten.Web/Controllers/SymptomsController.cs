@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Model.Kindergarten;
+using Kindergarten.Model.DB;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +70,7 @@ namespace MyMedicine.Controllers
                 return ControllersServices.ErrorMessage("Not allowed");
             }
 
-            _ = await _context.DeletesymptomsAsync(deleteList);
+            _ = await _context.DeleteSymptomsAsync(deleteList);
 
             return "true";
         }

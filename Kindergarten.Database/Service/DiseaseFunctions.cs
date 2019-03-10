@@ -69,7 +69,7 @@ namespace Kindergarten.Database.Contexts
             return true;
         }
 
-        public async ValueTask<bool> DeletesymptomsAsync(List<int> symptoms)
+        public async ValueTask<bool> DeleteSymptomsAsync(List<int> symptoms)
         {
             var contextSymptoms = Symptoms
                 .Where(s => symptoms.Contains(s.SymptomId))

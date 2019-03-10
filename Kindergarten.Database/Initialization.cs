@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using Kindergarten.Database.Contexts;
 using Kindergarten.Database.DIServices;
-using Kindergarten.Model.KindergartenIdentity;
+using Kindergarten.Model.Identity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace Kindergarten.Database
         {
 
             services
-                .AddDbContext<KindergartenIdentityContext>(options =>
+                .AddDbContext<IdentityContext>(options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("Kindergarten"),
                                          x => x.MigrationsAssembly(ASSEMBLY_PATH));
@@ -49,7 +50,7 @@ namespace Kindergarten.Database
                 })
                 .AddRoles<ApplicationRole>()
                 .AddClaimsPrincipalFactory<ClaimsPrincipalFactoryDI>()
-                .AddEntityFrameworkStores<KindergartenIdentityContext>();
+                .AddEntityFrameworkStores<IdentityContext>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
         }
@@ -58,12 +59,12 @@ namespace Kindergarten.Database
         {
             // We cant start the both DI together 'couse we have a reference from Project to Identity context
             //Task.WhenAll(
-            //    ProjectTodoDataBase(serviceProvider, Configuration),
-            //    IdentityDataBase(serviceProvider, Configuration)
+            //    //IdentityInitDI(serviceProvider, Configuration),
+            //    KindergartenInitDI(serviceProvider, Configuration)
             //).GetAwaiter().GetResult();
 
-            //IdentityInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
-            //KindergartenInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
+            IdentityInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
+            KindergartenInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
         }
     }
 }

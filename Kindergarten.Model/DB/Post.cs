@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kindergarten.Model.Kindergarten
+using Kindergarten.Model.Identity;
+
+namespace Kindergarten.Model.DB
 {
     public class Post : IEquatable<Post>
     {
@@ -11,18 +13,19 @@ namespace Kindergarten.Model.Kindergarten
         public int PostId { get; set; }
 
         [Required]
-        public string Author { get; set; }
-        [Required]
         public string Header { get; set; }
         [Required]
-        public string Context { get; set; }
+        public string Content { get; set; }
         [Required]
         public DateTime Date { get; set; }
         public string ImgUrl { get; set; }
-        [Required]
-        public int CommentsCount { get; set; }
+
         //childrens
-        public ICollection<Comment> CommentsList { get; set; } = new List<Comment>();
+        public ICollection<Comment> CommentList { get; set; } = new List<Comment>();
+
+        [Required, ForeignKey(nameof(ApplicationUser))]
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
         public bool Equals(Post item)
         {
@@ -35,20 +38,5 @@ namespace Kindergarten.Model.Kindergarten
                 return false;
             }
         }
-    }
-    public class Comment
-    {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CommentId { get; set; }
-
-        [Required]
-        public string CommentInner { get; set; }
-        [Required]
-        public DateTime Date { get; set; }
-        [Required]
-        public string UserName { get; set; }
-
-        [Required, ForeignKey(nameof(Post))]
-        public int PostId { get; set; }
     }
 }

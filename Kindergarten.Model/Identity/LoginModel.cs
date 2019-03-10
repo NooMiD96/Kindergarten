@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace Kindergarten.Model.KindergartenIdentity
+namespace Kindergarten.Model.Identity
 {
     public class LoginModel
     {

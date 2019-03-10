@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
-using Kindergarten.Model.Kindergarten;
-
+using Kindergarten.Model.DB;
+using Kindergarten.Model.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using MyMedicine.Controllers.Services;
@@ -21,19 +23,24 @@ namespace MyMedicine.Controllers
     public class PostController : Controller
     {
         private readonly KindergartenContext _context;
-        public PostController([FromServices] KindergartenContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public PostController([FromServices] KindergartenContext context, [FromServices] UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        [AllowAnonymous]
         [HttpGet("[action]")]
-        public async Task<string> GetPosts([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<string> GetPreviewPostList([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var (Posts, TotalCount) = await _context.GetPostsAndCountAsync(page, pageSize);
+            var (Posts, TotalCount) = await _context.GetPreviewPostListAsync(page, pageSize);
 
             return JsonConvert.SerializeObject(new { Posts, TotalCount }, ControllersServices.JsonSettings);
         }
 
+        [AllowAnonymous]
         [HttpGet("[action]")]
         public async Task<string> GetPost([FromQuery] int postid)
         {
@@ -50,8 +57,11 @@ namespace MyMedicine.Controllers
                 return ControllersServices.ErrorMessage("auth");
             }
 
+            var user = await _userManager.GetUserAsync(User);
+
             var context = await ControllersServices.GetJsonFromBodyRequestAsync(Request.Body);
-            var result = await _context.AddNewCommentAsync(postid, User.Identity.Name, context);
+
+            var result = await _context.AddNewCommentAsync(postid, user, context);
 
             if (result != null)
             {
@@ -70,7 +80,7 @@ namespace MyMedicine.Controllers
                 return ControllersServices.ErrorMessage("auth");
             }
 
-            var result = await _context.GetCommentAsync(postid);
+            var result = await _context.GetCommentListAsync(postid);
 
             if (result != null)
             {
@@ -116,7 +126,7 @@ namespace MyMedicine.Controllers
                 return ControllersServices.ErrorMessage("Not allowed");
             }
 
-            await _context.DeleteCommentsListAsync(postid, commentsListId);
+            await _context.DeleteCommentListAsync(postid, commentsListId);
 
             return "true";
         }
