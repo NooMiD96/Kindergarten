@@ -2,6 +2,8 @@ import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponses";
+import { parseData } from "@src/core/fetchHelper";
+import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import * as t from "./actionsType";
 import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
@@ -33,14 +35,14 @@ export const ActionsList = {
     type: t.SEND_COMMENT_REQUEST_ERROR,
     errorMessage,
   }),
-  GetCommentsRequest: (): t.IGetCommentsRequestAction => ({
+  GetCommentListRequest: (): t.IGetCommentListRequestAction => ({
     type: t.GET_COMMENTS_REQUEST,
   }),
-  GetCommentsRequestSuccess: (commentsList: Comment[]): t.IGetCommentsRequestSuccessAction => ({
+  GetCommentListRequestSuccess: (commentsList: Comment[]): t.IGetCommentListRequestSuccessAction => ({
     type: t.GET_COMMENTS_REQUEST_SUCCESS,
     commentsList,
   }),
-  GetCommentsRequestError: (errorMessage: string): t.IGetCommentsRequestErrorAction => ({
+  GetCommentListRequestError: (errorMessage: string): t.IGetCommentListRequestErrorAction => ({
     type: t.GET_COMMENTS_REQUEST_ERROR,
     errorMessage,
   }),
@@ -75,11 +77,15 @@ export const ActionsList = {
 // ----------------
 //#region ACTIONS CREATORS
 export const ActionCreators = {
-  GetPost: (postId: number): AppThunkAction<t.TGetPostRequest> => (dispatch, _getState) => {
-    const fetchTask = fetch(`/api/post/getpost?postid=${postId}`, {
+  GetPost: (postId: number): AppThunkAction<t.TGetPostRequest> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    const fetchTask = fetch(`/api/post/GetPost?postId=${postId}`, {
       method: "GET",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
       credentials: "same-origin",
+      headers: {
+        ...xptToHeader,
+      },
     }).then((res: Response) => {
       if (res.ok) {
         return res.json();
@@ -91,13 +97,16 @@ export const ActionCreators = {
         return errorCreater(value.error);
       }
 
-      value.data.commentsList.forEach((comment: Comment) => comment.date = new Date(comment.date));
+      const data = parseData(value.data);
+
+      data.commentList.forEach((comment: Comment) => comment.date = new Date(comment.date));
 
       dispatch(ActionsList.GetPostRequestSuccess(value.data));
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
+      "GetPost",
       err,
       ActionsList.GetPostRequestError,
       dispatch
@@ -106,10 +115,15 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.GetPostRequest(postId));
   },
-  DeletePost: (PostId: number): AppThunkAction<t.TDeletePostRequest> => (dispatch, _getState) => {
-    const fetchTask = fetch(`/api/post/deletepost?postid=${PostId}`, {
+  DeletePost: (PostId: number): AppThunkAction<t.TDeletePostRequest> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    const fetchTask = fetch(`/api/post/DeletePost?postId=${PostId}`, {
       method: "DELETE",
       credentials: "same-origin",
+      headers: {
+        ...xptToHeader,
+      },
     }).then((res: Response) => {
       if (res.ok) {
         return res.json();
@@ -132,6 +146,7 @@ export const ActionCreators = {
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
+      "DeletePost",
       err,
       ActionsList.DeletePostRequestError,
       dispatch
@@ -141,42 +156,55 @@ export const ActionCreators = {
     dispatch(ActionsList.DeletePostRequest());
   },
 
-  GetComments: (): AppThunkAction<t.TGetCommentsRequest> => (dispatch, getState) => {
+  GetCommentList: (): AppThunkAction<t.TGetCommentListRequest> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
     // TODO:
     const { postId } = (getState() as any).post;
-    const fetchTask = fetch(`/api/post/getcomments?postid=${postId}`, {
+    const fetchTask = fetch(`/api/post/GetCommentList?postId=${postId}`, {
       method: "GET",
       credentials: "same-origin",
+      headers: {
+        ...xptToHeader,
+      },
     }).then((res: Response) => {
       if (res.ok) {
         return res.json();
       } else {
         return errorCreater(`Status is ${res.status}`);
       }
-    }).then((value: IResponse<Comment[]>) => {
+    }).then((value: IResponse<{ CommentList: Comment[] }>) => {
       if (value.error) {
         return errorCreater("Some trouble when post comment.\n" + value.error);
       }
 
-      value.data.forEach((comment: Comment) => comment.date = new Date(comment.date));
+      const data = parseData(value.data);
 
-      dispatch(ActionsList.GetCommentsRequestSuccess(value.data));
+      data.CommentList.forEach((comment: Comment) => comment.date = new Date(comment.date));
+
+      dispatch(ActionsList.GetCommentListRequestSuccess(data.CommentList));
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
+      "GetComments",
       err,
-      ActionsList.GetCommentsRequestError,
+      ActionsList.GetCommentListRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.GetCommentsRequest());
+    dispatch(ActionsList.GetCommentListRequest());
   },
-  SendComment: (comment: string, PostId: number): AppThunkAction<t.TSendCommentRequest> => (dispatch, _getState) => {
-    const fetchTask = fetch(`/api/post/addcomment?postid=${PostId}`, {
+  SendComment: (comment: string, postId: number): AppThunkAction<t.TSendCommentRequest> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    const fetchTask = fetch(`/api/post/AddComment?postid=${postId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
       credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
       body: comment,
     }).then((res: Response) => {
       if (res.ok) {
@@ -195,14 +223,17 @@ export const ActionCreators = {
         return errorCreater("Some trouble when post comment.\n" + value.error);
       }
 
-      value.data.date = new Date();
-      dispatch(ActionsList.SendCommentRequestSuccess(value.data));
+      const data = parseData(value.data);
 
-      ActionCreators.GetComments()(dispatch as any, _getState);
+      data.date = new Date();
+      dispatch(ActionsList.SendCommentRequestSuccess(data));
+
+      ActionCreators.GetCommentList()(dispatch as any, getState);
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
+      "SendComment",
       err,
       ActionsList.SendCommentRequestError,
       dispatch
@@ -211,11 +242,16 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.SendCommentRequest());
   },
-  DeleteCommentsList: (postId: number, commentList: [any]): AppThunkAction<t.TDeleteCommentListRequest> => (dispatch, _getState) => {
-    const fetchTask = fetch(`/api/post/deletecommentslist?postid=${postId}`, {
+  DeleteCommentList: (postId: number, commentList: [any]): AppThunkAction<t.TDeleteCommentListRequest> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    const fetchTask = fetch(`/api/post/DeleteCommentList?postId=${postId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
       credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
       body: JSON.stringify(commentList),
     }).then((res: Response) => {
       if (res.ok) {
@@ -235,11 +271,12 @@ export const ActionCreators = {
       }
 
       dispatch(ActionsList.DeleteCommentListRequestSuccess());
-      ActionCreators.GetComments()(dispatch as any, _getState);
+      ActionCreators.GetCommentList()(dispatch as any, getState);
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
+      "DeleteCommentsList",
       err,
       ActionsList.DeleteCommentListRequestError,
       dispatch

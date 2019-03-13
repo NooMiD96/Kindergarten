@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using Kindergarten.Core.Helpers;
+﻿using Kindergarten.Core.Helpers;
 using Kindergarten.Database.Contexts;
 using Kindergarten.Model.Identity;
 using Kindergarten.Web.Controllers;
@@ -11,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using MyMedicine.Controllers.Services;
 
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace MyMedicine.Controllers.Api
 {
@@ -31,15 +29,15 @@ namespace MyMedicine.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPreviewPostList([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var (Posts, TotalCount) = await _context.GetPreviewPostListAsync(page, pageSize);
+            var (PostList, TotalCount) = await _context.GetPreviewPostListAsync(page, pageSize);
 
-            return Ok(JsonHelper.Serialize(new { Posts, TotalCount }));
+            return Ok(JsonHelper.Serialize(new { PostList, TotalCount }));
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetPost([FromQuery] int postid)
+        public async Task<IActionResult> GetPost([FromQuery] int postId)
         {
-            var Post = await _context.GetPostAsync(postid);
+            var Post = await _context.GetPostAsync(postId);
 
             return Ok(JsonHelper.Serialize(new { Post }));
         }
@@ -48,10 +46,6 @@ namespace MyMedicine.Controllers.Api
         [HttpPost("[action]")]
         public async Task<IActionResult> AddComment([FromQuery] int postid)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return ControllersServices.ErrorMessage("auth");
-            //}
             var user = await _userManager.GetUserAsync(User);
 
             var context = await ControllersServices.GetJsonFromBodyRequestAsync(Request.Body);
@@ -67,17 +61,12 @@ namespace MyMedicine.Controllers.Api
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetComments([FromQuery] int postid)
+        public async Task<IActionResult> GetCommentList([FromQuery] int postId)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return ControllersServices.ErrorMessage("auth");
-            //}
-
-            var result = await _context.GetCommentListAsync(postid);
+            var result = await _context.GetCommentListAsync(postId);
 
             if (result != null)
-                return Ok(JsonHelper.Serialize(new { CommentsList = result }));
+                return Ok(JsonHelper.Serialize(new { CommentList = result }));
             else
                 return BadRequest("TODO");
         }

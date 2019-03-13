@@ -27,8 +27,8 @@ export const reducer: Reducer = (state: PostViewState, action: KnownAction) => {
                     context: action.data.context,
                     date: action.data.date,
                     imgUrl: action.data.imgUrl,
-                    commentsCount: action.data.commentsCount,
-                    commentsList: action.data.commentsList,
+                    commentsCount: action.data.commentCount,
+                    commentsList: action.data.commentList,
                 },
                 pending: false,
             };
@@ -58,7 +58,7 @@ export const reducer: Reducer = (state: PostViewState, action: KnownAction) => {
                 ...state,
                 post: {
                     ...state.post,
-                    commentsList: [...state.post.commentsList, action.comment],
+                    commentsList: [...state.post.commentList, action.comment],
                 },
                 pending: false,
             };

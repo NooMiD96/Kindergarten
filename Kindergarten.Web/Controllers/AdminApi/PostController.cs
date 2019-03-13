@@ -1,18 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Kindergarten.Core.Constants;
+﻿using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
 using Kindergarten.Model.DB;
 using Kindergarten.Model.Identity;
 using Kindergarten.Web.Controllers;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using MyMedicine.Controllers.Services;
-
-using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyMedicine.Controllers.AdminApi
 {
@@ -34,14 +31,6 @@ namespace MyMedicine.Controllers.AdminApi
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateOrEdit([FromQuery] int postId, [FromBody] Post post)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return ControllersServices.ErrorMessage("auth");
-            //}
-            //if (!User.IsInRole("Admin"))
-            //{
-            //    return ControllersServices.ErrorMessage("Not allowed");
-            //}
             var user = await _userManager.GetUserAsync(User);
 
             if (postId <= 0)
@@ -56,35 +45,17 @@ namespace MyMedicine.Controllers.AdminApi
             return Ok();
         }
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteCommentsList([FromQuery] int postid, [FromBody] List<int> commentsListId)
+        public async Task<IActionResult> DeleteCommentList([FromQuery] int postId, [FromBody] List<int> commentListId)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return ControllersServices.ErrorMessage("auth");
-            //}
-            //if (!User.IsInRole("Admin"))
-            //{
-            //    return ControllersServices.ErrorMessage("Not allowed");
-            //}
-
-            await _context.DeleteCommentListAsync(postid, commentsListId);
+            await _context.DeleteCommentListAsync(postId, commentListId);
 
             return Ok();
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeletePost([FromQuery] int postid)
+        public async Task<IActionResult> DeletePost([FromQuery] int postId)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return ControllersServices.ErrorMessage("auth");
-            //}
-            //if (!User.IsInRole("Admin"))
-            //{
-            //    return ControllersServices.ErrorMessage("Not allowed");
-            //}
-
-            await _context.DeletePostAsync(postid);
+            await _context.DeletePostAsync(postId);
 
             return Ok();
         }

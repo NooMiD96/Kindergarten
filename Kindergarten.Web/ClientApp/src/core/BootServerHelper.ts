@@ -1,12 +1,12 @@
 import { Store, AnyAction } from "redux";
 import { ApplicationState } from "@src/Store";
-import { ActionCreators as FetcherActionCreators } from "@components/Fetcher/actions";
+// import { ActionCreators as FetcherActionCreators } from "@components/Fetcher/actions";
 
 const oneParamSwitcher = (url: string, store: Store<ApplicationState>) => {
     switch (url.toLowerCase()) {
-        case "fetcher":
-            FetcherActionCreators.GetData()(store.dispatch, store.getState);
-            break;
+        // case "fetcher":
+        //     FetcherActionCreators.GetData()(store.dispatch, store.getState);
+        //     break;
 
         default:
             break;

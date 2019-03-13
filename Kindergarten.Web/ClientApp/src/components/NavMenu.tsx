@@ -61,6 +61,31 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
 
   render() {
     const { userType } = this.props;
+
+    let NavLinks = [
+      <Menu.Item key="0" className="logo">
+          <Link to={"/"}>Kindergarten</Link>
+      </Menu.Item>,
+    ];
+    if (userType === UserTypeEnums.Admin) {
+        NavLinks = NavLinks.concat([
+            <Menu.Item key="1">
+                <Link to={"/Visitation"}>Visitation</Link>
+            </Menu.Item>,
+            <Menu.Item key="2">
+                <Link to={"/Symptoms"}>Symptom List</Link>
+            </Menu.Item>,
+        ]);
+    }
+    NavLinks = NavLinks.concat([
+        <Menu.Item key="3">
+            <Link to={"/SearchDisease"}>Search Disease</Link>
+        </Menu.Item>,
+        <Menu.Item key="4">
+            <Link to={"/Chat"}>Chat</Link>
+        </Menu.Item>,
+    ]);
+
     return (
       <div className="header-container">
         <div className="header-menu-container">
@@ -75,38 +100,30 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
                 to={routesArray[0]}
                 onClick={e => this.preventClick(e, routesArray[0])}
               >
-                Home
-              </Link>
-            </Menu.Item>
-            <Menu.Item key={routesArray[1]}>
-              <Link
-                to={routesArray[1]}
-                onClick={e => this.preventClick(e, routesArray[1])}
-              >
-                Fetcher
-              </Link>
-            </Menu.Item>
-            <Menu.Item key={routesArray[2]}>
-              <Link
-                to={routesArray[2]}
-                onClick={e => this.preventClick(e, routesArray[2])}
-              >
-                Counter
+                Kindergarten
               </Link>
             </Menu.Item>
             {
               (
                 userType === UserTypeEnums.Admin
                 || userType === UserTypeEnums.Employee
-              ) && <Menu.Item key={routesArray[3]}>
+              ) && <Menu.Item key={routesArray[1]}>
                 <Link
-                  to={routesArray[3]}
-                  onClick={e => this.preventClick(e, routesArray[3])}
+                  to={routesArray[1]}
+                  onClick={e => this.preventClick(e, routesArray[1])}
                 >
-                  Todo List
+                  Visitation
                 </Link>
               </Menu.Item>
             }
+            <Menu.Item key={routesArray[2]}>
+              <Link
+                to={routesArray[2]}
+                onClick={e => this.preventClick(e, routesArray[2])}
+              >
+                Чат
+              </Link>
+            </Menu.Item>
           </Menu>
         </div>
         <div className="header-account-container">

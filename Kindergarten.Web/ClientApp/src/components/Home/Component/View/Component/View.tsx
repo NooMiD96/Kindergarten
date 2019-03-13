@@ -86,14 +86,14 @@ export class View extends React.Component<TState, TComponentState> {
         listToSend.push(prop);
       }
     }
-    this.props.DeleteCommentsList(this.props.post.postId, listToSend as any);
+    this.props.DeleteCommentList(this.props.post.postId, listToSend as any);
   }
 
   public render() {
     const {
       post: {
         postId,
-        commentsList,
+        commentList: commentsList,
         context,
         imgUrl,
       },

@@ -17,7 +17,7 @@ export const reducer: Reducer = (state: HomeState, action: KnownAction) => {
             return {
                 ...state,
                 pending: false,
-                posts: action.posts,
+                posts: action.postList,
                 totalCount: action.totalCount,
             } as HomeState;
 

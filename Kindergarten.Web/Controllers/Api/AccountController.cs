@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-using Kindergarten.Core.Constants;
+﻿using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
 using Kindergarten.Database.Contexts.ProjectTodoIdentity;
 using Kindergarten.Database.Service.Controllers.Api;
@@ -11,6 +8,9 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using System.Linq;
+using System.Threading.Tasks;
 
 using static Kindergarten.Core.Antiforgery.Xsrf;
 

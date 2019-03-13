@@ -4,10 +4,10 @@ import { Route } from "react-router-dom";
 import { Layout } from "@components/Layout";
 import { AsyncComponent } from "@core/HOC/AsyncComponent";
 
+// <Route exact path="/Visitation" component={AsyncComponent(() => import(/* webpackChunkName: "Visitation" */ "@src/components/Visitation"))} />
 export const AppRoutes = (
   <Layout>
-    <Route exact path="/" component={AsyncComponent(() => import(/* webpackChunkName: "home" */ "@src/components/Home"))} />
-    <Route exact path="/fetcher" component={AsyncComponent(() => import(/* webpackChunkName: "fetcher" */ "@src/components/Fetcher"))} />
-    <Route exact path="/counter" component={AsyncComponent(() => import(/* webpackChunkName: "counter" */ "@src/components/Counter"))} />
+    <Route exact path="/" component={AsyncComponent(() => import(/* webpackChunkName: "Home" */ "@src/components/Home"))} />
+    <Route exact path="/Chat" component={AsyncComponent(() => import(/* webpackChunkName: "Chat" */ "@src/components/Chat"))} />
   </Layout>
 );

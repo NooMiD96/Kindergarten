@@ -1,6 +1,7 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import { List, Avatar } from "antd";
+import { Avatar } from "antd";
+import List from "@core/antd/List";
 import Icon from "@core/antd/Icon";
 import Button from "@core/antd/Button";
 
@@ -37,7 +38,7 @@ export class Home extends React.Component<TState, TComponentState> {
           Create new record
         </Button>
       }
-      <h1>News!</h1>
+      <h1>Новости!</h1>
       <List
         itemLayout="vertical"
         size="large"
@@ -50,7 +51,7 @@ export class Home extends React.Component<TState, TComponentState> {
             actions={[
               <span>
                 <Icon type="message" style={{ marginRight: 8 }} />
-                {item.commentsCount}
+                {item.commentCount}
               </span>,
             ]}
             extra={item.imgUrl && <img width={200} alt="logo" src={item.imgUrl} />}

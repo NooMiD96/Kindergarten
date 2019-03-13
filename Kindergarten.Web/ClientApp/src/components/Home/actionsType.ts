@@ -10,7 +10,7 @@ export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
 // -----------------
 //#region ACTIONS INTERFACE
 export interface IGetPostListRequestAction { type: typeof GET_POST_LIST_REQUEST; }
-export interface IGetPostListRequestSuccessAction { type: typeof GET_POST_LIST_REQUEST_SUCCESS; posts: Post[]; totalCount: number; }
+export interface IGetPostListRequestSuccessAction { type: typeof GET_POST_LIST_REQUEST_SUCCESS; postList: Post[]; totalCount: number; }
 export interface IGetPostListRequestErrorAction { type: typeof GET_POST_LIST_REQUEST_ERROR; errorMessage: string; }
 export type TGetPostList = IGetPostListRequestAction | IGetPostListRequestSuccessAction | IGetPostListRequestErrorAction;
 

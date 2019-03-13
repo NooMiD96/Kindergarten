@@ -36,10 +36,10 @@ export interface ISendCommentRequestSuccessAction { type: typeof SEND_COMMENT_RE
 export interface ISendCommentRequestErrorAction { type: typeof SEND_COMMENT_REQUEST_ERROR; errorMessage: string; }
 export type TSendCommentRequest = ISendCommentRequestAction | ISendCommentRequestSuccessAction | ISendCommentRequestErrorAction;
 
-export interface IGetCommentsRequestAction { type: typeof GET_COMMENTS_REQUEST; }
-export interface IGetCommentsRequestSuccessAction { type: typeof GET_COMMENTS_REQUEST_SUCCESS; commentsList: Comment[]; }
-export interface IGetCommentsRequestErrorAction { type: typeof GET_COMMENTS_REQUEST_ERROR; errorMessage: string; }
-export type TGetCommentsRequest = IGetCommentsRequestAction | IGetCommentsRequestSuccessAction | IGetCommentsRequestErrorAction;
+export interface IGetCommentListRequestAction { type: typeof GET_COMMENTS_REQUEST; }
+export interface IGetCommentListRequestSuccessAction { type: typeof GET_COMMENTS_REQUEST_SUCCESS; commentsList: Comment[]; }
+export interface IGetCommentListRequestErrorAction { type: typeof GET_COMMENTS_REQUEST_ERROR; errorMessage: string; }
+export type TGetCommentListRequest = IGetCommentListRequestAction | IGetCommentListRequestSuccessAction | IGetCommentListRequestErrorAction;
 
 export interface IDeletePostRequestAction { type: typeof DELETE_POST_REQUEST; }
 export interface IDeletePostRequestSuccessAction { type: typeof DELETE_POST_REQUEST_SUCCESS; }
@@ -54,7 +54,7 @@ export type TDeleteCommentListRequest = IDeleteCommentListRequestAction | IDelet
 export interface ICleanePostDataAction { type: typeof CLEANE_POST_DATA; }
 export interface ICleanErrorInnerAction { type: typeof CLEAN_ERROR_INNER; }
 
-type KnownAction = TGetPostRequest | TSendCommentRequest | TGetCommentsRequest | TDeletePostRequest
+type KnownAction = TGetPostRequest | TSendCommentRequest | TGetCommentListRequest | TDeletePostRequest
     | TDeleteCommentListRequest | ICleanePostDataAction | ICleanErrorInnerAction;
 export default KnownAction;
 //#endregion

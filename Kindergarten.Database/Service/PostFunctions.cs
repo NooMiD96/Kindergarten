@@ -13,16 +13,16 @@ namespace Kindergarten.Database.Contexts
 {
     public partial class KindergartenContext
     {
-        public async Task<(ICollection<PreviewPost> Posts, int TotalCount)> GetPreviewPostListAsync(int page, int pageSize) => (
-            page <= 0 || pageSize <= 0 ?
-                (null, Post.Count())
-            :
-                (await Post
+        public async Task<(ICollection<PreviewPost> PostList, int TotalCount)> GetPreviewPostListAsync(int page, int pageSize)
+        {
+            page = page < 0 ? 0 : page;
+            pageSize = pageSize <= 0 ? 1 : pageSize;
+
+            return (
+                await Post
                     .OrderBy(p => p.PostId)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
-                    .Include(x => x.CommentList)
-                    .Include(x => x.User)
                     .Select(item => new PreviewPost()
                     {
                         Author = item.User.UserName,
@@ -33,8 +33,9 @@ namespace Kindergarten.Database.Contexts
                         ImgUrl = item.ImgUrl
                     })
                     .ToListAsync(),
-                await Post.CountAsync())
-        );
+                await Post.CountAsync()
+            );
+        }
 
         public async Task<Post> GetPostAsync(int postId) => await Post
             .Include(post => post.CommentList)
@@ -46,14 +47,10 @@ namespace Kindergarten.Database.Contexts
 
         public async Task<ICollection<Comment>> GetCommentListAsync(int postId)
         {
-            var post = await Post
-                .Where(p => p.PostId == postId)
-                .FirstOrDefaultAsync();
+            var post = await Post.FirstOrDefaultAsync(p => p.PostId == postId);
 
             if (post == null)
-            {
                 return null;
-            }
 
             await Entry(post)
                 .Collection(p => p.CommentList)
@@ -180,38 +177,29 @@ namespace Kindergarten.Database.Contexts
         public async Task DeletePostAsync(int postId)
         {
             var contextPost = await Post
-                .Where(p => p.PostId == postId)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(p => p.PostId == postId);
 
             if (contextPost == null)
-            {
                 return;
-            }
 
             Post.Remove(contextPost);
 
             await SaveChangesAsync();
         }
-        public async Task DeleteCommentListAsync(int postid, List<int> commentListId)
+        public async Task DeleteCommentListAsync(int postId, List<int> commentListId)
         {
-            var post = await Post
-                .Where(p => p.PostId == postid)
-                .FirstOrDefaultAsync();
+            var post = await Post.FirstOrDefaultAsync(p => p.PostId == postId);
 
             if (post == null)
-            {
                 return;
-            }
 
             await Entry(post)
                 .Collection(p => p.CommentList)
                 .LoadAsync();
 
-            var commentsToDelete = post.CommentList
-                .Where(x => commentListId.Contains(x.CommentId));
+            var commentListToDelete = post.CommentList.Where(x => commentListId.Contains(x.CommentId));
 
-            Comment.RemoveRange(commentsToDelete);
+            Comment.RemoveRange(commentListToDelete);
 
             await SaveChangesAsync();
         }

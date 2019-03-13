@@ -90,6 +90,7 @@ export const ActionCreators = {
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Account",
+      "Registration",
       err,
       ActionsList.RegistrationError,
       dispatch
@@ -131,6 +132,7 @@ export const ActionCreators = {
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Account",
+      "Authentication",
       err,
       ActionsList.AuthenticationError,
       dispatch
@@ -162,6 +164,7 @@ export const ActionCreators = {
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Account",
+      "Logout",
       err,
       ActionsList.LogoutError,
       dispatch

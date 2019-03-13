@@ -13,8 +13,8 @@ export interface Post {
   context: string;
   date: Date;
   imgUrl?: string;
-  commentsCount: number;
-  commentsList: Comment[];
+  commentCount: number;
+  commentList: Comment[];
 }
 
 export interface Comment {

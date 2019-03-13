@@ -54,6 +54,7 @@ export const ActionCreators = {
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
+      "CreateEditPost",
       err,
       ActionsList.CreateEditPostError,
       dispatch

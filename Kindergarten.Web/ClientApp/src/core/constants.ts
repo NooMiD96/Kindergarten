@@ -1,9 +1,8 @@
 //#region Route
 export const routesObject = {
   "/": 0,
-  "/fetcher": 1,
-  "/counter": 2,
-  "/todolist": 3,
+  "/Visitation": 1,
+  "/Chat": 2,
 };
 
 export const routesArray = Object.keys(routesObject);
@@ -11,8 +10,8 @@ export const routesArray = Object.keys(routesObject);
 
 export const allowToAllUserLocation = {
   "/": true,
-  "/fetcher": true,
-  "/counter": true,
+  "/Visitation": false,
+  "/Chat": true,
 };
 
 export enum UserTypeEnums {
