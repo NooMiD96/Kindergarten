@@ -66,7 +66,7 @@ namespace Kindergarten.Web.Controllers.Api
                     await _userManager.AddToRoleAsync(user, UserRoles.User);
                     await _signInManager.SignInAsync(user, isPersistent: true);
 
-                    return Ok(_service.SuccessUserAuth(user.UserName, UserRoles.User));
+                    return Success(_service.SuccessUserAuth(user.UserName, UserRoles.User));
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace Kindergarten.Web.Controllers.Api
 
                     var userRoleDefined = await _userManager.GetRoleAsync(user);
 
-                    return Ok(_service.SuccessUserAuth(user.UserName, userRoleDefined));
+                    return Success(_service.SuccessUserAuth(user.UserName, userRoleDefined));
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace Kindergarten.Web.Controllers.Api
 
             if (_signInManager.IsSignedIn(User))
             {
-                return Ok(XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));
+                return Success(XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));
             }
             return BadRequest("User is not Signed");
         }
@@ -150,7 +150,7 @@ namespace Kindergarten.Web.Controllers.Api
         {
             var userName = User.Identity.Name;
             await _signInManager.SignOutAsync();
-            return Ok(_service.SuccessLogOut(userName));
+            return Success(_service.SuccessLogOut(userName));
         }
     }
 }

@@ -188,7 +188,7 @@ namespace Web.Migrations.Kindergarten
                     b.HasOne("Kindergarten.Model.DB.ChildrenInformation", "ChildrenInformation")
                         .WithOne("Children")
                         .HasForeignKey("Kindergarten.Model.DB.Children", "ChildrenId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Kindergarten.Model.DB.Group", "Group")
                         .WithMany()

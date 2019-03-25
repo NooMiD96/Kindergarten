@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Web.Migrations.Kindergarten
 {
     [DbContext(typeof(KindergartenContext))]
-    [Migration("20190325203301_InitKindergartenContext")]
+    [Migration("20190325203851_InitKindergartenContext")]
     partial class InitKindergartenContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -190,7 +190,7 @@ namespace Web.Migrations.Kindergarten
                     b.HasOne("Kindergarten.Model.DB.ChildrenInformation", "ChildrenInformation")
                         .WithOne("Children")
                         .HasForeignKey("Kindergarten.Model.DB.Children", "ChildrenId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Kindergarten.Model.DB.Group", "Group")
                         .WithMany()

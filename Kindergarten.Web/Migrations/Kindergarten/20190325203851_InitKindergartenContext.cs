@@ -118,7 +118,7 @@ namespace Web.Migrations.Kindergarten
                         column: x => x.ChildrenId,
                         principalTable: "ChildrenInformation",
                         principalColumn: "ChildrenId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Children_Group_GroupId",
                         column: x => x.GroupId,

@@ -31,7 +31,7 @@ namespace MyMedicine.Controllers.Api
         {
             var (PostList, TotalCount) = await _context.GetPreviewPostListAsync(page, pageSize);
 
-            return Ok(new { PostList, TotalCount });
+            return Success(new { PostList, TotalCount });
         }
 
         [HttpGet("[action]")]
@@ -39,7 +39,7 @@ namespace MyMedicine.Controllers.Api
         {
             var post = await _context.GetPostAsync(postId);
 
-            return Ok(post);
+            return Success(post);
         }
 
         [Authorize, ValidateAntiForgeryToken]
@@ -53,7 +53,7 @@ namespace MyMedicine.Controllers.Api
             var result = await _context.AddNewCommentAsync(postid, user, context);
 
             if (result != null)
-                return Ok(result);
+                return Success(result);
             else
             {
                 return BadRequest("Не удалось добавить комментарий, повторите попытку позже.");
@@ -66,7 +66,7 @@ namespace MyMedicine.Controllers.Api
             var CommentList = await _context.GetCommentListAsync(postId);
 
             if (CommentList != null)
-                return Ok(CommentList);
+                return Success(CommentList);
             else
                 return BadRequest("TODO");
         }

@@ -57,7 +57,7 @@ namespace MyMedicine.Controllers.AdminApi
         {
             var isSuccess = await _context.DeletePostAsync(postId);
 
-            return Ok(isSuccess);
+            return Success(isSuccess);
         }
     }
 }
