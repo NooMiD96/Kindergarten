@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Migrations.Kindergarten
 {
-    public partial class InitBaseContext : Migration
+    public partial class InitKindergartenContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,11 +26,25 @@ namespace Web.Migrations.Kindergarten
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChildrenInformation",
+                columns: table => new
+                {
+                    ChildrenId = table.Column<int>(nullable: false),
+                    Birthday = table.Column<DateTime>(nullable: false),
+                    Male = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChildrenInformation", x => x.ChildrenId);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,6 +58,22 @@ namespace Web.Migrations.Kindergarten
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Group", x => x.GroupId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medicament",
+                columns: table => new
+                {
+                    MedicamentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    Count = table.Column<int>(nullable: false),
+                    ExpirationDate = table.Column<DateTime>(nullable: false),
+                    Comment = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medicament", x => x.MedicamentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,14 +107,18 @@ namespace Web.Migrations.Kindergarten
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: false),
                     SecondName = table.Column<string>(nullable: false),
-                    Birthday = table.Column<DateTime>(nullable: false),
-                    Male = table.Column<bool>(nullable: false),
                     GroupId = table.Column<int>(nullable: false),
                     ParentId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Children", x => x.ChildrenId);
+                    table.ForeignKey(
+                        name: "FK_Children_ChildrenInformation_ChildrenId",
+                        column: x => x.ChildrenId,
+                        principalTable: "ChildrenInformation",
+                        principalColumn: "ChildrenId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Children_Group_GroupId",
                         column: x => x.GroupId,
@@ -160,6 +194,12 @@ namespace Web.Migrations.Kindergarten
 
             migrationBuilder.DropTable(
                 name: "Comment");
+
+            migrationBuilder.DropTable(
+                name: "Medicament");
+
+            migrationBuilder.DropTable(
+                name: "ChildrenInformation");
 
             migrationBuilder.DropTable(
                 name: "Group");

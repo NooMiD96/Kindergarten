@@ -1,7 +1,7 @@
 import { RouteComponentProps } from "react-router-dom";
 
 import { PostEditState } from "./State";
-import { Post } from "@components/Home/State";
+import { IPost } from "@components/Home/State";
 import { ActionCreators } from "./actions";
 import { ActionCreators as HomeActions } from "@components/Home/actions";
 import { ActionCreators as ViewActions } from "@components/Home/Component/View/actions";
@@ -14,7 +14,7 @@ export type TComponentState = { checkedList: any };
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = PostEditState & FormComponentProps & {
-    post: Post,
+    post: IPost,
     userRole: UserTypeEnums,
 } & RouteComponentProps<{id: string}>;
 export type TOwnProps = {};

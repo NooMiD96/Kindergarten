@@ -1,5 +1,7 @@
 import { fetch, addTask } from "domain-task";
 
+import { message } from "antd";
+
 import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponses";
 import { parseData } from "@src/core/fetchHelper";
@@ -7,7 +9,12 @@ import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import * as t from "./actionsType";
 import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
-import { Post, Comment } from "@components/Home/State";
+import { IPost, IComment } from "@components/Home/State";
+
+import { ActionCreators as AuthActions } from "@components/Account/actions";
+import { TLogout } from "@components/Account/actionsType";
+import { ActionCreators as PostActions } from "@components/Home/actions";
+import { TGetPostList } from "@components/Home/actionsType";
 
 // ----------------
 //#region ACTIONS
@@ -16,7 +23,7 @@ export const ActionsList = {
     type: t.GET_POST_REQUEST,
     postId,
   }),
-  GetPostRequestSuccess: (data: Post): t.IGetPostRequestSuccessAction => ({
+  GetPostRequestSuccess: (data: IPost): t.IGetPostRequestSuccessAction => ({
     type: t.GET_POST_REQUEST_SUCCESS,
     data,
   }),
@@ -27,7 +34,7 @@ export const ActionsList = {
   SendCommentRequest: (): t.ISendCommentRequestAction => ({
     type: t.SEND_COMMENT_REQUEST,
   }),
-  SendCommentRequestSuccess: (comment: Comment): t.ISendCommentRequestSuccessAction => ({
+  SendCommentRequestSuccess: (comment: IComment): t.ISendCommentRequestSuccessAction => ({
     type: t.SEND_COMMENT_REQUEST_SUCCESS,
     comment,
   }),
@@ -38,7 +45,7 @@ export const ActionsList = {
   GetCommentListRequest: (): t.IGetCommentListRequestAction => ({
     type: t.GET_COMMENTS_REQUEST,
   }),
-  GetCommentListRequestSuccess: (commentsList: Comment[]): t.IGetCommentListRequestSuccessAction => ({
+  GetCommentListRequestSuccess: (commentsList: IComment[]): t.IGetCommentListRequestSuccessAction => ({
     type: t.GET_COMMENTS_REQUEST_SUCCESS,
     commentsList,
   }),
@@ -92,16 +99,14 @@ export const ActionCreators = {
       } else {
         return errorCreater(`Status is ${res.status}`);
       }
-    }).then((value: IResponse<Post>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
+    }).then((res: IResponse<IPost>) => {
+      if (res && res.error) {
+        return errorCreater(res.error);
       }
 
-      const data = parseData(value.data);
+      res.data.commentList.forEach((comment: IComment) => comment.date = new Date(comment.date));
 
-      data.commentList.forEach((comment: Comment) => comment.date = new Date(comment.date));
-
-      dispatch(ActionsList.GetPostRequestSuccess(value.data));
+      dispatch(ActionsList.GetPostRequestSuccess(res.data));
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
@@ -115,7 +120,7 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.GetPostRequest(postId));
   },
-  DeletePost: (PostId: number): AppThunkAction<t.TDeletePostRequest> => (dispatch, getState) => {
+  DeletePost: (PostId: number): AppThunkAction<t.TDeletePostRequest | TLogout | TGetPostList> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const fetchTask = fetch(`/api/post/DeletePost?postId=${PostId}`, {
@@ -130,19 +135,17 @@ export const ActionCreators = {
       } else {
         return errorCreater(`Status is ${res.status}`);
       }
-    }).then((value: IResponse<void>) => {
+    }).then((value: IResponse<boolean>) => {
       if (value && value.error) {
         if (value.error === "auth") {
-          // TODO:
-          // AuthActions.LogOut()(dispatch as any, _getState);
-          // message.error('Need auth again');
+          AuthActions.Logout()(dispatch, getState);
+          message.error("Need auth again");
           return;
         }
         return errorCreater("Some trouble when post comment.\n" + value.error);
       }
       dispatch(ActionsList.DeletePostRequestSuccess());
-      // TODO:
-      // PostsActions.GetPosts(1, 5)(dispatch as any, _getState);
+      PostActions.GetPosts(1, 5)(dispatch, getState);
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
@@ -159,7 +162,6 @@ export const ActionCreators = {
   GetCommentList: (): AppThunkAction<t.TGetCommentListRequest> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
-    // TODO:
     const { postId } = (getState() as any).post;
     const fetchTask = fetch(`/api/post/GetCommentList?postId=${postId}`, {
       method: "GET",
@@ -173,16 +175,14 @@ export const ActionCreators = {
       } else {
         return errorCreater(`Status is ${res.status}`);
       }
-    }).then((value: IResponse<{ CommentList: Comment[] }>) => {
+    }).then((value: IResponse<{ CommentList: IComment[] }>) => {
       if (value.error) {
         return errorCreater("Some trouble when post comment.\n" + value.error);
       }
 
-      const data = parseData(value.data);
+      value.data.CommentList.forEach((comment: IComment) => comment.date = new Date(comment.date));
 
-      data.CommentList.forEach((comment: Comment) => comment.date = new Date(comment.date));
-
-      dispatch(ActionsList.GetCommentListRequestSuccess(data.CommentList));
+      dispatch(ActionsList.GetCommentListRequestSuccess(value.data.CommentList));
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
@@ -212,7 +212,7 @@ export const ActionCreators = {
       } else {
         return errorCreater(`Status is ${res.status}`);
       }
-    }).then((value: IResponse<Comment>) => {
+    }).then((value: IResponse<IComment>) => {
       if (value && value.error) {
         if (value.error === "auth") {
           // TODO:
@@ -223,10 +223,8 @@ export const ActionCreators = {
         return errorCreater("Some trouble when post comment.\n" + value.error);
       }
 
-      const data = parseData(value.data);
-
-      data.date = new Date();
-      dispatch(ActionsList.SendCommentRequestSuccess(data));
+      value.data.date = new Date();
+      dispatch(ActionsList.SendCommentRequestSuccess(value.data));
 
       ActionCreators.GetCommentList()(dispatch as any, getState);
 

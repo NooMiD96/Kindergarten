@@ -2,16 +2,16 @@
 //#region REDUCER
 import { Reducer } from "redux";
 
-import { HomeState, Post, unloadedState } from "./State";
+import { IHomeState, IPost, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer = (state: HomeState, action: KnownAction) => {
+export const reducer: Reducer = (state: IHomeState, action: KnownAction) => {
     switch (action.type) {
         case t.GET_POST_LIST_REQUEST:
             return {
                 ...state,
                 pending: true,
-            } as HomeState;
+            } as IHomeState;
 
         case t.GET_POST_LIST_REQUEST_SUCCESS:
             return {
@@ -19,25 +19,25 @@ export const reducer: Reducer = (state: HomeState, action: KnownAction) => {
                 pending: false,
                 posts: action.postList,
                 totalCount: action.totalCount,
-            } as HomeState;
+            } as IHomeState;
 
         case t.GET_POST_LIST_REQUEST_ERROR:
             return {
                 ...state,
                 pending: false,
                 errorInner: action.errorMessage,
-            } as HomeState;
+            } as IHomeState;
 
         case t.CLEAN_ERROR_INNER:
             return {
                 ...state,
                 errorInner: "",
-            } as HomeState;
+            } as IHomeState;
 
         default:
             const exhaustiveCheck: never = action;
             if (state && state.postList) {
-                state.postList.forEach((item: Post) => item.date = new Date(item.date));
+                state.postList.forEach((item: IPost) => item.date = new Date(item.date));
             }
     }
 

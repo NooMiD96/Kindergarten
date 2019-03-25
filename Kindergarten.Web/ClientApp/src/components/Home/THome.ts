@@ -1,6 +1,6 @@
 import { RouteComponentProps } from "react-router-dom";
 
-import { HomeState } from "./State";
+import { IHomeState } from "./State";
 import { ActionCreators } from "./actions";
 
 import { FormComponentProps } from "@core/antd/Form";
@@ -10,7 +10,7 @@ import { UserTypeEnums } from "@core/constants";
 export type TComponentState = { };
 // -----------------------------
 // REDUX STATE OF COMPONENT
-export type TStateToProps = HomeState & FormComponentProps & {
+export type TStateToProps = IHomeState & FormComponentProps & {
     userRole: UserTypeEnums,
 } & RouteComponentProps;
 export type TOwnProps = {};

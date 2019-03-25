@@ -7,7 +7,7 @@ import Button from "@core/antd/Button";
 
 import HomeWrapped from "./style/Home.style";
 
-import { Post } from "../State";
+import { IPost } from "../State";
 import { TState, TComponentState } from "../THome";
 import { UserTypeEnums } from "@core/constants";
 
@@ -35,7 +35,7 @@ export class Home extends React.Component<TState, TComponentState> {
           className="edit-button"
           onClick={() => history.push("/edit/0")}
         >
-          Create new record
+          Создать публикацию
         </Button>
       }
       <h1>Новости!</h1>
@@ -45,7 +45,7 @@ export class Home extends React.Component<TState, TComponentState> {
         pagination={{ defaultCurrent: 1, defaultPageSize: 5, total: totalCount, onChange: this.PageChangeHandler }}
         dataSource={postList}
         // locale={{ emptyText: '' }}
-        renderItem={(item: Post) => (
+        renderItem={(item: IPost) => (
           <List.Item
             key={item.postId}
             actions={[
@@ -59,7 +59,7 @@ export class Home extends React.Component<TState, TComponentState> {
             <List.Item.Meta
               avatar={<Avatar style={{ verticalAlign: "middle" }} size="large" >{item.author}</Avatar>}
               title={<NavLink to={`/post/${item.postId}`}>{item.header}</NavLink>}
-              description={<div>Created by: {item.author} at {item.date.toLocaleString()}</div>}
+              description={<div>Был создан {item.author} в {item.date.toLocaleString()}</div>}
             />
           </List.Item>
         )}

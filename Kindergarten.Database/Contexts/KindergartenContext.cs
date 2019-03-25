@@ -12,6 +12,8 @@ namespace Kindergarten.Database.Contexts
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Group> Group { get; set; }
         public DbSet<Children> Children { get; set; }
+        public DbSet<ChildrenInformation> ChildrenInformation { get; set; }
+        public DbSet<Medicament> Medicament { get; set; }
 
         public KindergartenContext(DbContextOptions<KindergartenContext> options) : base(options) { }
 

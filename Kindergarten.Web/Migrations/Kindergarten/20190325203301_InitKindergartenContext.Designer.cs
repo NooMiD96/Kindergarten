@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Web.Migrations.Kindergarten
 {
     [DbContext(typeof(KindergartenContext))]
-    [Migration("20190310170625_InitBaseContext")]
-    partial class InitBaseContext
+    [Migration("20190325203301_InitKindergartenContext")]
+    partial class InitKindergartenContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,14 +27,10 @@ namespace Web.Migrations.Kindergarten
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Birthday");
-
                     b.Property<string>("FirstName")
                         .IsRequired();
 
                     b.Property<int>("GroupId");
-
-                    b.Property<bool>("Male");
 
                     b.Property<string>("ParentId")
                         .IsRequired();
@@ -49,6 +45,19 @@ namespace Web.Migrations.Kindergarten
                     b.HasIndex("ParentId");
 
                     b.ToTable("Children");
+                });
+
+            modelBuilder.Entity("Kindergarten.Model.DB.ChildrenInformation", b =>
+                {
+                    b.Property<int>("ChildrenId");
+
+                    b.Property<DateTime>("Birthday");
+
+                    b.Property<bool>("Male");
+
+                    b.HasKey("ChildrenId");
+
+                    b.ToTable("ChildrenInformation");
                 });
 
             modelBuilder.Entity("Kindergarten.Model.DB.Comment", b =>
@@ -90,6 +99,26 @@ namespace Web.Migrations.Kindergarten
                     b.ToTable("Group");
                 });
 
+            modelBuilder.Entity("Kindergarten.Model.DB.Medicament", b =>
+                {
+                    b.Property<int>("MedicamentId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment");
+
+                    b.Property<int>("Count");
+
+                    b.Property<DateTime>("ExpirationDate");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("MedicamentId");
+
+                    b.ToTable("Medicament");
+                });
+
             modelBuilder.Entity("Kindergarten.Model.DB.Post", b =>
                 {
                     b.Property<int>("PostId")
@@ -129,6 +158,8 @@ namespace Web.Migrations.Kindergarten
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("IsAdmin");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -156,6 +187,11 @@ namespace Web.Migrations.Kindergarten
 
             modelBuilder.Entity("Kindergarten.Model.DB.Children", b =>
                 {
+                    b.HasOne("Kindergarten.Model.DB.ChildrenInformation", "ChildrenInformation")
+                        .WithOne("Children")
+                        .HasForeignKey("Kindergarten.Model.DB.Children", "ChildrenId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Kindergarten.Model.DB.Group", "Group")
                         .WithMany()
                         .HasForeignKey("GroupId")

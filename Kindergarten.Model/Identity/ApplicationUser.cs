@@ -7,5 +7,7 @@ namespace Kindergarten.Model.Identity
     {
         public ApplicationUser() : base() { }
         public ApplicationUser(string UserName) : base(UserName) { }
+
+        public bool IsAdmin { get; set; }
     }
 }

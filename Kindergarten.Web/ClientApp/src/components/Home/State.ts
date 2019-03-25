@@ -1,12 +1,13 @@
-
-export interface HomeState {
-  postList: Post[];
+// -----------------
+//#region STATE
+export interface IHomeState {
+  postList: IPost[];
   totalCount: number;
   pending: boolean;
   errorInner: string;
 }
 
-export interface Post {
+export interface IPost {
   postId: number;
   author: string;
   header: string;
@@ -14,19 +15,20 @@ export interface Post {
   date: Date;
   imgUrl?: string;
   commentCount: number;
-  commentList: Comment[];
+  commentList: IComment[];
 }
 
-export interface Comment {
+export interface IComment {
   commentId: number;
   commentInner: string;
   date: Date;
   userName: string;
 }
 
-export const unloadedState: HomeState = {
+export const unloadedState: IHomeState = {
   postList: [],
   totalCount: 0,
   pending: false,
   errorInner: "",
 };
+//#endregion

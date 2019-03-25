@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Kindergarten.Core.Helpers;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace Kindergarten.Web.Controllers
 {
-    public class BaseController: ControllerBase
+    public class BaseController : ControllerBase
     {
-        public IActionResult Ok(string res)
+        public IActionResult Ok<T>(T res)
         {
-            return this.Ok(new { data = res });
+            return this.Ok(JsonHelper.Serialize(new { data = res }));
         }
 
         public IActionResult BadRequest(string res)
         {
-            return this.Ok(new
-            {
-                error = res
-            });
+            return this.Ok(JsonHelper.Serialize(new { error = res }));
         }
     }
 }

@@ -1,13 +1,13 @@
-import { Post } from "@components/Home/State";
+import { IPost } from "@components/Home/State";
 // -----------------
 // STATE
-export interface PostViewState {
-  post: Post;
+export interface IPostViewState {
+  post: IPost;
   pending: boolean;
   errorInner: string;
 }
 
-export const unloadedState: PostViewState = {
+export const unloadedState: IPostViewState = {
   post: {
     postId: 0,
     author: "",

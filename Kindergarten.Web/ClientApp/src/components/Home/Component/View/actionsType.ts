@@ -1,4 +1,4 @@
-import { Post, Comment } from "@components/Home/State";
+import { IPost, IComment } from "@components/Home/State";
 // -----------------
 //#region ACTIONS TYPE
 export const GET_POST_REQUEST = "GET_POST_REQUEST";
@@ -27,17 +27,17 @@ export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
 // -----------------
 //#region ACTIONS INTERFACE
 export interface IGetPostRequestAction { type: typeof GET_POST_REQUEST; postId: number; }
-export interface IGetPostRequestSuccessAction { type: typeof GET_POST_REQUEST_SUCCESS; data: Post; }
+export interface IGetPostRequestSuccessAction { type: typeof GET_POST_REQUEST_SUCCESS; data: IPost; }
 export interface IGetPostRequestErrorAction { type: typeof GET_POST_REQUEST_ERROR; errorMessage: string; }
 export type TGetPostRequest = IGetPostRequestAction | IGetPostRequestSuccessAction | IGetPostRequestErrorAction;
 
 export interface ISendCommentRequestAction { type: typeof SEND_COMMENT_REQUEST; }
-export interface ISendCommentRequestSuccessAction { type: typeof SEND_COMMENT_REQUEST_SUCCESS; comment: Comment; }
+export interface ISendCommentRequestSuccessAction { type: typeof SEND_COMMENT_REQUEST_SUCCESS; comment: IComment; }
 export interface ISendCommentRequestErrorAction { type: typeof SEND_COMMENT_REQUEST_ERROR; errorMessage: string; }
 export type TSendCommentRequest = ISendCommentRequestAction | ISendCommentRequestSuccessAction | ISendCommentRequestErrorAction;
 
 export interface IGetCommentListRequestAction { type: typeof GET_COMMENTS_REQUEST; }
-export interface IGetCommentListRequestSuccessAction { type: typeof GET_COMMENTS_REQUEST_SUCCESS; commentsList: Comment[]; }
+export interface IGetCommentListRequestSuccessAction { type: typeof GET_COMMENTS_REQUEST_SUCCESS; commentsList: IComment[]; }
 export interface IGetCommentListRequestErrorAction { type: typeof GET_COMMENTS_REQUEST_ERROR; errorMessage: string; }
 export type TGetCommentListRequest = IGetCommentListRequestAction | IGetCommentListRequestSuccessAction | IGetCommentListRequestErrorAction;
 

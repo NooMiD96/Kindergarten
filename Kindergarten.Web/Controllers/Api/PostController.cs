@@ -31,15 +31,15 @@ namespace MyMedicine.Controllers.Api
         {
             var (PostList, TotalCount) = await _context.GetPreviewPostListAsync(page, pageSize);
 
-            return Ok(JsonHelper.Serialize(new { PostList, TotalCount }));
+            return Ok(new { PostList, TotalCount });
         }
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPost([FromQuery] int postId)
         {
-            var Post = await _context.GetPostAsync(postId);
+            var post = await _context.GetPostAsync(postId);
 
-            return Ok(JsonHelper.Serialize(new { Post }));
+            return Ok(post);
         }
 
         [Authorize, ValidateAntiForgeryToken]
@@ -53,7 +53,7 @@ namespace MyMedicine.Controllers.Api
             var result = await _context.AddNewCommentAsync(postid, user, context);
 
             if (result != null)
-                return Ok(JsonHelper.Serialize(result));
+                return Ok(result);
             else
             {
                 return BadRequest("Не удалось добавить комментарий, повторите попытку позже.");
@@ -63,10 +63,10 @@ namespace MyMedicine.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCommentList([FromQuery] int postId)
         {
-            var result = await _context.GetCommentListAsync(postId);
+            var CommentList = await _context.GetCommentListAsync(postId);
 
-            if (result != null)
-                return Ok(JsonHelper.Serialize(new { CommentList = result }));
+            if (CommentList != null)
+                return Ok(CommentList);
             else
                 return BadRequest("TODO");
         }

@@ -2,10 +2,10 @@
 //#region REDUCER
 import { Reducer } from "redux";
 
-import { PostViewState, unloadedState } from "./State";
+import { IPostViewState, unloadedState } from "./State";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer = (state: PostViewState, action: KnownAction) => {
+export const reducer: Reducer = (state: IPostViewState, action: KnownAction) => {
     switch (action.type) {
         case t.GET_POST_REQUEST:
             return {

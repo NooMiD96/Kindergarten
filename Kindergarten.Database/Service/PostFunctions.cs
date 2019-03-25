@@ -174,17 +174,19 @@ namespace Kindergarten.Database.Contexts
             await SaveChangesAsync();
         }
 
-        public async Task DeletePostAsync(int postId)
+        public async ValueTask<bool> DeletePostAsync(int postId)
         {
             var contextPost = await Post
                 .FirstOrDefaultAsync(p => p.PostId == postId);
 
             if (contextPost == null)
-                return;
+                return false;
 
             Post.Remove(contextPost);
 
             await SaveChangesAsync();
+
+            return true;
         }
         public async Task DeleteCommentListAsync(int postId, List<int> commentListId)
         {

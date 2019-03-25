@@ -5,7 +5,7 @@ import { IResponse } from "@core/fetchHelper/IResponses";
 import { parseData } from "@core/fetchHelper";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
-import { Post } from "./State";
+import { IPost } from "./State";
 import * as t from "./actionsType";
 import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
 
@@ -15,7 +15,7 @@ export const ActionsList = {
   GetPostListRequest: (): t.IGetPostListRequestAction => ({
     type: t.GET_POST_LIST_REQUEST,
   }),
-  GetPostListRequestSuccess: (postList: Post[], totalCount: number): t.IGetPostListRequestSuccessAction => ({
+  GetPostListRequestSuccess: (postList: IPost[], totalCount: number): t.IGetPostListRequestSuccessAction => ({
     type: t.GET_POST_LIST_REQUEST_SUCCESS,
     postList: postList,
     totalCount,
@@ -33,7 +33,7 @@ export const ActionsList = {
 //#region ACTIONS CREATORS
 export const ActionCreators = {
   GetPosts: (page: number, pageSize: number): AppThunkAction<t.TGetPostList> => (dispatch, getState) => {
-    type ResponseDataType = { PostList: Post[]; TotalCount: number; };
+    type ResponseDataType = { PostList: IPost[]; TotalCount: number; };
 
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -56,7 +56,7 @@ export const ActionCreators = {
 
       const data = parseData(value.data);
 
-      data.PostList.forEach((item: Post) => item.date = new Date(item.date));
+      data.PostList.forEach((item: IPost) => item.date = new Date(item.date));
       dispatch(ActionsList.GetPostListRequestSuccess(value.data.PostList, value.data.TotalCount));
 
       return Promise.resolve();

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Web.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20190310163427_InitIdentityContext")]
+    [Migration("20190325203246_InitIdentityContext")]
     partial class InitIdentityContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,8 @@ namespace Web.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("IsAdmin");
 
                     b.Property<bool>("LockoutEnabled");
 

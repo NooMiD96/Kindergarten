@@ -4,13 +4,10 @@
     {
         public object SuccessUserAuth(string userName, string userType) => new
         {
-            data = new
-            {
-                userName,
-                userType
-            }
+            userName,
+            userType
         };
 
-        public object SuccessLogOut(string userName) => new { data = $"{userName} is logouted" };
+        public string SuccessLogOut(string userName) => $"{userName} is logouted";
     }
 }

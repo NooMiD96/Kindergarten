@@ -55,9 +55,9 @@ namespace MyMedicine.Controllers.AdminApi
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeletePost([FromQuery] int postId)
         {
-            await _context.DeletePostAsync(postId);
+            var isSuccess = await _context.DeletePostAsync(postId);
 
-            return Ok();
+            return Ok(isSuccess);
         }
     }
 }
