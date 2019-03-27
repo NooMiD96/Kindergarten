@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Web.Migrations.Kindergarten
+namespace Web.Migrations
 {
     public partial class InitKindergartenContext : Migration
     {

@@ -4,7 +4,6 @@ import { message } from "antd";
 
 import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponses";
-import { parseData } from "@src/core/fetchHelper";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import * as t from "./actionsType";

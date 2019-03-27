@@ -2,7 +2,6 @@ import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponses";
-import { parseData } from "@core/fetchHelper";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { IPost } from "./State";
@@ -54,9 +53,7 @@ export const ActionCreators = {
         return errorCreater("Some trouble when getting posts.\n" + value.error);
       }
 
-      const data = parseData(value.data);
-
-      data.PostList.forEach((item: IPost) => item.date = new Date(item.date));
+      value.data.PostList.forEach((item: IPost) => item.date = new Date(item.date));
       dispatch(ActionsList.GetPostListRequestSuccess(value.data.PostList, value.data.TotalCount));
 
       return Promise.resolve();

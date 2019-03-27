@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Web.Migrations
+namespace Web.Migrations.Identity
 {
     public partial class InitIdentityContext : Migration
     {
