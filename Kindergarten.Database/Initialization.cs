@@ -49,6 +49,9 @@ namespace Kindergarten.Database
                     options.Lockout.AllowedForNewUsers = true;
                 })
                 .AddRoles<ApplicationRole>()
+                .AddUserManager<UserManager<ApplicationUser>>()
+                .AddRoleManager<RoleManager<ApplicationRole>>()
+                .AddSignInManager()
                 .AddClaimsPrincipalFactory<ClaimsPrincipalFactoryDI>()
                 .AddEntityFrameworkStores<IdentityContext>();
 

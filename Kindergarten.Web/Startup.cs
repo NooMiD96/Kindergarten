@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Newtonsoft.Json.Serialization;
+
 using static Kindergarten.Database.DatabaseInitialization;
 
 namespace Kindergarten
@@ -51,7 +55,14 @@ namespace Kindergarten
 
             InitializeDb(serviceProvider, Configuration);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services
+                .AddMvc()
+                //.AddNewtonsoftJson(jsonConfig =>
+                //{
+                //    jsonConfig.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                //    jsonConfig.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                //})
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -83,15 +94,20 @@ namespace Kindergarten
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+            app.UseMvcWithDefaultRoute();
+            //    (routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+            //    routes.MapSpaFallbackRoute(
+            //        name: "spa-fallback",
+            //        defaults: new { controller = "Home", action = "Index" });
+            //});
+            app.UseSpa(spaConfig =>
+            {
+                spaConfig.Options.SourcePath = Configuration.GetValue<string>("SpaPhysicalRootPath");
             });
         }
     }
