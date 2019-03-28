@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Kindergarten.Database.Contexts;
 using Kindergarten.Database.DIServices;
 using Kindergarten.Model.Identity;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,6 +56,19 @@ namespace Kindergarten.Database
                 .AddEntityFrameworkStores<IdentityContext>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
+
+            services
+                .AddAuthentication(IdentityConstants.ApplicationScheme)
+                .AddIdentityCookies();
+                //(options =>
+                //{
+                //    options.Cookie.HttpOnly = true;
+                //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                //    options.SlidingExpiration = true;
+                //    options.ReturnUrlParameter = "";
+                //    options.LoginPath = "";
+                //    options.AccessDeniedPath = "";
+                //});
         }
 
         public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)

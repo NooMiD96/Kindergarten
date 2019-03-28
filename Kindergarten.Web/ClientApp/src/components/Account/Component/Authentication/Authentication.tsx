@@ -8,16 +8,16 @@ import ModalControlButtons from "../ModalControlButtons";
 import { TAuthenticationModel } from "../../TAccount";
 
 interface Props extends FormComponentProps {
-  HandleSubmit: (payload: TAuthenticationModel) => void;
-  HandleСlose: () => void;
+  handleSubmit: (payload: TAuthenticationModel) => void;
+  handleСlose: () => void;
   loading: boolean;
 }
 
 export class Authentication extends React.Component<Props, {}> {
-  OnSubmit = () => {
+  onSubmit = () => {
     this.props.form.validateFields((err: any, values: TAuthenticationModel) => {
       if (!err) {
-        this.props.HandleSubmit({
+        this.props.handleSubmit({
           password: values.password,
           userName: values.userName,
         });
@@ -26,9 +26,9 @@ export class Authentication extends React.Component<Props, {}> {
     });
   }
 
-  OnClose = () => {
+  onClose = () => {
     this.props.form.resetFields();
-    this.props.HandleСlose();
+    this.props.handleСlose();
   }
 
   render() {
@@ -36,7 +36,7 @@ export class Authentication extends React.Component<Props, {}> {
     const { getFieldDecorator } = form;
 
     return (
-      <Form layout="vertical" onSubmit={this.OnSubmit}>
+      <Form layout="vertical" onSubmit={this.onSubmit}>
         <FormItem
           label="User Name"
         >
@@ -46,7 +46,7 @@ export class Authentication extends React.Component<Props, {}> {
             <Input
               prefix={<Icon type="user" className="input-prefix-color" />}
               placeholder="User Name"
-              onPressEnter={this.OnSubmit}
+              onPressEnter={this.onSubmit}
             />
           )}
         </FormItem>
@@ -60,14 +60,14 @@ export class Authentication extends React.Component<Props, {}> {
               prefix={<Icon type="lock" className="input-prefix-color" />}
               type="password"
               placeholder="Password"
-              onPressEnter={this.OnSubmit}
+              onPressEnter={this.onSubmit}
             />
           )}
         </FormItem>
         <div className="ant-modal-footer">
           <ModalControlButtons
-            HandleSubmit={this.OnSubmit}
-            HandleCancel={this.OnClose}
+            handleSubmit={this.onSubmit}
+            handleCancel={this.onClose}
             loading={loading}
             returnTitle="Return"
             submitTitle="Login"

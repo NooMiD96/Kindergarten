@@ -8,8 +8,8 @@ import ModalControlButtons from "../ModalControlButtons";
 import { TRegistrationModel } from "../../TAccount";
 
 interface Props extends FormComponentProps {
-  HandleSubmit: (payload: TRegistrationModel) => void;
-  HandleСlose: () => void;
+  handleSubmit: (payload: TRegistrationModel) => void;
+  handleСlose: () => void;
   loading: boolean;
 }
 
@@ -17,7 +17,7 @@ export class Registration extends React.Component<Props, {}> {
   OnSubmit = () => {
     this.props.form.validateFields((err: any, values: TRegistrationModel & {confirm: string}) => {
       if (!err) {
-        this.props.HandleSubmit({
+        this.props.handleSubmit({
           userName: values.userName,
           email: values.email,
           password: values.password,
@@ -29,7 +29,7 @@ export class Registration extends React.Component<Props, {}> {
 
   OnClose = () => {
     this.props.form.resetFields();
-    this.props.HandleСlose();
+    this.props.handleСlose();
   }
 
   CompareToFirstPassword = (rule: any, value: string, callback: Function) => {
@@ -114,8 +114,8 @@ export class Registration extends React.Component<Props, {}> {
         </FormItem>
         <div className="ant-modal-footer">
           <ModalControlButtons
-            HandleSubmit={this.OnSubmit}
-            HandleCancel={this.OnClose}
+            handleSubmit={this.OnSubmit}
+            handleCancel={this.OnClose}
             loading={loading}
             returnTitle="Return"
             submitTitle="Registration"

@@ -1,5 +1,4 @@
 ﻿using Kindergarten.Core.Constants;
-using Kindergarten.Database.Contexts;
 using Kindergarten.Database.Contexts.ProjectTodoIdentity;
 using Kindergarten.Database.Service.Controllers.Api;
 using Kindergarten.Model.Identity;
@@ -22,20 +21,20 @@ namespace Kindergarten.Web.Controllers.Api
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly KindergartenContext _context;
         private readonly AccountService _service;
         private readonly IAntiforgery _antiforgery;
         private readonly ILogger _logger;
 
-        public AccountController([FromServices] UserManager<ApplicationUser> userManager,
-                                 [FromServices] SignInManager<ApplicationUser> signInManager,
-                                 [FromServices] KindergartenContext context,
+        const string _pleaseTryAgain = "Повторите попытку позже";
+        const string _incorrectCredentials = "User Name or Password incorrect";
+
+        public AccountController(UserManager<ApplicationUser> userManager,
+                                 SignInManager<ApplicationUser> signInManager,
                                  IAntiforgery antiforgery,
                                  ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
             _service = new AccountService();
             _antiforgery = antiforgery;
             _logger = logger;
@@ -49,6 +48,7 @@ namespace Kindergarten.Web.Controllers.Api
                 Email = userModel.Email
             };
             _logger.LogDebug($"Registration: UserName:{user.UserName}, Email:{user.Email}");
+
             if (userModel.IsValid(_userManager, user, out var error))
             {
                 _logger.LogDebug($"Registration: Model is valid");
@@ -74,14 +74,14 @@ namespace Kindergarten.Web.Controllers.Api
 
                     // TODO: can't create
                     // return error description
-                    return BadRequest(result.Errors.FirstOrDefault()?.Description ?? "Please try again");
+                    return BadRequest(result.Errors.FirstOrDefault()?.Description ?? _pleaseTryAgain);
                 }
             }
             _logger.LogDebug($"Registration: Model is invalid");
 
             // TODO: not valid
             // return error description
-            return BadRequest(error.Description ?? "Please try again");
+            return BadRequest(error.Description ?? _pleaseTryAgain);
         }
 
         [HttpPost("[action]")]
@@ -90,19 +90,17 @@ namespace Kindergarten.Web.Controllers.Api
             if (userModel.IsValid(out var error))
             {
                 var user = await _userManager.FindByNameAsync(userModel.UserName);
-                if (user is null) return BadRequest("User Name or Password incorrect");
+                if (user is null) return BadRequest(_incorrectCredentials);
 
                 var isPasswordCanPass = await _signInManager.CheckPasswordSignInAsync(user, userModel.Password, false);
-                if (!isPasswordCanPass.Succeeded) return BadRequest("User Name or Password incorrect");
+                if (!isPasswordCanPass.Succeeded) return BadRequest(_incorrectCredentials);
 
-                var result = isPasswordCanPass.Succeeded
-                    ? await _signInManager.PasswordSignInAsync(
-                        userModel.UserName,
-                        userModel.Password,
-                        isPersistent: true,
-                        lockoutOnFailure: false
-                    )
-                    : new Microsoft.AspNetCore.Identity.SignInResult();
+                var result = await _signInManager.PasswordSignInAsync(
+                    user,
+                    userModel.Password,
+                    isPersistent: true,
+                    lockoutOnFailure: false
+                );
 
                 if (result.Succeeded)
                 {
@@ -119,14 +117,14 @@ namespace Kindergarten.Web.Controllers.Api
                 {
                     // TODO: can't login
                     // return error description
-                    return BadRequest("Please try again");
+                    return BadRequest(_pleaseTryAgain);
                 }
             }
             else
             {
                 // TODO: not valid
                 // return error description
-                return BadRequest(error.Description ?? "Please try again");
+                return BadRequest(error.Description ?? _pleaseTryAgain);
             }
         }
 
@@ -142,7 +140,7 @@ namespace Kindergarten.Web.Controllers.Api
             {
                 return Success(XsrfToXpt(_antiforgery.GetAndStoreTokens(HttpContext)));
             }
-            return BadRequest("User is not Signed");
+            return BadRequest("Не удалось получить подтверждение. " + _pleaseTryAgain);
         }
 
         [HttpPost("[action]")]

@@ -38,20 +38,20 @@ export class Account extends React.Component<TState, TComponentState> {
     return null;
   }
 
-  HandleSubmit = (cb: Function, payload: TRegistrationModel | TAuthenticationModel) => {
-    this.props.RemoveErrorMessage();
+  handleSubmit = (cb: Function, payload: TRegistrationModel | TAuthenticationModel) => {
+    this.props.removeErrorMessage();
     cb(payload);
     this.setState({
       pending: true,
     });
   }
 
-  LogOut = () => this.props.Logout();
+  logout = () => this.props.logout();
 
-  ShowModal = (type: ModalTypeEnums) => this.setState({
+  showModal = (type: ModalTypeEnums) => this.setState({
     modalType: type,
   })
-  СloseModal = () => this.setState({
+  closeModal = () => this.setState({
     modalType: ModalTypeEnums.Nothing,
   })
 
@@ -66,8 +66,8 @@ export class Account extends React.Component<TState, TComponentState> {
       >
         <ButtonGroup>
           <AccountControlButtons
-            ShowModal={this.ShowModal}
-            LogOut={this.LogOut}
+            showModal={this.showModal}
+            logout={this.logout}
             userName={userName}
           />
           <Modal
@@ -87,10 +87,10 @@ export class Account extends React.Component<TState, TComponentState> {
               />
             }
             <ModalContent
-              HandleAuthSubmit={(payload: TAuthenticationModel) => this.HandleSubmit(this.props.Authentication, payload)}
-              HandleRegSubmit={(payload: TRegistrationModel) => this.HandleSubmit(this.props.Registration, payload)}
+              handleAuthSubmit={(payload: TAuthenticationModel) => this.handleSubmit(this.props.authentication, payload)}
+              handleRegSubmit={(payload: TRegistrationModel) => this.handleSubmit(this.props.registration, payload)}
               generalProps={{
-                HandleСlose: this.СloseModal,
+                handleСlose: this.closeModal,
                 loading: pending,
               }}
               modalType={modalType}

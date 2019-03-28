@@ -137,7 +137,7 @@ export const ActionCreators = {
     }).then((value: IResponse<boolean>) => {
       if (value && value.error) {
         if (value.error === "auth") {
-          AuthActions.Logout()(dispatch, getState);
+          AuthActions.logout()(dispatch, getState);
           message.error("Need auth again");
           return;
         }

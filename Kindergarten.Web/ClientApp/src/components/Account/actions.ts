@@ -11,52 +11,53 @@ import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 // ----------------
 // ACTIONS
 export const ActionsList = {
-  RegistrationRequest: (): t.IRegistrationRequest => ({
+  registrationRequest: (): t.IRegistrationRequest => ({
     type: t.REGISTRATION_REQUEST,
   }),
-  RegistrationSuccess: (): t.IRegistrationSuccess => ({
+  registrationSuccess: (): t.IRegistrationSuccess => ({
     type: t.REGISTRATION_SUCCESS,
   }),
-  RegistrationError: (errorMessage: string): t.IRegistrationError => ({
+  registrationError: (errorMessage: string): t.IRegistrationError => ({
     type: t.REGISTRATION_ERROR,
     errorMessage,
   }),
-  AuthenticationRequest: (): t.IAuthenticationRequest => ({
+  authenticationRequest: (): t.IAuthenticationRequest => ({
     type: t.AUTHENTICATION_REQUEST,
   }),
-  AuthenticationSuccess: (): t.IAuthenticationSuccess => ({
+  authenticationSuccess: (): t.IAuthenticationSuccess => ({
     type: t.AUTHENTICATION_SUCCESS,
   }),
-  AuthenticationError: (errorMessage: string): t.IAuthenticationError => ({
+  authenticationError: (errorMessage: string): t.IAuthenticationError => ({
     type: t.AUTHENTICATION_ERROR,
     errorMessage,
   }),
-  LogoutRequest: (): t.ILogoutRequest => ({
+  logoutRequest: (): t.ILogoutRequest => ({
     type: t.LOGOUT_REQUEST,
   }),
-  LogoutSuccess: (): t.ILogoutSuccess => ({
+  logoutSuccess: (): t.ILogoutSuccess => ({
     type: t.LOGOUT_SUCCESS,
   }),
-  LogoutError: (errorMessage: string): t.ILogoutError => ({
+  logoutError: (errorMessage: string): t.ILogoutError => ({
     type: t.LOGOUT_ERROR,
     errorMessage,
   }),
-  SetUser: (user: TUserModel): t.ISetUser => ({
+  setUser: (user: TUserModel): t.ISetUser => ({
     type: t.SET_USER,
     user,
   }),
-  RemoveErrorMessage: (): t.IRemoveErrorMessage => ({
+  removeErrorMessage: (): t.IRemoveErrorMessage => ({
     type: t.REMOVE_ERROR_MESSAGE,
   }),
-  SetXsrf: (xpt: XPT): t.ISetXPTAction => ({
+  setXsrf: (xpt: XPT): t.ISetXPTAction => ({
     type: t.SET_XPT,
     xpt,
   }),
 };
 // ----------------
 // ACTION CREATORS
+const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const ActionCreators = {
-  Registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
+  registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
     const fetchTask = fetch("/api/Account/Registration", {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -76,15 +77,15 @@ export const ActionCreators = {
       try {
         xpt = await GetXsrf(data);
       } catch (err) {
-        return errorCreater("Please try again...");
+        return errorCreater(err.message);
       }
 
       if (xpt) {
-        dispatch(ActionsList.RegistrationSuccess());
-        dispatch(ActionsList.SetUser(value.data));
-        dispatch(ActionsList.SetXsrf(xpt));
+        dispatch(ActionsList.registrationSuccess());
+        dispatch(ActionsList.setUser(value.data));
+        dispatch(ActionsList.setXsrf(xpt));
       } else {
-        return errorCreater("Please try again...");
+        return errorCreater(uncatchError);
       }
 
       return Promise.resolve();
@@ -92,14 +93,14 @@ export const ActionCreators = {
       "Account",
       "Registration",
       err,
-      ActionsList.RegistrationError,
+      ActionsList.registrationError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.RegistrationRequest());
+    dispatch(ActionsList.registrationRequest());
   },
-  Authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
+  authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
     const fetchTask = fetch("/api/Account/Authentication", {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -119,29 +120,29 @@ export const ActionCreators = {
       try {
         xpt = await GetXsrf(data);
       } catch (err) {
-        return errorCreater("Please try again...");
+        return errorCreater(err.message);
       }
 
       if (xpt) {
-        dispatch(ActionsList.AuthenticationSuccess());
-        dispatch(ActionsList.SetUser(value.data));
-        dispatch(ActionsList.SetXsrf(xpt));
+        dispatch(ActionsList.authenticationSuccess());
+        dispatch(ActionsList.setUser(value.data));
+        dispatch(ActionsList.setXsrf(xpt));
       } else {
-        return errorCreater("Please try again...");
+        return errorCreater(uncatchError);
       }
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Account",
       "Authentication",
       err,
-      ActionsList.AuthenticationError,
+      ActionsList.authenticationError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.AuthenticationRequest());
+    dispatch(ActionsList.authenticationRequest());
   },
-  Logout: (): AppThunkAction<t.TLogout> => (dispatch, getState) => {
+  logout: (): AppThunkAction<t.TLogout> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const fetchTask = fetch("/api/Account/Logout", {
@@ -160,18 +161,18 @@ export const ActionCreators = {
       if (value && value.error) {
         return errorCreater(value.error);
       }
-      dispatch(ActionsList.LogoutSuccess());
+      dispatch(ActionsList.logoutSuccess());
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Account",
       "Logout",
       err,
-      ActionsList.LogoutError,
+      ActionsList.logoutError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.LogoutRequest());
+    dispatch(ActionsList.logoutRequest());
   },
-  RemoveErrorMessage: ActionsList.RemoveErrorMessage,
+  removeErrorMessage: ActionsList.removeErrorMessage,
 };

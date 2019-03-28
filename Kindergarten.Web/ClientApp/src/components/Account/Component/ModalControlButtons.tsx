@@ -2,8 +2,8 @@ import * as React from "react";
 import Button from "@core/antd/Button";
 
 type ModalControlButtonsProps = {
-    HandleSubmit: () => void,
-    HandleCancel: () => void,
+    handleSubmit: () => void,
+    handleCancel: () => void,
     loading: boolean,
     returnTitle: string,
     submitTitle: string,
@@ -14,7 +14,7 @@ const ModalControlButtons = (props: ModalControlButtonsProps) => (
         <Button
             key="back"
             loading={props.loading}
-            onClick={props.HandleCancel}
+            onClick={props.handleCancel}
         >
             {props.returnTitle}
         </Button>
@@ -22,7 +22,7 @@ const ModalControlButtons = (props: ModalControlButtonsProps) => (
             key="submit"
             type="primary"
             loading={props.loading}
-            onClick={props.HandleSubmit}
+            onClick={props.handleSubmit}
         >
             {props.submitTitle}
         </Button>

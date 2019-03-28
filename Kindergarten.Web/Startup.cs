@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -31,16 +30,6 @@ namespace Kindergarten
         public void ConfigureServices(IServiceCollection services)
         {
             SetupDatabaseSettings(services, Configuration);
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.SlidingExpiration = true;
-                options.ReturnUrlParameter = "";
-                options.LoginPath = "";
-                options.AccessDeniedPath = "";
-            });
 
             services.AddResponseCompression();
 
@@ -75,7 +64,8 @@ namespace Kindergarten
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //IWebHostEnvironment
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

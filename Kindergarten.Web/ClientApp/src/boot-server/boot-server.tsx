@@ -48,10 +48,10 @@ export default createServerRenderer(params =>
     const store = configureStore(history);
     if (userModel.userName) {
       if (xpt) {
-        store.dispatch(ActionsList.SetUser(userModel));
-        store.dispatch(ActionsList.SetXsrf(xpt));
+        store.dispatch(ActionsList.setUser(userModel));
+        store.dispatch(ActionsList.setXsrf(xpt));
       } else {
-        store.dispatch(ActionsList.LogoutRequest());
+        store.dispatch(ActionsList.logoutRequest());
       }
     }
     // init state corresponding to the incoming URL

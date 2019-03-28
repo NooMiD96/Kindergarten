@@ -13,7 +13,7 @@ namespace Kindergarten.Web.Controllers
 
         public IActionResult BadRequest(string res)
         {
-            return this.Success(JsonHelper.Serialize(new { error = res }));
+            return this.Ok(JsonHelper.Serialize(new { error = res }));
         }
     }
 }

@@ -10,10 +10,10 @@ import {
 } from "../TAccount";
 
 type AccountControlButtonsProps = {
-  HandleAuthSubmit: (payload: TAuthenticationModel) => void,
-  HandleRegSubmit: (payload: TRegistrationModel) => void,
+  handleAuthSubmit: (payload: TAuthenticationModel) => void,
+  handleRegSubmit: (payload: TRegistrationModel) => void,
   generalProps: {
-    HandleСlose: () => void,
+    handleСlose: () => void,
     loading: boolean,
   }
   modalType: ModalTypeEnums,
@@ -24,14 +24,14 @@ const AccountControlButtons = (props: AccountControlButtonsProps) => {
     case ModalTypeEnums.Authentication:
       return (
         <Authentication
-          HandleSubmit={props.HandleAuthSubmit}
+          handleSubmit={props.handleAuthSubmit}
           {...props.generalProps}
         />
       );
     case ModalTypeEnums.Registration:
       return (
         <Registration
-          HandleSubmit={props.HandleRegSubmit}
+          handleSubmit={props.handleRegSubmit}
           {...props.generalProps}
         />
       );
