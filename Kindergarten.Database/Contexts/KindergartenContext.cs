@@ -1,11 +1,15 @@
 ﻿using Kindergarten.Model.DB;
+using Kindergarten.Model.Identity;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kindergarten.Database.Contexts
 {
-    public partial class KindergartenContext : DbContext
+    public partial class KindergartenContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
+        public KindergartenContext(DbContextOptions<KindergartenContext> options) : base(options) { }
+
         static private object lockObj = new object();
 
         public DbSet<Post> Post { get; set; }
@@ -15,10 +19,13 @@ namespace Kindergarten.Database.Contexts
         public DbSet<ChildrenInformation> ChildrenInformation { get; set; }
         public DbSet<Medicament> Medicament { get; set; }
 
-        public KindergartenContext(DbContextOptions<KindergartenContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
+
             modelBuilder.Entity<Comment>()
                 .HasOne(x => x.User)
                 .WithMany()

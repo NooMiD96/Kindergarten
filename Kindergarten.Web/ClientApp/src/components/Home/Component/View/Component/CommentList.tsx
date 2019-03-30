@@ -1,14 +1,21 @@
 import * as React from "react";
-import { List, Avatar, Checkbox } from "antd";
-import { WrappedFormUtils, hasErrors } from "@core/antd/Form";
 
-import Form from "@core/antd/Form";
-import Button from "@core/antd/Button";
-import Input from "@core/antd/Input";
-import Icon from "@core/antd/Svg";
+import { Checkbox } from "antd";
+
+import {
+  Button,
+  Input,
+  Icon,
+  List,
+  Avatar,
+  Typography,
+} from "@core/antd";
+import Form, { WrappedFormUtils, hasErrors } from "@core/antd/Form";
 
 import { IComment } from "@components/Home/State";
 import { UserTypeEnums } from "@core/constants";
+
+const { Text } = Typography;
 
 const SendButton = ({
   pending,
@@ -26,7 +33,7 @@ const SendButton = ({
       onClick={sumbitHandler}
       disabled={hasErrors(form.getFieldsError())}
     >
-      Отправить
+      <Text>Отправить</Text>
     </Button>
   );
 
@@ -42,7 +49,7 @@ const DeleteCheckedCommentList = ({
       loading={pending}
       onClick={deleteCommentListHandler}
     >
-      Удалить выделенные
+      <Text>Удалить выделенные</Text>
     </Button>
   );
 
@@ -73,8 +80,13 @@ const CommentInput = ({
           ],
         })(
           <Input
-            placeholder="Enter your comment"
-            prefix={<Icon type="message" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="Введите комментарий"
+            prefix={(
+              <Icon
+                type="message"
+                className="home-publish-view-add_comment-message_icon"
+              />
+            )}
             suffix={(
               <SendButton
                 pending={pending}
@@ -107,6 +119,7 @@ const CommentList = ({
 }) => {
   const AdminCommentListRender = (item: IComment) => (
     <List.Item
+      key={item.commentId}
       actions={[
         <Checkbox
           value={item.commentId}
@@ -118,7 +131,7 @@ const CommentList = ({
       <List.Item.Meta
         avatar={(
           <Avatar
-            style={{ verticalAlign: "middle" }}
+            className="home-publish-vertical-avatar"
             size="large"
           >
             {item.userName}
@@ -132,9 +145,16 @@ const CommentList = ({
   );
 
   const UserCommentListRender = (item: IComment) => (
-    <List.Item>
+    <List.Item key={item.commentId}>
       <List.Item.Meta
-        avatar={<Avatar style={{ verticalAlign: "middle" }} size="large">{item.userName}</Avatar>}
+        avatar={(
+          <Avatar
+            className="home-publish-vertical-avatar"
+            size="large"
+          >
+            {item.userName}
+          </Avatar>
+        )}
         title={<p>{item.userName}</p>}
         description={item.date.toLocaleString()}
       />
@@ -144,6 +164,7 @@ const CommentList = ({
 
   const footer = [
     <CommentInput
+      key="footer_CommentInput"
       pending={pending}
       sumbitHandler={sumbitHandler}
       form={form}
@@ -154,6 +175,7 @@ const CommentList = ({
   if (userRole === UserTypeEnums.Admin) {
     footer.push(
       <DeleteCheckedCommentList
+        key="footer_DeleteCheckedCommentList"
         pending={pending}
         deleteCommentListHandler={deleteCommentListHandler}
       />

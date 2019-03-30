@@ -5,6 +5,7 @@ import { getIconAsync, TIcons } from "../constants";
 export interface CustomIconProps {
   type: TIcons;
   className?: string;
+  style?: object;
 }
 
 export interface CustomIconState {
@@ -35,6 +36,7 @@ class CustomIcon extends React.PureComponent<CustomIconProps, CustomIconState> {
       svgProps
         ? <Svg
           className={this.props.className}
+          style={this.props.style}
           svgProps={svgProps}
         />
         : <span />

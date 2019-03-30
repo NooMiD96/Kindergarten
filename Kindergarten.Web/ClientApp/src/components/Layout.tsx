@@ -1,9 +1,17 @@
 import * as React from "react";
 import AntdLayout from "@core/antd/Layout";
 const { Header, Content, Footer } = AntdLayout;
+import { ConfigProvider, Empty } from "antd";
+import { Text } from "@core/antd/Typography";
 
 import AccountControlComponent from "@core/HOC/AccountControlComponent";
 import NavMenu from "./NavMenu";
+
+const customizeRenderEmpty = () => (
+  <Empty
+    description={<Text>Данных нет</Text>}
+  />
+);
 
 export class Layout extends React.Component<{}, {}> {
   render() {
@@ -15,7 +23,9 @@ export class Layout extends React.Component<{}, {}> {
           </Header>
           <Content>
             <AccountControlComponent>
-              {this.props.children}
+              <ConfigProvider renderEmpty={customizeRenderEmpty}>
+                {this.props.children}
+              </ConfigProvider>
             </AccountControlComponent>
           </Content>
           <Footer>

@@ -20,8 +20,8 @@ const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapState
 
 const mapDispatchToProps: TMapDispatchToProps = {
     ...ActionCreators,
-    GetPosts: HomeActions.GetPosts,
-    GetPost: ViewActions.GetPost,
+    getPosts: HomeActions.getPosts,
+    getPost: ViewActions.getPost,
 };
 
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(

@@ -2,7 +2,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RouterState } from "connected-react-router";
+import { Title } from "@core/antd/Typography";
 import Menu from "@core/antd/Menu";
+import Icon from "@core/antd/Icon";
 
 import { ApplicationState } from "@src/Store";
 import { UserTypeEnums } from "@core/constants";
@@ -14,13 +16,15 @@ import { routesArray, routesObject } from "@core/constants";
 
 interface IComponentState {
   selectedKeys: string[];
+  collapsed: boolean;
 }
 
-interface IComponentProps extends AccountState, RouterState {}
+interface IComponentProps extends AccountState, RouterState { }
 
 export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   state: IComponentState = {
     selectedKeys: [],
+    collapsed: false,
   };
 
   componentDidMount() {
@@ -62,68 +66,79 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   render() {
     const { userType } = this.props;
 
-    let NavLinks = [
-      <Menu.Item key="0" className="logo">
-          <Link to={"/"}>Kindergarten</Link>
+    const NavLinks = [
+      <Menu.Item key={routesArray[0]}>
+        <Link
+          to={routesArray[0]}
+          onClick={e => this.preventClick(e, routesArray[0])}
+        >
+          Новости
+        </Link>
       </Menu.Item>,
     ];
-    if (userType === UserTypeEnums.Admin) {
-        NavLinks = NavLinks.concat([
-            <Menu.Item key="1">
-                <Link to={"/Visitation"}>Visitation</Link>
-            </Menu.Item>,
-            <Menu.Item key="2">
-                <Link to={"/Symptoms"}>Symptom List</Link>
-            </Menu.Item>,
-        ]);
+
+    if (userType === UserTypeEnums.Admin || userType === UserTypeEnums.Employee) {
+      NavLinks.push(
+        <Menu.Item key={routesArray[1]}>
+          <Link
+            to={routesArray[1]}
+            onClick={e => this.preventClick(e, routesArray[1])}
+          >
+            Visitation
+          </Link>
+        </Menu.Item>
+        // <Menu.Item key={routesArray[2]}>
+        //   <Link
+        //     to={routesArray[2]}
+        //     onClick={e => this.preventClick(e, routesArray[1])}
+        //   >
+        //     Symptom List
+        //   </Link>
+        // </Menu.Item>
+      );
     }
-    NavLinks = NavLinks.concat([
-        <Menu.Item key="3">
-            <Link to={"/SearchDisease"}>Search Disease</Link>
-        </Menu.Item>,
-        <Menu.Item key="4">
-            <Link to={"/Chat"}>Chat</Link>
-        </Menu.Item>,
-    ]);
+
+    NavLinks.push(
+      // <Menu.Item key="3">
+      //   <Link to={"/SearchDisease"}>Search Disease</Link>
+      // </Menu.Item>,
+      <Menu.Item key={routesArray[2]}>
+        <Link
+          to={routesArray[1]}
+          onClick={e => this.preventClick(e, routesArray[1])}
+        >
+          Чат
+        </Link>
+      </Menu.Item>
+    );
 
     return (
       <div className="header-container">
         <div className="header-menu-container">
           <Menu
             theme="dark"
-            mode="horizontal"
+            mode="inline"
             selectedKeys={this.state.selectedKeys}
             onSelect={this.onSelectItemHandler}
           >
-            <Menu.Item key={routesArray[0]}>
-              <Link
-                to={routesArray[0]}
-                onClick={e => this.preventClick(e, routesArray[0])}
-              >
-                Kindergarten
-              </Link>
-            </Menu.Item>
-            {
-              (
-                userType === UserTypeEnums.Admin
-                || userType === UserTypeEnums.Employee
-              ) && <Menu.Item key={routesArray[1]}>
-                <Link
-                  to={routesArray[1]}
-                  onClick={e => this.preventClick(e, routesArray[1])}
-                >
-                  Visitation
-                </Link>
-              </Menu.Item>
-            }
-            <Menu.Item key={routesArray[2]}>
-              <Link
-                to={routesArray[2]}
-                onClick={e => this.preventClick(e, routesArray[2])}
-              >
-                Чат
-              </Link>
-            </Menu.Item>
+            <Menu.SubMenu
+              title={(
+              <React.Fragment>
+                <Icon
+                  type="caret-dow"
+                  className="header-submenu-more-icon"
+                />
+                  <Title
+                    className="main-title"
+                    level={2}
+                  >
+                    Kindergarten
+                  </Title>
+                </React.Fragment>
+              )}
+            >
+              {NavLinks}
+            </Menu.SubMenu>
           </Menu>
         </div>
         <div className="header-account-container">

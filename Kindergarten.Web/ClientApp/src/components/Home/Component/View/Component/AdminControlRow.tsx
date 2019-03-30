@@ -3,6 +3,7 @@ import * as React from "react";
 import Row from "@core/antd/Row";
 import Col from "@core/antd/Col";
 import Button from "@core/antd/Button";
+import { Text } from "@core/antd/Typography";
 
 import { History } from "history";
 
@@ -27,22 +28,22 @@ const Edit = ({
 const Delete = ({
   postId,
   history,
-  DeletePost,
+  deletePost,
 }: {
   postId: number,
   history: History<any>,
-  DeletePost: (postId: number) => void,
+  deletePost: (postId: number) => void,
 }) => (
     <Col xs={24} sm={{ span: 2 }}>
       <Button
         key="delete"
         className="delete-button"
         onClick={() => {
-          DeletePost(postId);
+          deletePost(postId);
           history.push("/");
         }}
       >
-        Удалить публикацию
+        <Text>Удалить публикацию</Text>
       </Button>
     </Col>
   );
@@ -50,11 +51,11 @@ const Delete = ({
 const AdminControlRow = ({
   postId,
   history,
-  DeletePost,
+  deletePost,
 }: {
   postId: number,
   history: History<any>,
-  DeletePost: (postId: number) => void,
+  deletePost: (postId: number) => void,
 }) => (
     <Row className="control-row">
       <Edit
@@ -64,7 +65,7 @@ const AdminControlRow = ({
       <Delete
         postId={postId}
         history={history}
-        DeletePost={DeletePost}
+        deletePost={deletePost}
       />
     </Row>
   );

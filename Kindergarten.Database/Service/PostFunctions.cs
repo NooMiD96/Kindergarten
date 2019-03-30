@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Kindergarten.Model.DB;
+﻿using Kindergarten.Model.DB;
 using Kindergarten.Model.Identity;
 using Kindergarten.Model.UI.Post;
 
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kindergarten.Database.Contexts
 {
@@ -25,12 +25,13 @@ namespace Kindergarten.Database.Contexts
                     .Take(pageSize)
                     .Select(item => new PreviewPost()
                     {
+                        PostId = item.PostId,
                         Author = item.User.UserName,
-                        CommentsCount = item.CommentList.Count,
                         Date = item.Date,
                         Header = item.Header,
-                        PostId = item.PostId,
-                        ImgUrl = item.ImgUrl
+                        Content = item.Content,
+                        ImgUrl = item.ImgUrl,
+                        CommentCount = item.CommentList.Count,
                     })
                     .ToListAsync(),
                 await Post.CountAsync()

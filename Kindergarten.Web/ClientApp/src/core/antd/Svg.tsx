@@ -4,6 +4,7 @@ import { IconDefinition } from "@antdSvgs/../types";
 interface SvgProps {
   svgProps?: IconDefinition;
   className?: string;
+  style?: object;
 }
 
 const Svg = (props: SvgProps) => {
@@ -17,6 +18,7 @@ const Svg = (props: SvgProps) => {
   return (
     <i
       className={`anticon${props.className ? " " + props.className : ""}`}
+      style={props.style}
     >
       <svg
         fill="currentColor"

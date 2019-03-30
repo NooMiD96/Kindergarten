@@ -1,4 +1,4 @@
-import { IResponse } from "@core/fetchHelper/IResponses";
+import { IResponse } from "@core/fetchHelper/IResponse";
 import { ApplicationState } from "@src/Store";
 
 export interface XPT {

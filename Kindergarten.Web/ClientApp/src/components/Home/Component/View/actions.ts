@@ -3,7 +3,7 @@ import { fetch, addTask } from "domain-task";
 import { message } from "antd";
 
 import { AppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponses";
+import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import * as t from "./actionsType";
@@ -18,72 +18,73 @@ import { TGetPostList } from "@components/Home/actionsType";
 // ----------------
 //#region ACTIONS
 export const ActionsList = {
-  GetPostRequest: (postId: number): t.IGetPostRequestAction => ({
+  getPostRequest: (postId: number): t.IGetPostRequestAction => ({
     type: t.GET_POST_REQUEST,
     postId,
   }),
-  GetPostRequestSuccess: (data: IPost): t.IGetPostRequestSuccessAction => ({
+  getPostRequestSuccess: (data: IPost): t.IGetPostRequestSuccessAction => ({
     type: t.GET_POST_REQUEST_SUCCESS,
     data,
   }),
-  GetPostRequestError: (errorMessage: string): t.IGetPostRequestErrorAction => ({
+  getPostRequestError: (errorMessage: string): t.IGetPostRequestErrorAction => ({
     type: t.GET_POST_REQUEST_ERROR,
     errorMessage,
   }),
-  SendCommentRequest: (): t.ISendCommentRequestAction => ({
+  sendCommentRequest: (): t.ISendCommentRequestAction => ({
     type: t.SEND_COMMENT_REQUEST,
   }),
-  SendCommentRequestSuccess: (comment: IComment): t.ISendCommentRequestSuccessAction => ({
+  sendCommentRequestSuccess: (comment: IComment): t.ISendCommentRequestSuccessAction => ({
     type: t.SEND_COMMENT_REQUEST_SUCCESS,
     comment,
   }),
-  SendCommentRequestError: (errorMessage: string): t.ISendCommentRequestErrorAction => ({
+  sendCommentRequestError: (errorMessage: string): t.ISendCommentRequestErrorAction => ({
     type: t.SEND_COMMENT_REQUEST_ERROR,
     errorMessage,
   }),
-  GetCommentListRequest: (): t.IGetCommentListRequestAction => ({
+  getCommentListRequest: (): t.IGetCommentListRequestAction => ({
     type: t.GET_COMMENTS_REQUEST,
   }),
-  GetCommentListRequestSuccess: (commentsList: IComment[]): t.IGetCommentListRequestSuccessAction => ({
+  getCommentListRequestSuccess: (commentsList: IComment[]): t.IGetCommentListRequestSuccessAction => ({
     type: t.GET_COMMENTS_REQUEST_SUCCESS,
     commentsList,
   }),
-  GetCommentListRequestError: (errorMessage: string): t.IGetCommentListRequestErrorAction => ({
+  getCommentListRequestError: (errorMessage: string): t.IGetCommentListRequestErrorAction => ({
     type: t.GET_COMMENTS_REQUEST_ERROR,
     errorMessage,
   }),
-  DeletePostRequest: (): t.IDeletePostRequestAction => ({
+  deletePostRequest: (): t.IDeletePostRequestAction => ({
     type: t.DELETE_POST_REQUEST,
   }),
-  DeletePostRequestSuccess: (): t.IDeletePostRequestSuccessAction => ({
+  deletePostRequestSuccess: (): t.IDeletePostRequestSuccessAction => ({
     type: t.DELETE_POST_REQUEST_SUCCESS,
   }),
-  DeletePostRequestError: (errorMessage: string): t.IDeletePostRequestErrorAction => ({
+  deletePostRequestError: (errorMessage: string): t.IDeletePostRequestErrorAction => ({
     type: t.DELETE_POST_REQUEST_ERROR,
     errorMessage,
   }),
-  DeleteCommentListRequest: (): t.IDeleteCommentListRequestAction => ({
+  deleteCommentListRequest: (): t.IDeleteCommentListRequestAction => ({
     type: t.DELETE_COMMENT_LIST_REQUEST,
   }),
-  DeleteCommentListRequestSuccess: (): t.IDeleteCommentListRequestSuccessAction => ({
+  deleteCommentListRequestSuccess: (): t.IDeleteCommentListRequestSuccessAction => ({
     type: t.DELETE_COMMENT_LIST_REQUEST_SUCCESS,
   }),
-  DeleteCommentListRequestError: (errorMessage: string): t.IDeleteCommentListRequestErrorAction => ({
+  deleteCommentListRequestError: (errorMessage: string): t.IDeleteCommentListRequestErrorAction => ({
     type: t.DELETE_COMMENT_LIST_REQUEST_ERROR,
     errorMessage,
   }),
-  CleanePostData: (): t.ICleanePostDataAction => ({
+  cleanePostData: (): t.ICleanePostDataAction => ({
     type: t.CLEANE_POST_DATA,
   }),
-  CleanErrorInner: (): t.ICleanErrorInnerAction => ({
+  cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
 };
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
+const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const ActionCreators = {
-  GetPost: (postId: number): AppThunkAction<t.TGetPostRequest> => (dispatch, getState) => {
+  getPost: (postId: number): AppThunkAction<t.TGetPostRequest> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const fetchTask = fetch(`/api/post/GetPost?postId=${postId}`, {
@@ -96,7 +97,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((res: IResponse<IPost>) => {
       if (res && res.error) {
@@ -105,24 +106,24 @@ export const ActionCreators = {
 
       res.data.commentList.forEach((comment: IComment) => comment.date = new Date(comment.date));
 
-      dispatch(ActionsList.GetPostRequestSuccess(res.data));
+      dispatch(ActionsList.getPostRequestSuccess(res.data));
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "GetPost",
       err,
-      ActionsList.GetPostRequestError,
+      ActionsList.getPostRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.GetPostRequest(postId));
+    dispatch(ActionsList.getPostRequest(postId));
   },
-  DeletePost: (PostId: number): AppThunkAction<t.TDeletePostRequest | TLogout | TGetPostList> => (dispatch, getState) => {
+  deletePost: (postId: number): AppThunkAction<t.TDeletePostRequest | TLogout | TGetPostList> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/post/DeletePost?postId=${PostId}`, {
+    const fetchTask = fetch(`/api/post/DeletePost?postId=${postId}`, {
       method: "DELETE",
       credentials: "same-origin",
       headers: {
@@ -132,7 +133,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<boolean>) => {
       if (value && value.error) {
@@ -141,24 +142,24 @@ export const ActionCreators = {
           message.error("Need auth again");
           return;
         }
-        return errorCreater("Some trouble when post comment.\n" + value.error);
+        return errorCreater("Произошла ошибка при удалении публикации.\n" + value.error);
       }
-      dispatch(ActionsList.DeletePostRequestSuccess());
-      PostActions.GetPosts(1, 5)(dispatch, getState);
+      dispatch(ActionsList.deletePostRequestSuccess());
+      PostActions.getPosts(1, 5)(dispatch, getState);
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "DeletePost",
       err,
-      ActionsList.DeletePostRequestError,
+      ActionsList.deletePostRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.DeletePostRequest());
+    dispatch(ActionsList.deletePostRequest());
   },
 
-  GetCommentList: (): AppThunkAction<t.TGetCommentListRequest> => (dispatch, getState) => {
+  getCommentList: (): AppThunkAction<t.TGetCommentListRequest> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const { postId } = (getState() as any).post;
@@ -172,29 +173,29 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<{ CommentList: IComment[] }>) => {
       if (value.error) {
-        return errorCreater("Some trouble when post comment.\n" + value.error);
+        return errorCreater("Произошла ошибка при получении комментариев.\n" + value.error);
       }
 
       value.data.CommentList.forEach((comment: IComment) => comment.date = new Date(comment.date));
 
-      dispatch(ActionsList.GetCommentListRequestSuccess(value.data.CommentList));
+      dispatch(ActionsList.getCommentListRequestSuccess(value.data.CommentList));
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "GetComments",
       err,
-      ActionsList.GetCommentListRequestError,
+      ActionsList.getCommentListRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.GetCommentListRequest());
+    dispatch(ActionsList.getCommentListRequest());
   },
-  SendComment: (comment: string, postId: number): AppThunkAction<t.TSendCommentRequest> => (dispatch, getState) => {
+  sendComment: (comment: string, postId: number): AppThunkAction<t.TSendCommentRequest> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const fetchTask = fetch(`/api/post/AddComment?postid=${postId}`, {
@@ -209,7 +210,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<IComment>) => {
       if (value && value.error) {
@@ -219,27 +220,27 @@ export const ActionCreators = {
           // message.error("Need auth again");
           return;
         }
-        return errorCreater("Some trouble when post comment.\n" + value.error);
+        return errorCreater("Произошла ошибка при добавлении комментария.\n" + value.error);
       }
 
       value.data.date = new Date();
-      dispatch(ActionsList.SendCommentRequestSuccess(value.data));
+      dispatch(ActionsList.sendCommentRequestSuccess(value.data));
 
-      ActionCreators.GetCommentList()(dispatch as any, getState);
+      ActionCreators.getCommentList()(dispatch as any, getState);
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "SendComment",
       err,
-      ActionsList.SendCommentRequestError,
+      ActionsList.sendCommentRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.SendCommentRequest());
+    dispatch(ActionsList.sendCommentRequest());
   },
-  DeleteCommentList: (postId: number, commentList: [any]): AppThunkAction<t.TDeleteCommentListRequest> => (dispatch, getState) => {
+  deleteCommentList: (postId: number, commentList: [any]): AppThunkAction<t.TDeleteCommentListRequest> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const fetchTask = fetch(`/api/post/DeleteCommentList?postId=${postId}`, {
@@ -254,7 +255,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<void>) => {
       if (value && value.error) {
@@ -264,26 +265,26 @@ export const ActionCreators = {
           // message.error('Need auth again');
           return;
         }
-        return errorCreater("Some trouble when delete comments.\n" + value.error);
+        return errorCreater("Произошла ошибка при удалении комментариев.\n" + value.error);
       }
 
-      dispatch(ActionsList.DeleteCommentListRequestSuccess());
-      ActionCreators.GetCommentList()(dispatch as any, getState);
+      dispatch(ActionsList.deleteCommentListRequestSuccess());
+      ActionCreators.getCommentList()(dispatch as any, getState);
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "DeleteCommentsList",
       err,
-      ActionsList.DeleteCommentListRequestError,
+      ActionsList.deleteCommentListRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.DeleteCommentListRequest());
+    dispatch(ActionsList.deleteCommentListRequest());
   },
 
-  CleanePostData: ActionsList.CleanePostData,
-  CleanErrorInner: ActionsList.CleanErrorInner,
+  cleanePostData: ActionsList.cleanePostData,
+  cleanErrorInner: ActionsList.cleanErrorInner,
 };
 //#endregion

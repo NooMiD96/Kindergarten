@@ -1,11 +1,14 @@
-using System;
-using System.Threading.Tasks;
-
+using Kindergarten.Core.Constants;
 using Kindergarten.Database.Contexts;
+using Kindergarten.Model.Identity;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using System;
+using System.Threading.Tasks;
 
 namespace Kindergarten.Database.DIServices
 {
@@ -18,19 +21,64 @@ namespace Kindergarten.Database.DIServices
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                var kindergartenContext = scope.ServiceProvider.GetRequiredService<KindergartenContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<KindergartenContext>();
+                var userManager     = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager     = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
                 try
                 {
-                    await kindergartenContext.Database.MigrateAsync();
+                    await dbContext.Database.MigrateAsync();
+
+                    var roleNames = UserRoles.RoleList;
+                    IdentityResult roleResult;
+
+                    foreach (var roleName in roleNames)
+                    {
+                        var roleExist = await roleManager.RoleExistsAsync(roleName);
+                        if (!roleExist)
+                        {
+                            roleResult = await roleManager.CreateAsync(new ApplicationRole(roleName));
+
+                            if (!roleResult.Succeeded)
+                                throw new Exception("Can't add roles in database");
+                        }
+                    }
+
+                    var admins = Configuration.GetSection("Admins").GetChildren();
+                    foreach (var admin in admins)
+                    {
+                        var userName = admin["UserName"];
+                        var password = admin["Password"];
+                        var email    = admin["Email"];
+
+                        var _user = await userManager.FindByNameAsync(userName);
+                        if (_user == null)
+                        {
+                            var poweruser = new ApplicationUser
+                            {
+                                UserName = userName,
+                                Email = email
+                            };
+
+                            var createPowerUser = await userManager.CreateAsync(poweruser, password);
+                            if (createPowerUser.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(poweruser, UserRoles.Admin);
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"\r\n\r\ninfo: Trouble with first connection to project database:\n{ex.Message}\r\n\r\n");
+                    Console.WriteLine($"\r\n\r\ninfo: Trouble with first connection to identity database:\n{ex.Message}\r\n\r\n");
                 }
                 finally
                 {
-                    if (kindergartenContext != null)
-                        kindergartenContext.Dispose();
+                    if (roleManager != null)
+                        roleManager.Dispose();
+                    if (userManager != null)
+                        userManager.Dispose();
+                    if (dbContext != null)
+                        dbContext.Dispose();
                 }
             }
         }

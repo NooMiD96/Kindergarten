@@ -12,7 +12,7 @@ export const unloadedState: IPostViewState = {
     postId: 0,
     author: "",
     header: "",
-    context: "",
+    content: "",
     date: new Date(),
     commentCount: 0,
     commentList: [],

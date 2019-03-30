@@ -1,7 +1,7 @@
 import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponses";
+import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { IPost } from "./State";
@@ -11,19 +11,19 @@ import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
 // ----------------
 //#region ACTIONS
 export const ActionsList = {
-  GetPostListRequest: (): t.IGetPostListRequestAction => ({
+  getPostListRequest: (): t.IGetPostListRequestAction => ({
     type: t.GET_POST_LIST_REQUEST,
   }),
-  GetPostListRequestSuccess: (postList: IPost[], totalCount: number): t.IGetPostListRequestSuccessAction => ({
+  getPostListRequestSuccess: (postList: IPost[], totalCount: number): t.IGetPostListRequestSuccessAction => ({
     type: t.GET_POST_LIST_REQUEST_SUCCESS,
     postList: postList,
     totalCount,
   }),
-  GetPostListRequestError: (errorMessage: string): t.IGetPostListRequestErrorAction => ({
+  getPostListRequestError: (errorMessage: string): t.IGetPostListRequestErrorAction => ({
     type: t.GET_POST_LIST_REQUEST_ERROR,
     errorMessage,
   }),
-  CleanErrorInner: (): t.ICleanErrorInnerAction => ({
+  cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
 };
@@ -31,8 +31,8 @@ export const ActionsList = {
 // ----------------
 //#region ACTIONS CREATORS
 export const ActionCreators = {
-  GetPosts: (page: number, pageSize: number): AppThunkAction<t.TGetPostList> => (dispatch, getState) => {
-    type ResponseDataType = { PostList: IPost[]; TotalCount: number; };
+  getPosts: (page: number, pageSize: number): AppThunkAction<t.TGetPostList> => (dispatch, getState) => {
+    type ResponseDataType = { postList: IPost[]; totalCount: number; };
 
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -53,21 +53,21 @@ export const ActionCreators = {
         return errorCreater("Some trouble when getting posts.\n" + value.error);
       }
 
-      value.data.PostList.forEach((item: IPost) => item.date = new Date(item.date));
-      dispatch(ActionsList.GetPostListRequestSuccess(value.data.PostList, value.data.TotalCount));
+      value.data.postList.forEach((item: IPost) => item.date = new Date(item.date));
+      dispatch(ActionsList.getPostListRequestSuccess(value.data.postList, value.data.totalCount));
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "GetPosts",
       err,
-      ActionsList.GetPostListRequestError,
+      ActionsList.getPostListRequestError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.GetPostListRequest());
+    dispatch(ActionsList.getPostListRequest());
   },
-  CleanErrorInner: ActionsList.CleanErrorInner,
+  cleanErrorInner: ActionsList.cleanErrorInner,
 };
 //#endregion

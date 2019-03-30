@@ -1,12 +1,12 @@
 import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponses";
+import { IResponse } from "@core/fetchHelper/IResponse";
+import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TAccount";
 import * as t from "./actionsType";
 import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
-import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 // ----------------
 // ACTIONS
@@ -66,7 +66,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then(async (value: IResponse<TUserModel>) => {
       if (value && value.error) {
@@ -109,7 +109,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then(async (value: IResponse<TUserModel>) => {
       if (value && value.error) {
@@ -155,7 +155,7 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<string>) => {
       if (value && value.error) {

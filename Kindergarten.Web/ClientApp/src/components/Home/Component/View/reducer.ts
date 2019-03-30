@@ -24,7 +24,7 @@ export const reducer: Reducer = (state: IPostViewState, action: KnownAction) => 
                     postId: action.data.postId,
                     author: action.data.author,
                     header: action.data.header,
-                    context: action.data.context,
+                    content: action.data.content,
                     date: action.data.date,
                     imgUrl: action.data.imgUrl,
                     commentsCount: action.data.commentCount,

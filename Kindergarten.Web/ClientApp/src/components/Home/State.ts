@@ -11,7 +11,7 @@ export interface IPost {
   postId: number;
   author: string;
   header: string;
-  context: string;
+  content: string;
   date: Date;
   imgUrl?: string;
   commentCount: number;

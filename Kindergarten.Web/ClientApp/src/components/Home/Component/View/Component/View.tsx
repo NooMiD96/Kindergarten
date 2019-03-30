@@ -1,10 +1,8 @@
 import * as React from "react";
 
 import { Card } from "antd";
-import Layout from "@core/antd/Layout";
-import Row from "@core/antd/Row";
-import Col from "@core/antd/Col";
-import Form from "@core/antd/Form";
+import { Layout, Row, Col, Form } from "@core/antd";
+
 import CommentList from "./CommentList";
 import AdminControlRow from "./AdminControlRow";
 
@@ -19,18 +17,18 @@ export class View extends React.Component<TState, TComponentState> {
   };
 
   componentDidMount() {
-    this.props.GetPost(this.props.match.params.id as any);
+    this.props.getPost(this.props.match.params.id as any);
   }
 
   componentWillUnmount() {
-    this.props.CleanePostData();
+    this.props.cleanePostData();
   }
 
   sumbitHandler = (e: any) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.SendComment(values.comment, this.props.post.postId);
+        this.props.sendComment(values.comment, this.props.post.postId);
         this.props.form.resetFields();
       }
     });
@@ -53,7 +51,7 @@ export class View extends React.Component<TState, TComponentState> {
         listToSend.push(prop);
       }
     }
-    this.props.DeleteCommentList(this.props.post.postId, listToSend as any);
+    this.props.deleteCommentList(this.props.post.postId, listToSend as any);
   }
 
   public render() {
@@ -61,13 +59,13 @@ export class View extends React.Component<TState, TComponentState> {
       post: {
         postId,
         commentList,
-        context,
+        content,
         imgUrl,
       },
       pending,
       userRole,
       form,
-      DeletePost,
+      deletePost,
       history,
     } = this.props;
 
@@ -76,7 +74,7 @@ export class View extends React.Component<TState, TComponentState> {
         {
           userRole === UserTypeEnums.Admin &&
           <AdminControlRow
-            DeletePost={DeletePost}
+            deletePost={deletePost}
             history={history}
             postId={postId}
           />
@@ -93,7 +91,7 @@ export class View extends React.Component<TState, TComponentState> {
                   cover={<img alt="logo" src={imgUrl} />}
                 />
               }
-              {context.split("\n")[0]}
+              {content.split("\n")[0]}
             </Col>
           </Row>
           <Row className="post-inner">
@@ -102,7 +100,7 @@ export class View extends React.Component<TState, TComponentState> {
               sm={{ span: 20, offset: 2 }}
               style={{ whiteSpace: "pre-wrap" }}
             >
-              {context.substr(context.indexOf("\n") + 1)}
+              {content.substr(content.indexOf("\n") + 1)}
             </Col>
           </Row>
         </Layout.Content>

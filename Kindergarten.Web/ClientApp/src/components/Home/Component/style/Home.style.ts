@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export default styled.div`
+    padding: 15px;
+
     h1 {
         margin: 5px 0 10px 20px;
         display: inline-block;
@@ -9,7 +11,15 @@ export default styled.div`
         display: block !important;
     }
 
-    .ant-pagination {
-        /* min-width: 432px; */
+    .edit-button {
+        float: right;
+    }
+
+    .home-publish-vertical-avatar {
+        vertical-align: middle;
+    }
+
+    .home-publish-list-message_icon {
+        margin-right: 8px;
     }
 `;

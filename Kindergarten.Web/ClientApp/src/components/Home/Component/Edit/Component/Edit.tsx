@@ -1,20 +1,32 @@
 import * as React from "react";
 
-import Layout from "@core/antd/Layout";
-import Input from "@core/antd/Input";
-import Row from "@core/antd/Row";
-import Col from "@core/antd/Col";
-import Form from "@core/antd/Form";
-import Button from "@core/antd/Button";
-import Icon from "@core/antd/Svg";
+import {
+  Layout,
+  Input,
+  Row,
+  Col,
+  Form,
+  Button,
+  Icon,
+  Typography,
+} from "@core/antd";
+
 import { hasErrors } from "@core/antd/Form";
 
 import { TState, TComponentState } from "../TEdit";
 import { UserTypeEnums } from "@core/constants";
 import Alert from "@src/core/components/Alert";
 
+import localeText from "./Text";
+
+const { Text } = Typography;
+
 const { Content } = Layout;
 const FormItem = Form.Item;
+
+const LayoutStyle = {
+  padding: "15px",
+};
 
 export class Edit extends React.Component<TState, TComponentState> {
   componentDidMount() {
@@ -23,12 +35,12 @@ export class Edit extends React.Component<TState, TComponentState> {
         postId,
         header,
         imgUrl,
-        context,
+        content,
       },
       userRole,
       history,
       match,
-      GetPost,
+      getPost,
       form,
     } = this.props;
 
@@ -39,25 +51,25 @@ export class Edit extends React.Component<TState, TComponentState> {
     }
     if (numberId > 0) {
       if (postId !== numberId) {
-        GetPost(numberId);
+        getPost(numberId);
       } else {
-        form.setFieldsValue({ header, imgUrl, context });
+        form.setFieldsValue({ header, imgUrl, content });
       }
     }
   }
 
   componentDidUpdate(prevProps: TState) {
-    if (prevProps.post.context !== this.props.post.context || prevProps.post.header !== this.props.post.header) {
-      this.props.form.setFieldsValue({ header: this.props.post.header, imgUrl: this.props.post.imgUrl, context: this.props.post.context });
+    if (prevProps.post.content !== this.props.post.content || prevProps.post.header !== this.props.post.header) {
+      this.props.form.setFieldsValue({ header: this.props.post.header, imgUrl: this.props.post.imgUrl, content: this.props.post.content });
     }
     if (prevProps.pending && !this.props.pending && !this.props.errorInner) {
       const numberId = Number.parseInt(this.props.match.params.id, 10);
 
       if (Number.isNaN(numberId) || numberId <= 0) {
-        this.props.GetPosts(1, 5);
+        this.props.getPosts(1, 5);
         this.props.history.push("/");
       } else {
-        this.props.GetPost(numberId);
+        this.props.getPost(numberId);
         this.props.history.push(`/post/${this.props.post.postId}`);
       }
     }
@@ -70,68 +82,81 @@ export class Edit extends React.Component<TState, TComponentState> {
         // this.setState({
         //     loading: true,
         // });
-        this.props.CreateEditPost(Number.parseInt(this.props.match.params.id, 10), values.header, values.context, values.imgUrl);
+        this.props.createEditPost(
+          Number.parseInt(this.props.match.params.id, 10),
+          values.header,
+          values.content,
+          values.imgUrl
+        );
       }
     });
   }
 
   public render() {
-    const { pending, errorInner, CleanErrorInner } = this.props;
+    const { pending, errorInner, cleanErrorInner: CleanErrorInner } = this.props;
     const { isFieldTouched, getFieldError, getFieldDecorator, getFieldsError } = this.props.form;
 
     const headerError = isFieldTouched("header") && getFieldError("header");
     const contentError = isFieldTouched("content") && getFieldError("content");
 
-    return <div>
-      <Layout>
-        <Form
-          onSubmit={this.SumbitHandler}
-        >
+    return(
+      <Layout style={LayoutStyle}>
+        <Form onSubmit={this.SumbitHandler}>
           <Content>
-
-            <Row className="edit-header-image">
+            <Row>
               <Col style={{ float: "left" }} xs={24} sm={{ span: 10 }}>
                 <FormItem
                   validateStatus={headerError ? "error" : undefined}
-                  label={"Header"}
+                  label={localeText._label_header}
                 >
                   {getFieldDecorator("header", {
-                    rules: [{ required: true, message: "Please input your comment!" }],
+                    rules: [{ required: true, message: localeText._rules_require_header }],
                   })(
                     <Input
-                      placeholder="Enter header of post"
-                      prefix={<Icon type="tag" style={{ color: "rgba(0,0,0,.25)" }} />}
+                      placeholder={localeText._label_header}
+                      prefix={(
+                        <Icon
+                          type="tag"
+                          style={{ color: "rgba(0,0,0,.25)" }}
+                        />
+                      )}
                     />
                   )}
                 </FormItem>
               </Col>
               <Col style={{ float: "left" }} xs={24} sm={{ span: 10, offset: 4 }}>
                 <FormItem
-                  label={"Url to image"}
+                  label={localeText._label_urlImg}
                 >
                   {getFieldDecorator("imgUrl", {
-                    rules: [{ required: false, message: "Please input your comment!" }],
+                    rules: [{ required: false }],
                   })(
                     <Input
-                      placeholder="Enter url to image"
-                      prefix={<Icon type="tag-o" style={{ color: "rgba(0,0,0,.25)" }} />}
+                      placeholder={localeText._label_urlImg}
+                      prefix={(
+                        <Icon
+                          type="paper-clip"
+                          style={{ color: "rgba(0,0,0,.25)" }}
+                        />
+                      )}
                     />
                   )}
                 </FormItem>
               </Col>
             </Row>
 
-            <Row className="edit-context">
+            <Row>
               <Col span={24}>
                 <FormItem
                   validateStatus={contentError ? "error" : undefined}
-                  label={"Context"}
+                  label={localeText._label_content}
                 >
-                  {getFieldDecorator("context", {
-                    rules: [{ required: true, message: "Please input your comment!" }],
+                  {getFieldDecorator("content", {
+                    rules: [{ required: true, message: localeText._rules_require_content }],
                   })(
                     <Input.TextArea
-                      autosize={{ minRows: 2, maxRows: 12 }}
+                    autosize={{ minRows: 2, maxRows: 12 }}
+                    placeholder={localeText._label_content}
                     />
                   )}
                 </FormItem>
@@ -148,18 +173,21 @@ export class Edit extends React.Component<TState, TComponentState> {
                 onClose={CleanErrorInner}
               />
             }
-            <Button type="primary"
+            <Button
+              type="primary"
               htmlType="submit"
               loading={pending}
               onClick={this.SumbitHandler}
               disabled={hasErrors(getFieldsError())}
             >
-              Apply
+              <Text>
+                Опубликовать
+              </Text>
             </Button>
           </Content>
         </Form>
       </Layout>
-    </div>;
+    );
   }
 }
 

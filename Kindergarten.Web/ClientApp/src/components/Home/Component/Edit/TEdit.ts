@@ -23,8 +23,8 @@ export type TMapStateToProps = TStateToProps
 // -----------------------------
 // REDUX ACTIONS OF COMPONENT
 export type TDispatchToProps = typeof ActionCreators & {
-    GetPosts: typeof HomeActions.GetPosts,
-    GetPost: typeof ViewActions.GetPost,
+    getPosts: typeof HomeActions.getPosts,
+    getPost: typeof ViewActions.getPost,
 };
 export type TMapDispatchToProps = TDispatchToProps;
 // -----------------------------

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Kindergarten.Core.Helpers
 {
@@ -8,6 +9,7 @@ namespace Kindergarten.Core.Helpers
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
         };
 
         public static string Serialize<T>(T obj) => JsonConvert.SerializeObject(obj, JsonSettings);

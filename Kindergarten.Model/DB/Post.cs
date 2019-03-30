@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Kindergarten.Model.Identity;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-using Kindergarten.Model.Identity;
 
 namespace Kindergarten.Model.DB
 {
@@ -65,5 +65,10 @@ namespace Kindergarten.Model.DB
         }
 
         #endregion
+
+    }
+    public class CreateEditPostModel : Post
+    {
+        new public string UserId { get; set; }
     }
 }

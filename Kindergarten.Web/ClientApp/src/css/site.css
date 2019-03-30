@@ -9,9 +9,10 @@ body {background-color: whitesmoke}
   */
 .header-container {
   display: grid;
-  grid-template-columns: auto 15%;
+  grid-template-columns: auto auto;
   grid-template-rows: auto;
   justify-items: start;
+  height: 64px;
 }
 
 .header-menu-container {
@@ -21,6 +22,8 @@ body {background-color: whitesmoke}
   grid-row-end: 2;
 
   justify-self: start;
+  align-self: center;
+  line-height: 0;
 }
 
 .header-menu-container .ant-menu {
@@ -36,7 +39,7 @@ body {background-color: whitesmoke}
 
   justify-self: end;
   align-self: center;
-  line-height: initial;
+  line-height: 0;
   min-width: 80px;
 }
 .header-account-container .account-modal-title {
@@ -53,4 +56,36 @@ body {background-color: whitesmoke}
 }
 .ant-alert-close-icon .anticon:hover {
   color: #404040;
+}
+
+.header-container .ant-menu-submenu-arrow {
+  display: none;
+}
+
+.header-submenu-more-icon {
+  vertical-align: 0.175em;
+}
+
+.ant-menu-submenu-open.ant-menu-submenu-inline > .ant-menu-submenu-title .header-submenu-more-icon {
+  transform: scale(-1);
+}
+
+.header-container .ant-typography.main-title {
+  display: inline;
+  color: whitesmoke;
+}
+
+.ant-btn.ant-btn-primary .ant-typography,
+.ant-typography.white-text {
+  color: whitesmoke;
+}
+
+.ant-btn.ant-btn-primary[disabled] .ant-typography {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.header-menu-container .ant-menu.ant-menu-sub.ant-menu-inline {
+  position: absolute;
+  z-index: 1;
+  left: 0;
 }

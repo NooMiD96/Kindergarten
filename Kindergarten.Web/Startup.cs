@@ -85,12 +85,22 @@ namespace Kindergarten
 
             app.UseAuthentication();
 
-            app.UseMvcWithDefaultRoute();
-
-            app.UseSpa(spaConfig =>
+            app.UseMvc(routes =>
             {
-                spaConfig.Options.SourcePath = Configuration.GetValue<string>("SpaPhysicalRootPath");
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
+
+            //app.UseSpa(spaConfig =>
+            //{
+            //    spaConfig.Options.DefaultPage = new Microsoft.AspNetCore.Http.PathString("/");
+            //    spaConfig.Options.SourcePath = Configuration.GetValue<string>("SpaPhysicalRootPath");
+            //});
         }
     }
 }

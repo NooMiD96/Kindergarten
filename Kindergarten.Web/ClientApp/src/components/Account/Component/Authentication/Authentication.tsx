@@ -1,11 +1,12 @@
 import * as React from "react";
-import Icon from "@core/antd/Icon";
-import Input from "@core/antd/Input";
+import { Icon, Input } from "@core/antd";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 
 import ModalControlButtons from "../ModalControlButtons";
 
 import { TAuthenticationModel } from "../../TAccount";
+
+import localeText from "../Text";
 
 interface Props extends FormComponentProps {
   handleSubmit: (payload: TAuthenticationModel) => void;
@@ -38,28 +39,28 @@ export class Authentication extends React.Component<Props, {}> {
     return (
       <Form layout="vertical" onSubmit={this.onSubmit}>
         <FormItem
-          label="User Name"
+          label={localeText._label_userName}
         >
           {getFieldDecorator("userName", {
-            rules: [{ required: true, message: "Please input your User Name!" }],
+            rules: [{ required: true, message: localeText._rule_require_userName }],
           })(
             <Input
               prefix={<Icon type="user" className="input-prefix-color" />}
-              placeholder="User Name"
+              placeholder={localeText._label_userName}
               onPressEnter={this.onSubmit}
             />
           )}
         </FormItem>
         <FormItem
-          label="Password"
+          label={localeText._label_password}
         >
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: localeText._rule_require_password }],
           })(
             <Input
               prefix={<Icon type="lock" className="input-prefix-color" />}
               type="password"
-              placeholder="Password"
+              placeholder={localeText._label_password}
               onPressEnter={this.onSubmit}
             />
           )}
@@ -69,8 +70,8 @@ export class Authentication extends React.Component<Props, {}> {
             handleSubmit={this.onSubmit}
             handleCancel={this.onClose}
             loading={loading}
-            returnTitle="Return"
-            submitTitle="Login"
+            returnTitle="Вернуться"
+            submitTitle="Войти"
           />
         </div>
       </Form>

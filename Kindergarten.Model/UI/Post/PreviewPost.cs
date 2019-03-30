@@ -7,9 +7,9 @@ namespace Kindergarten.Model.UI.Post
         public int PostId { get; set; }
         public string Author { get; set; }
         public string Header { get; set; }
-        public string Context { get; set; }
+        public string Content { get; set; }
         public DateTime Date { get; set; }
         public string ImgUrl { get; set; }
-        public int CommentsCount { get; set; }
+        public int CommentCount { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 // import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
-// import { IResponse } from "@core/fetchHelper/IResponses";
+// import { IResponse } from "@core/fetchHelper/IResponse";
 import { IMessage } from "./State";
 
 import * as t from "./actionsType";

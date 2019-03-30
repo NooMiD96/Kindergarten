@@ -29,7 +29,7 @@ namespace MyMedicine.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateOrEdit([FromQuery] int postId, [FromBody] Post post)
+        public async Task<IActionResult> CreateOrEdit([FromQuery] int postId, [FromBody] CreateEditPostModel post)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -42,14 +42,14 @@ namespace MyMedicine.Controllers.AdminApi
                 await _context.EditPostAsync(post, postId);
             }
 
-            return Ok();
+            return Success(true);
         }
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteCommentList([FromQuery] int postId, [FromBody] List<int> commentListId)
         {
             await _context.DeleteCommentListAsync(postId, commentListId);
 
-            return Ok();
+            return Success(true);
         }
 
         [HttpDelete("[action]")]

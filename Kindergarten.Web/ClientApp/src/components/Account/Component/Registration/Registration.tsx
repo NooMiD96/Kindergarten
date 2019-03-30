@@ -1,11 +1,12 @@
 import * as React from "react";
-import Icon from "@core/antd/Icon";
-import Input from "@core/antd/Input";
+import { Icon, Input } from "@core/antd";
 import Form, { FormItem, FormComponentProps } from "@core/antd/Form";
 
 import ModalControlButtons from "../ModalControlButtons";
 
 import { TRegistrationModel } from "../../TAccount";
+
+import localeText from "../Text";
 
 interface Props extends FormComponentProps {
   handleSubmit: (payload: TRegistrationModel) => void;
@@ -15,7 +16,7 @@ interface Props extends FormComponentProps {
 
 export class Registration extends React.Component<Props, {}> {
   OnSubmit = () => {
-    this.props.form.validateFields((err: any, values: TRegistrationModel & {confirm: string}) => {
+    this.props.form.validateFields((err: any, values: TRegistrationModel & { confirm: string }) => {
       if (!err) {
         this.props.handleSubmit({
           userName: values.userName,
@@ -35,7 +36,7 @@ export class Registration extends React.Component<Props, {}> {
   CompareToFirstPassword = (rule: any, value: string, callback: Function) => {
     const form = this.props.form;
     if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
+      callback("2 пароля, которые Вы ввели, разные!");
     } else {
       callback();
     }
@@ -48,66 +49,66 @@ export class Registration extends React.Component<Props, {}> {
     return (
       <Form layout="vertical" onSubmit={this.OnSubmit}>
         <FormItem
-          label="User Name"
+          label={localeText._label_userName}
         >
           {getFieldDecorator("userName", {
-            rules: [{ required: true, message: "Please input your user Name!" }],
+            rules: [{ required: true, message: localeText._rule_require_userName }],
           })(
             <Input
               prefix={<Icon type="user" className="input-prefix-color" />}
-              placeholder="Username"
+              placeholder={localeText._label_userName}
               onPressEnter={this.OnSubmit}
             />
           )}
         </FormItem>
         <FormItem
-          label="E-Mail"
+          label={localeText._label_email}
         >
           {getFieldDecorator("email", {
             rules: [{
-                type: "email", message: "The input is not valid E-mail!",
-              }, {
-                required: true, message: "Please input your email!",
-              }],
+              type: "email", message: localeText._rule_type_email,
+            }, {
+              required: true, message: localeText._rule_require_email,
+            }],
           })(
             <Input
               prefix={<Icon type="mail" className="input-prefix-color" />}
               type="email"
-              placeholder="Email"
+              placeholder={localeText._label_email}
               onPressEnter={this.OnSubmit}
             />
           )}
         </FormItem>
         <FormItem
-          label="Password"
+          label={localeText._label_password}
         >
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: localeText._rule_require_password }],
           })(
             <Input
               prefix={<Icon type="lock" className="input-prefix-color" />}
               type="password"
-              placeholder="Password"
+              placeholder={localeText._label_password}
               onPressEnter={this.OnSubmit}
             />
           )}
         </FormItem>
         <FormItem
-          label="Confirm Password"
+          label={localeText._label_confirmPassword}
         >
           {getFieldDecorator("confirm", {
             rules: [{
               required: true,
-              message: "Please confirm your password!",
+              message: localeText._rule_require_confirmPassword,
             }, {
               validator: this.CompareToFirstPassword,
-              message: "Password not equals",
+              message: localeText._rule_validator_email,
             }],
           })(
             <Input
               prefix={<Icon type="lock" className="input-prefix-color" />}
               type="password"
-              placeholder="Confirm Password"
+              placeholder={localeText._label_confirmPassword}
               onPressEnter={this.OnSubmit}
             />
           )}
@@ -117,8 +118,8 @@ export class Registration extends React.Component<Props, {}> {
             handleSubmit={this.OnSubmit}
             handleCancel={this.OnClose}
             loading={loading}
-            returnTitle="Return"
-            submitTitle="Registration"
+            returnTitle="Вернуться"
+            submitTitle="Регистрация"
           />
         </div>
       </Form>

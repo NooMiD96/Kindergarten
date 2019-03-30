@@ -24,6 +24,7 @@ export enum UserTypeEnums {
 //#region SVG Icons
 export type TIcons =
   "loading"
+  | "caret-dow"
   /* Main: Button */
   | "login"
   | "idcard"
@@ -38,54 +39,75 @@ export type TIcons =
   | "close-circle"
   | "close"
   /* END Alert */
-  /* Input */
+  /* Home */
+  | "message"
   | "left"
   | "right"
-  /* END Input */
-  /* Counter: Button */
-  | "down-circle-o"
-  | "up-circle-o"
-  /* END Counter: Button */
+  /* END Home */
+
+  /* Home.Edit */
+  | "tag"
+  | "paper-clip"
+  /* END Home.Edit */
+
+  /* Home.View */
+  | "message"
+  /* END Home.View */
   ;
 
 export const getIconAsync = async (type: TIcons) => {
   switch (type) {
     case "loading":
       return (await import(/* webpackChunkName: "main-client.global.icons" */ "@antdSvgs/LoadingOutline")).default;
-/* Main: Button */
+    case "caret-dow":
+      return (await import(/* webpackChunkName: "main-client.global.icons" */ "@antdSvgs/CaretDownOutline")).default;
+
+    /* Main: Button */
     case "login":
       return (await import(/* webpackChunkName: "main-client.icons" */ "@antdSvgs/LoginOutline")).default;
     case "idcard":
       return (await import(/* webpackChunkName: "main-client.icons" */ "@antdSvgs/IdcardOutline")).default;
     case "logout":
       return (await import(/* webpackChunkName: "main-client.icons" */ "@antdSvgs/LogoutOutline")).default;
-/* END Main: Button */
-/* Main: Account: Input */
+    /* END Main: Button */
+
+    /* Main: Account: Input */
     case "user":
       return (await import(/* webpackChunkName: "account.modal.icons" */ "@antdSvgs/UserOutline")).default;
     case "lock":
       return (await import(/* webpackChunkName: "account.modal.icons" */ "@antdSvgs/LockOutline")).default;
     case "mail":
       return (await import(/* webpackChunkName: "account.modal.icons" */ "@antdSvgs/MailOutline")).default;
-/* END Main: Account: Input */
-/* Alert */
+    /* END Main: Account: Input */
+
+    /* Alert */
     case "close-circle":
       return (await import(/* webpackChunkName: "alert.icons" */ "@antdSvgs/CloseCircleOutline")).default;
     case "close":
       return (await import(/* webpackChunkName: "alert.icons" */ "@antdSvgs/CloseOutline")).default;
-/* END Alert */
-/* Input */
+    /* END Alert */
+
+    /* Home */
+    case "message":
+      return (await import(/* webpackChunkName: "Home.icons" */ "@antdSvgs/MessageOutline")).default;
     case "left":
-      return (await import(/* webpackChunkName: "input.icons" */ "@antdSvgs/LeftOutline")).default;
+      return (await import(/* webpackChunkName: "Home.icons" */ "@antdSvgs/LeftOutline")).default;
     case "right":
-      return (await import(/* webpackChunkName: "input.icons" */ "@antdSvgs/RightOutline")).default;
-/* END Input */
-/* Counter: Button */
-    case "down-circle-o":
-      return (await import(/* webpackChunkName: "counter.icons" */ "@antdSvgs/DownCircleOutline")).default;
-    case "up-circle-o":
-      return (await import(/* webpackChunkName: "counter.icons" */ "@antdSvgs/UpCircleOutline")).default;
-/* END Counter: Button */
+      return (await import(/* webpackChunkName: "Home.icons" */ "@antdSvgs/RightOutline")).default;
+    /* END Home */
+
+    /* Home.Edit */
+    case "tag":
+      return (await import(/* webpackChunkName: "Home.Edit.icons" */ "@antdSvgs/TagOutline")).default;
+    case "paper-clip":
+      return (await import(/* webpackChunkName: "Home.Edit.icons" */ "@antdSvgs/PaperClipOutline")).default;
+    /* END Home.Edit */
+
+    /* Home.View */
+    case "message":
+      return (await import(/* webpackChunkName: "Home.View.icons" */ "@antdSvgs/MessageOutline")).default;
+    /* END Home.View */
+
     default:
       const exhaustiveCheck: never = type;
       throw new Error(`SVG with "${exhaustiveCheck}" type not found!`);

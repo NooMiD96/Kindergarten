@@ -29,7 +29,7 @@ export const reducer: Reducer = (state: PostEditState, action: KnownAction) => {
     case t.CLEAN_ERROR_INNER:
       return {
         ...state,
-        ErrorInner: "",
+        errorInner: "",
       };
 
     default:

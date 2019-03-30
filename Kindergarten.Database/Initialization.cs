@@ -1,14 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using Kindergarten.Database.Contexts;
+﻿using Kindergarten.Database.Contexts;
 using Kindergarten.Database.DIServices;
 using Kindergarten.Model.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using System;
 
 using static Kindergarten.Database.DIServices.DependencyInjections;
 
@@ -22,18 +21,11 @@ namespace Kindergarten.Database
         {
 
             services
-                .AddDbContext<IdentityContext>(options =>
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("Kindergarten"),
-                                         x => x.MigrationsAssembly(ASSEMBLY_PATH));
-                })
                 .AddDbContext<KindergartenContext>(options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("Kindergarten"),
                                          x => x.MigrationsAssembly(ASSEMBLY_PATH));
-                });
-
-            services
+                })
                 .AddIdentityCore<ApplicationUser>(options =>
                 {
                     options.Password.RequiredLength = 6;
@@ -53,7 +45,7 @@ namespace Kindergarten.Database
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager()
                 .AddClaimsPrincipalFactory<ClaimsPrincipalFactoryDI>()
-                .AddEntityFrameworkStores<IdentityContext>();
+                .AddEntityFrameworkStores<KindergartenContext>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ClaimsPrincipalFactoryDI>();
 
@@ -73,13 +65,6 @@ namespace Kindergarten.Database
 
         public static void InitializeDb(ServiceProvider serviceProvider, IConfiguration Configuration)
         {
-            // We cant start the both DI together 'couse we have a reference from Project to Identity context
-            //Task.WhenAll(
-            //    //IdentityInitDI(serviceProvider, Configuration),
-            //    KindergartenInitDI(serviceProvider, Configuration)
-            //).GetAwaiter().GetResult();
-
-            IdentityInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
             KindergartenInitDI(serviceProvider, Configuration).GetAwaiter().GetResult();
         }
     }

@@ -1,7 +1,8 @@
 import { fetch, addTask } from "domain-task";
 
 import { AppThunkAction } from "@src/Store";
-import { IResponse } from "@core/fetchHelper/IResponses";
+import { IResponse } from "@core/fetchHelper/IResponse";
+import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import * as t from "./actionsType";
 import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
@@ -9,35 +10,41 @@ import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
 // ----------------
 //#region ACTIONS
 export const ActionsList = {
-  CreateEditPostRequest: (): t.ICreateEditPostRequestAction => ({
+  createEditPostRequest: (): t.ICreateEditPostRequestAction => ({
     type: t.CREATE_EDIT_POST_REQUEST,
   }),
-  CreateEditPostSuccess: (): t.ICreateEditPostSuccessAction => ({
+  createEditPostSuccess: (): t.ICreateEditPostSuccessAction => ({
     type: t.CREATE_EDIT_POST_SUCCESS,
   }),
-  CreateEditPostError: (errorMessage: string): t.ICreateEditPostErrorAction => ({
+  createEditPostError: (errorMessage: string): t.ICreateEditPostErrorAction => ({
     type: t.CREATE_EDIT_POST_ERROR,
     errorMessage,
   }),
-  CleanErrorInner: (): t.ICleanErrorInnerAction => ({
+  cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
 };
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
+const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку.";
 export const ActionCreators = {
-  CreateEditPost: (postId: number, header: string, context: string, imgUrl?: string): AppThunkAction<t.TCreateEditPostRequest> => (dispatch, _getState) => {
-    const fetchTask = fetch(`/api/post/createoredit?postid=${postId}`, {
+  createEditPost: (postId: number, header: string, content: string, imgUrl?: string): AppThunkAction<t.TCreateEditPostRequest> => (dispatch, getState) => {
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    const fetchTask = fetch(`/api/Post/CreateOrEdit?postid=${postId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        ...xptToHeader,
+      },
       credentials: "same-origin",
-      body: JSON.stringify({ header, context, imgUrl }),
+      body: JSON.stringify({ header, content, imgUrl }),
     }).then((res: Response) => {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<void>) => {
       if (value && value.error) {
@@ -47,22 +54,22 @@ export const ActionCreators = {
           // message.error('Need auth again');
           return;
         }
-        return errorCreater("Some trouble when getting post.\n" + value.error);
+        return errorCreater("Произошла ошибка при получении новых публикаций.\n" + value.error);
       }
 
-      dispatch(ActionsList.CreateEditPostSuccess());
+      dispatch(ActionsList.createEditPostSuccess());
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
       "Post",
       "CreateEditPost",
       err,
-      ActionsList.CreateEditPostError,
+      ActionsList.createEditPostError,
       dispatch
     ));
 
     addTask(fetchTask);
-    dispatch(ActionsList.CreateEditPostRequest());
+    dispatch(ActionsList.createEditPostRequest());
   },
-  CleanErrorInner: ActionsList.CleanErrorInner,
+  cleanErrorInner: ActionsList.cleanErrorInner,
 };
 //#endregion
