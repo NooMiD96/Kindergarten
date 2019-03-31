@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-namespace Kindergarten.Core.Helpers
+namespace Core.Helpers
 {
     public static class ClaimHelper
     {

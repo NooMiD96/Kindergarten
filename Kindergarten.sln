@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Kindergarten.Core\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Kindergarten.Database\Database.csproj", "{B4106B75-7010-4C71-BA3C-0EE8F3B3A2B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Kindergarten.Model\Model.csproj", "{8B2A666B-67E2-4A3D-9E8B-78D395AA9562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Kindergarten.Model\Model.csproj", "{8B2A666B-67E2-4A3D-9E8B-78D395AA9562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

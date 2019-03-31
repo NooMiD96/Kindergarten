@@ -1,17 +1,18 @@
-﻿using Kindergarten.Database.Contexts;
-using Kindergarten.Database.DIServices;
-using Kindergarten.Model.Identity;
+﻿using Database.Contexts;
+using Database.DIServices;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Model.Identity;
+
 using System;
 
-using static Kindergarten.Database.DIServices.DependencyInjections;
+using static Database.DIServices.DependencyInjections;
 
-namespace Kindergarten.Database
+namespace Database
 {
     public static class DatabaseInitialization
     {

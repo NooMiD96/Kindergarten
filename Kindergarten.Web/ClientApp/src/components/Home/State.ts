@@ -20,9 +20,9 @@ export interface IPost {
 
 export interface IComment {
   commentId: number;
-  commentInner: string;
+  content: string;
   date: Date;
-  userName: string;
+  author: string;
 }
 
 export const unloadedState: IHomeState = {

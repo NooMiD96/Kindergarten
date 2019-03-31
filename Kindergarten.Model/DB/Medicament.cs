@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kindergarten.Model.DB
+namespace Model.DB
 {
     /// <summary>
     /// Модель единицы препоратов

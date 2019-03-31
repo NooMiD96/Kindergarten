@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace MyMedicine.Controllers
+namespace Web.Controllers
 {
     public static class Utils
     {

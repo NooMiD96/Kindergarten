@@ -1,10 +1,10 @@
-﻿using Kindergarten.Model.DB;
-using Kindergarten.Model.Identity;
-
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kindergarten.Database.Contexts
+using Model.DB;
+using Model.Identity;
+
+namespace Database.Contexts
 {
     public partial class KindergartenContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {

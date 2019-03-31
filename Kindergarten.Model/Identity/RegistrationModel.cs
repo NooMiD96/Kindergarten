@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNetCore.Identity;
+
+using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Identity;
-
-namespace Kindergarten.Model.Identity
+namespace Model.Identity
 {
     public class RegistrationModel
     {

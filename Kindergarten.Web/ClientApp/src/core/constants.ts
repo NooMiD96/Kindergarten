@@ -1,8 +1,8 @@
 //#region Route
 export const routesObject = {
   "/": 0,
-  "/Visitation": 1,
-  "/Chat": 2,
+  "/visitation": 1,
+  "/chat": 2,
 };
 
 export const routesArray = Object.keys(routesObject);
@@ -10,8 +10,10 @@ export const routesArray = Object.keys(routesObject);
 
 export const allowToAllUserLocation = {
   "/": true,
-  "/Visitation": false,
-  "/Chat": true,
+  "/post": true,
+  "/edit": false,
+  "/visitation": false,
+  "/chat": true,
 };
 
 export enum UserTypeEnums {
@@ -48,6 +50,7 @@ export type TIcons =
   /* Home.Edit */
   | "tag"
   | "paper-clip"
+  | "down"
   /* END Home.Edit */
 
   /* Home.View */
@@ -101,6 +104,8 @@ export const getIconAsync = async (type: TIcons) => {
       return (await import(/* webpackChunkName: "Home.Edit.icons" */ "@antdSvgs/TagOutline")).default;
     case "paper-clip":
       return (await import(/* webpackChunkName: "Home.Edit.icons" */ "@antdSvgs/PaperClipOutline")).default;
+    case "down":
+      return (await import(/* webpackChunkName: "Home.Edit.icons" */ "@antdSvgs/DownOutline")).default;
     /* END Home.Edit */
 
     /* Home.View */

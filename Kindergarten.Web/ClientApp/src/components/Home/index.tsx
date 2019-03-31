@@ -6,7 +6,7 @@ import {
     TMapStateToProps,
     TMapDispatchToProps,
 } from "./THome";
-import { Home } from "./Component/Home";
+import { Home } from "@components/Home/Components/Component";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 
-using static Kindergarten.Core.Helpers.JsonHelper;
+using static Core.Helpers.JsonHelper;
 
-namespace Kindergarten.Core.Antiforgery
+namespace Core.Antiforgery
 {
     static public class Xsrf
     {

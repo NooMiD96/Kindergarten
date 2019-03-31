@@ -1,17 +1,17 @@
-﻿using Kindergarten.Core.Helpers;
-using Kindergarten.Database.Contexts;
-using Kindergarten.Model.Identity;
-using Kindergarten.Web.Controllers;
+﻿using Database.Contexts;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using MyMedicine.Controllers.Services;
+using Model.Identity;
+using Model.ViewModel.PostViewModel;
 
 using System.Threading.Tasks;
 
-namespace MyMedicine.Controllers.Api
+using Web.Controllers.Services;
+
+namespace Web.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -37,7 +37,7 @@ namespace MyMedicine.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetPost([FromQuery] int postId)
         {
-            var post = await _context.GetPostAsync(postId);
+            var post = await _context.GetPostViewModelAsync(postId);
 
             return Success(post);
         }
@@ -48,12 +48,14 @@ namespace MyMedicine.Controllers.Api
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var context = await ControllersServices.GetJsonFromBodyRequestAsync(Request.Body);
+            var content = await ControllersServices.GetJsonFromBodyRequestAsync(Request.Body);
 
-            var result = await _context.AddNewCommentAsync(postid, user, context);
+            var result = await _context.AddNewCommentAsync(postid, user, content);
 
             if (result != null)
+            {
                 return Success(result);
+            }
             else
             {
                 return BadRequest("Не удалось добавить комментарий, повторите попытку позже.");
@@ -63,10 +65,10 @@ namespace MyMedicine.Controllers.Api
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCommentList([FromQuery] int postId)
         {
-            var CommentList = await _context.GetCommentListAsync(postId);
+            var commentList = await _context.GetCommentViewModelListAsync(postId);
 
-            if (CommentList != null)
-                return Success(CommentList);
+            if (commentList != null)
+                return Success(commentList);
             else
                 return BadRequest("TODO");
         }

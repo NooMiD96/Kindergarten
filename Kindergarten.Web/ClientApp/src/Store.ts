@@ -4,10 +4,10 @@ import { reducer as AccountReducer } from "@src/components/Account/reducer";
 
 import { IHomeState } from "@components/Home/State";
 import { reducer as HomeReducer } from "@components/Home/reducer";
-import { IPostViewState } from "@components/Home/Component/View/State";
-import { reducer as PostViewReducer } from "@components/Home/Component/View/reducer";
-import { PostEditState } from "@components/Home/Component/Edit/State";
-import { reducer as PostEditReducer } from "@components/Home/Component/Edit/reducer";
+import { IPostViewState } from "@components/Home/Components/View/State";
+import { reducer as PostViewReducer } from "@components/Home/Components/View/reducer";
+import { PostEditState } from "@components/Home/Components/Edit/State";
+import { reducer as PostEditReducer } from "@components/Home/Components/Edit/reducer";
 
 import { ChatState } from "@components/Chat/State";
 import { reducer as ChatReducer } from "@components/Chat/reducer";

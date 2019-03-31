@@ -1,14 +1,14 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-
-using Kindergarten.Core.Helpers;
-using Kindergarten.Database.Contexts;
-using Kindergarten.Model.Identity;
+﻿using Database.Contexts;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace Kindergarten.Database.DIServices
+using Model.Identity;
+
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace Database.DIServices
 {
     public class ClaimsPrincipalFactoryDI: UserClaimsPrincipalFactory<ApplicationUser, ApplicationRole>
     {

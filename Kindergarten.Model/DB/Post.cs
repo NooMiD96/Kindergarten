@@ -1,16 +1,45 @@
-﻿using Kindergarten.Model.Identity;
+﻿using Model.Identity;
+
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kindergarten.Model.DB
+namespace Model.DB
 {
     /// <summary>
     /// Модель единицы публикации
     /// </summary>
-    public class Post : IEquatable<Post>
+    public class Post : PostBase
+    {
+        public Post() : base() { }
+        public Post(PostBase post)
+        {
+            this.PostId = post.PostId;
+            this.Header = post.Header;
+            this.Content = post.Content;
+            this.Date = post.Date;
+            this.ImgUrl = post.ImgUrl;
+            this.CommentList = post.CommentList;
+            this.UserId = null;
+            this.User = null;
+        }
+        /// <summary>
+        /// Ссылка на пользователя
+        /// </summary>
+        [Required, ForeignKey(nameof(ApplicationUser))]
+        [JsonIgnore]
+        public string UserId { get; set; }
+        /// <summary>
+        /// Пользователь
+        /// </summary>
+        [JsonIgnore]
+        public ApplicationUser User { get; set; }
+    }
+
+    public class PostBase : IEquatable<Post>
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PostId { get; set; }
@@ -35,22 +64,10 @@ namespace Kindergarten.Model.DB
         /// </summary>
         public string ImgUrl { get; set; }
 
-        #region Childrens
-
         /// <summary>
         /// Список комментариев поста
         /// </summary>
         public ICollection<Comment> CommentList { get; set; } = new List<Comment>();
-
-        /// <summary>
-        /// Ссылка на пользователя
-        /// </summary>
-        [Required, ForeignKey(nameof(ApplicationUser))]
-        public string UserId { get; set; }
-        /// <summary>
-        /// Пользователь
-        /// </summary>
-        public ApplicationUser User { get; set; }
 
         public bool Equals(Post item)
         {
@@ -63,12 +80,5 @@ namespace Kindergarten.Model.DB
                 return false;
             }
         }
-
-        #endregion
-
-    }
-    public class CreateEditPostModel : Post
-    {
-        new public string UserId { get; set; }
     }
 }

@@ -1,7 +1,6 @@
-﻿using Kindergarten.Model.DB;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace Kindergarten.Model.Identity
+namespace Model.Identity
 {
     public class ApplicationUser: IdentityUser
     {

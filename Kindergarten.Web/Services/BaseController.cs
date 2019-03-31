@@ -1,8 +1,8 @@
-﻿using Kindergarten.Core.Helpers;
+﻿using Core.Helpers;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kindergarten.Web.Controllers
+namespace Web.Controllers
 {
     public class BaseController : ControllerBase
     {

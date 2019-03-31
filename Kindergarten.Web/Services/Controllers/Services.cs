@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace MyMedicine.Controllers.Services
+namespace Web.Controllers.Services
 {
     public static class ControllersServices
     {

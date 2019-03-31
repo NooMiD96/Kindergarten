@@ -1,13 +1,13 @@
-﻿using System.Diagnostics;
-
-using Kindergarten.Core.Helpers;
+﻿using Core.Helpers;
 
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 
-using static Kindergarten.Core.Antiforgery.Xsrf;
+using System.Diagnostics;
 
-namespace Kindergarten.Web.Controllers
+using static Core.Antiforgery.Xsrf;
+
+namespace Web.Controllers
 {
     public class HomeController: Controller
     {

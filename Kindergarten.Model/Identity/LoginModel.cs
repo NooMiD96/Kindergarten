@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
 
-using Microsoft.AspNetCore.Identity;
+using System;
 
-namespace Kindergarten.Model.Identity
+namespace Model.Identity
 {
     public class LoginModel
     {

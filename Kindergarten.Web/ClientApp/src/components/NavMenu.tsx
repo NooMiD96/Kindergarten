@@ -104,8 +104,8 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
       // </Menu.Item>,
       <Menu.Item key={routesArray[2]}>
         <Link
-          to={routesArray[1]}
-          onClick={e => this.preventClick(e, routesArray[1])}
+          to={routesArray[2]}
+          onClick={e => this.preventClick(e, routesArray[2])}
         >
           Чат
         </Link>

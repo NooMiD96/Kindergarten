@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Newtonsoft.Json.Serialization;
 
-using static Kindergarten.Database.DatabaseInitialization;
+using static Database.DatabaseInitialization;
 
-namespace Kindergarten
+namespace Web
 {
     public class Startup
     {

@@ -9,8 +9,9 @@ export const isUserHavePermissions = (userType: UserTypeEnums, pathname: string)
   switch (userType) {
     case UserTypeEnums.Guest:
     case UserTypeEnums.User: {
-      const parthOfLocation = pathname.split("/");
-      const isHavePermission = (allowToAllUserLocation as any)[`/${parthOfLocation[1]}`] || false;
+      const parthOfLocationSplit = pathname.toLowerCase().split("/");
+      const parthOfLocation = !!parthOfLocationSplit[1] ? parthOfLocationSplit[1] : "";
+      const isHavePermission = (allowToAllUserLocation as any)[`/${parthOfLocation}`] || false;
       return isHavePermission;
     }
 

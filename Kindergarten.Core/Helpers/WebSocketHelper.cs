@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+
+using System;
 using System.IO;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Newtonsoft.Json;
-
-namespace Kindergarten.Core.Helpers
+namespace Core.Helpers
 {
     public static class WebSocketHelper
     {

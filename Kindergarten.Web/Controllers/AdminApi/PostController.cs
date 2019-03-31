@@ -1,17 +1,18 @@
-﻿using Kindergarten.Core.Constants;
-using Kindergarten.Database.Contexts;
-using Kindergarten.Model.DB;
-using Kindergarten.Model.Identity;
-using Kindergarten.Web.Controllers;
+﻿using Core.Constants;
+
+using Database.Contexts;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using Model.DB;
+using Model.Identity;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyMedicine.Controllers.AdminApi
+namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
@@ -29,7 +30,7 @@ namespace MyMedicine.Controllers.AdminApi
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateOrEdit([FromQuery] int postId, [FromBody] CreateEditPostModel post)
+        public async Task<IActionResult> CreateOrEdit([FromQuery] int postId, [FromBody] PostBase post)
         {
             var user = await _userManager.GetUserAsync(User);
 

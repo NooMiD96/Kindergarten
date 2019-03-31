@@ -1,16 +1,18 @@
-using Kindergarten.Core.Constants;
-using Kindergarten.Database.Contexts;
-using Kindergarten.Model.Identity;
+using Core.Constants;
+
+using Database.Contexts;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Model.Identity;
+
 using System;
 using System.Threading.Tasks;
 
-namespace Kindergarten.Database.DIServices
+namespace Database.DIServices
 {
     /// <summary>
     /// class for initialize custom DI

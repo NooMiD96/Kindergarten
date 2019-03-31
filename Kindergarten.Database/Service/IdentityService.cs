@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-using Kindergarten.Core.Constants;
+﻿using Core.Constants;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace Kindergarten.Database.Contexts.ProjectTodoIdentity
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Database.Service
 {
     public static class UserManagerExtensions
     {

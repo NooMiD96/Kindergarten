@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kindergarten.Model.DB
+namespace Model.DB
 {
     public class Group
     {

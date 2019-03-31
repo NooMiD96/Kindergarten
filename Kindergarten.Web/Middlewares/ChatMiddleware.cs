@@ -1,19 +1,21 @@
-﻿using System;
+﻿using Core.Helpers;
+
+using Microsoft.AspNetCore.Http;
+
+using Model.UI.Chat;
+
+using Newtonsoft.Json;
+
+using System;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Kindergarten.Core.Helpers;
-using Kindergarten.Model.UI.Chat;
-using Kindergarten.Web.Services.ChatHelper;
-
-using Microsoft.AspNetCore.Http;
-
-using Newtonsoft.Json;
+using Web.Services.ChatHelper;
 
 
-namespace Kindergarten.Web.Middlewares
+namespace Web.Middlewares
 {
     public class ChatMiddleware
     {

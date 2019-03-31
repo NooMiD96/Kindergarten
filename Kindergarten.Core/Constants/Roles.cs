@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kindergarten.Core.Constants
+namespace Core.Constants
 {
     public static class UserRoles
     {

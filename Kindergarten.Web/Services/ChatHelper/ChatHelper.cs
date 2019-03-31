@@ -1,8 +1,8 @@
-﻿using System.Collections.Concurrent;
+﻿using Model.UI.Chat;
 
-using Kindergarten.Model.UI.Chat;
+using System.Collections.Concurrent;
 
-namespace Kindergarten.Web.Services.ChatHelper
+namespace Web.Services.ChatHelper
 {
     public static class ChatHelper
     {

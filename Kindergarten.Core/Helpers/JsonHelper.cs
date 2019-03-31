@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Kindergarten.Core.Helpers
+namespace Core.Helpers
 {
     public static class JsonHelper
     {
