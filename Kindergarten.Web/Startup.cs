@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Newtonsoft.Json.Serialization;
 
 using static Database.DatabaseInitialization;
+using Newtonsoft.Json;
 
 namespace Web
 {
@@ -47,11 +48,12 @@ namespace Web
 
             services
                 .AddMvc()
-                //.AddNewtonsoftJson(jsonConfig =>
-                //{
-                //    jsonConfig.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                //    jsonConfig.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                //})
+                .AddNewtonsoftJson(jsonConfig =>
+                {
+                    jsonConfig.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    jsonConfig.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    jsonConfig.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             // In production, the React files will be served from this directory
@@ -65,7 +67,7 @@ namespace Web
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         //IWebHostEnvironment
-        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -84,7 +86,7 @@ namespace Web
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
