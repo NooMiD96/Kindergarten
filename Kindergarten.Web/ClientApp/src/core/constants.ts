@@ -2,7 +2,8 @@
 export const routesObject = {
   "/": 0,
   "/visitation": 1,
-  "/chat": 2,
+  "/medicament": 2,
+  "/chat": 3,
 };
 
 export const routesArray = Object.keys(routesObject);
@@ -13,6 +14,7 @@ export const allowToAllUserLocation = {
   "/post": true,
   "/edit": false,
   "/visitation": false,
+  "/medicament": false,
   "/chat": true,
 };
 
@@ -56,6 +58,10 @@ export type TIcons =
   /* Home.View */
   | "message"
   /* END Home.View */
+
+  /* Medicament */
+  | "filter"
+  /* END Medicament */
   ;
 
 export const getIconAsync = async (type: TIcons) => {
@@ -112,6 +118,11 @@ export const getIconAsync = async (type: TIcons) => {
     case "message":
       return (await import(/* webpackChunkName: "Home.View.icons" */ "@antdSvgs/MessageOutline")).default;
     /* END Home.View */
+
+    /* Medicament */
+    case "filter":
+      return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/FilterOutline")).default;
+    /* END Medicament */
 
     default:
       const exhaustiveCheck: never = type;

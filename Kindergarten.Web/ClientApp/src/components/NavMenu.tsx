@@ -86,15 +86,15 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
           >
             Visitation
           </Link>
+        </Menu.Item>,
+        <Menu.Item key={routesArray[2]}>
+          <Link
+            to={routesArray[2]}
+            onClick={e => this.preventClick(e, routesArray[2])}
+          >
+            Медикаменты
+          </Link>
         </Menu.Item>
-        // <Menu.Item key={routesArray[2]}>
-        //   <Link
-        //     to={routesArray[2]}
-        //     onClick={e => this.preventClick(e, routesArray[1])}
-        //   >
-        //     Symptom List
-        //   </Link>
-        // </Menu.Item>
       );
     }
 
@@ -102,10 +102,10 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
       // <Menu.Item key="3">
       //   <Link to={"/SearchDisease"}>Search Disease</Link>
       // </Menu.Item>,
-      <Menu.Item key={routesArray[2]}>
+      <Menu.Item key={routesArray[3]}>
         <Link
-          to={routesArray[2]}
-          onClick={e => this.preventClick(e, routesArray[2])}
+          to={routesArray[3]}
+          onClick={e => this.preventClick(e, routesArray[3])}
         >
           Чат
         </Link>

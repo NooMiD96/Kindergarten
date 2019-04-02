@@ -9,26 +9,37 @@ import { reducer as PostViewReducer } from "@components/Home/Components/View/red
 import { PostEditState } from "@components/Home/Components/Edit/State";
 import { reducer as PostEditReducer } from "@components/Home/Components/Edit/reducer";
 
+import { IMedicamentState } from "@components/Medicament/State";
+import { reducer as MedicamentReducer } from "@components/Medicament/reducer";
+
 import { ChatState } from "@components/Chat/State";
 import { reducer as ChatReducer } from "@components/Chat/reducer";
 
 export interface ApplicationState {
-    account: AccountState;
-    router: RouterState;
-    home: IHomeState;
-    postView: IPostViewState;
-    postEdit: PostEditState;
-    chat: ChatState;
+  router: RouterState;
+
+  account: AccountState;
+
+  post: IHomeState;
+  postView: IPostViewState;
+  postEdit: PostEditState;
+
+  medicament: IMedicamentState;
+
+  chat: ChatState;
 }
 
 export const reducers = {
-    account: AccountReducer,
-    home: HomeReducer,
-    postView: PostViewReducer,
-    postEdit: PostEditReducer,
-    chat: ChatReducer,
+  account: AccountReducer,
+  post: HomeReducer,
+  postView: PostViewReducer,
+  postEdit: PostEditReducer,
+
+  medicament: MedicamentReducer,
+
+  chat: ChatReducer,
 };
 
 export interface AppThunkAction<TAction> {
-    (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;
+  (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;
 }

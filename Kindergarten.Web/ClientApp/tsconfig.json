@@ -31,11 +31,22 @@
       "@antdSvgs/*": [
         "node_modules/@ant-design/icons/lib/outline/*"
       ]
-    }
+    },
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "configFile": "./tslint.json",
+        "jsEnable": false,
+        "alwaysShowRuleFailuresAsWarnings": false
+      }
+    ]
   },
   "exclude": [
     "node_modules",
     "public"
+  ],
+  "include": [
+    "./src/**/*"
   ],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true

@@ -30,6 +30,7 @@ export const ActionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
+const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const ActionCreators = {
   getPosts: (page: number, pageSize: number): AppThunkAction<t.TGetPostList> => (dispatch, getState) => {
     type ResponseDataType = { postList: IPost[]; totalCount: number; };
@@ -46,11 +47,11 @@ export const ActionCreators = {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`Status is ${res.status}`);
+        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
       }
     }).then((value: IResponse<ResponseDataType>) => {
       if (value && value.error) {
-        return errorCreater("Some trouble when getting posts.\n" + value.error);
+        return errorCreater(value.error);
       }
 
       value.data.postList.forEach((item: IPost) => item.date = new Date(item.date));
