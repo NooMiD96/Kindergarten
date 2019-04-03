@@ -14,11 +14,14 @@ const Svg = (props: SvgProps) => {
     return null;
   }
   const { icon } = props.svgProps;
+  const iProp = { ...props };
+  delete iProp.svgProps;
 
   return (
     <i
       className={`anticon${props.className ? " " + props.className : ""}`}
       style={props.style}
+      {...iProp}
     >
       <svg
         fill="currentColor"

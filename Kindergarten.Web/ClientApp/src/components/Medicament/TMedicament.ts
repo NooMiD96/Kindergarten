@@ -13,16 +13,10 @@ export enum SendTypeEnum {
 }
 
 export type TComponentState = {
-    editId: number | null,
-    inputValue: string,
     lastCreateIndex: number,
     editList: IMedicament[],
     deleteList: number[],
     lastSendedType: SendTypeEnum,
-    filterData: IMedicament[],
-    searchText: string,
-    filtered: boolean,
-    filterDropdownVisible: boolean,
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT

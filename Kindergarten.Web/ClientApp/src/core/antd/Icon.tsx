@@ -38,6 +38,7 @@ class CustomIcon extends React.PureComponent<CustomIconProps, CustomIconState> {
           className={this.props.className}
           style={this.props.style}
           svgProps={svgProps}
+          {...this.props}
         />
         : <span />
     );
