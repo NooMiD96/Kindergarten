@@ -73,11 +73,20 @@ export const actionCreators = {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-    }).then(res => {
+    }).then(async (res: Response) => {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+        switch (res.status) {
+          case 400:
+            return await errorCreater.createValidationError(res);
+
+          case 401:
+            return errorCreater.createAuthError();
+
+          default:
+            return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+        }
       }
     }).then((value: IResponse<IMedicament[]>) => {
       if (value && value.error) {
@@ -107,12 +116,21 @@ export const actionCreators = {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-      body: JSON.stringify({medicamentList}),
-    }).then(res => {
+      body: JSON.stringify({ medicamentList }),
+    }).then(async (res: Response) => {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+        switch (res.status) {
+          case 400:
+            return await errorCreater.createValidationError(res);
+
+          case 401:
+            return errorCreater.createAuthError();
+
+          default:
+            return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+        }
       }
     }).then((value: IResponse<Boolean>) => {
       if (value && value.error) {
@@ -143,12 +161,21 @@ export const actionCreators = {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-      body: JSON.stringify({medicamentList}),
-    }).then(res => {
+      body: JSON.stringify({ medicamentList }),
+    }).then(async (res: Response) => {
       if (res.ok) {
         return res.json();
       } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+        switch (res.status) {
+          case 400:
+            return await errorCreater.createValidationError(res);
+
+          case 401:
+            return errorCreater.createAuthError();
+
+          default:
+            return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+        }
       }
     }).then((value: IResponse<Boolean>) => {
       if (value && value.error) {

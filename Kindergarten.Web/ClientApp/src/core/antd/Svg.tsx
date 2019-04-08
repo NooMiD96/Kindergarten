@@ -16,6 +16,8 @@ const Svg = (props: SvgProps) => {
   const { icon } = props.svgProps;
   const iProp = { ...props };
   delete iProp.svgProps;
+  delete iProp.className;
+  delete iProp.style;
 
   return (
     <i

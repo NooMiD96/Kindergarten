@@ -3,6 +3,7 @@ import Avatar from "./Avatar";
 import Button from "./Button";
 import ButtonGroup from "./ButtonGroup";
 import Col from "./Col";
+import DatePicker from "./DatePicker";
 import Divider from "./Divider";
 import Form from "./Form";
 import Icon from "./Icon";
@@ -15,6 +16,7 @@ import Pagination from "./Pagination";
 import Row from "./Row";
 import Spin from "./Spin";
 import Table from "./Table";
+import Tag from "./Tag";
 import Typography from "./Typography";
 
 export {
@@ -23,6 +25,7 @@ export {
     Button,
     ButtonGroup,
     Col,
+    DatePicker,
     Divider,
     Form,
     Icon,
@@ -35,5 +38,6 @@ export {
     Row,
     Spin,
     Table,
+    Tag,
     Typography,
 };

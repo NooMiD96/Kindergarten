@@ -6,6 +6,7 @@ import Table from "./Table";
 
 import { TState, TComponentState, SendTypeEnum } from "@components/Medicament/TMedicament";
 import { IMedicament } from "../State";
+
 export class Medicament extends React.Component<TState, TComponentState> {
   state: TComponentState = {
     lastCreateIndex: -1,
@@ -42,48 +43,6 @@ export class Medicament extends React.Component<TState, TComponentState> {
     }
   }
 
-  addToEditList = (id: number | null, value?: string) => {
-    if (typeof (id) !== "number" || isNaN(id)) {
-      return;
-    }
-
-    const { editList } = this.state;
-    const lastCreateIndex = this.state.lastCreateIndex + 1;
-
-    // if new symptom is empty delete his
-    if (!value && id === lastCreateIndex) {
-      /**
-       * Probably this block doesn't need
-       * 'cause element isn't already added in 'EditList'
-       */
-      // const index = EditList.indexOf({medicamentId: id, name: ''});
-      // this.setState({
-      //     EditList: EditList.slice(0, index).concat(EditList.slice(index + 1))
-      // });
-
-      this.props.deleteMedicament(id);
-      return;
-    } else if (!value) {
-      return;
-    }
-
-    const indexOfElemInEditList = editList.findIndex((value: IMedicament) => value.medicamentId === id);
-
-    if (indexOfElemInEditList !== -1) {
-      editList.splice(indexOfElemInEditList, 1);
-    }
-
-    const newMedicament = {
-      medicamentId: id,
-      name: value,
-    } as IMedicament;
-
-    editList.push(newMedicament);
-
-    // set new value to render
-    this.props.setNewValue(newMedicament);
-  }
-
   changeMedicamentList = () => {
     this.props.changeMedicamentList(this.state.editList);
     this.setState({
@@ -112,7 +71,7 @@ export class Medicament extends React.Component<TState, TComponentState> {
   render() {
     const { errorInner, cleanErrorInner, medicamentList, pending } = this.props;
     const { editList, deleteList } = this.state;
-debugger;
+
     return (
       <React.Fragment>
         {
@@ -137,7 +96,6 @@ debugger;
 
             lastCreateIndex={this.state.lastCreateIndex}
             medicamentList={this.props.medicamentList}
-            addToEditList={this.addToEditList}
             updateSelectedDeleteList={this.updateSelectedDeleteList}
           />
         </Spin>

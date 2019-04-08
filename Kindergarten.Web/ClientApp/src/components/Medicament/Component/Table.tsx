@@ -2,9 +2,10 @@ import * as React from "react";
 
 import { Table, Input, Button, Icon } from "@core/antd";
 
+import { GetTableColumns } from "./TableHelper";
 import { IMedicament } from "../State";
 
-type TProps = {
+export type TProps = {
   addNewMedicament: Function;
   enableChange: Boolean;
   changeMedicamentList: () => void;
@@ -13,16 +14,15 @@ type TProps = {
 
   lastCreateIndex: number;
   medicamentList: IMedicament[];
-  addToEditList: Function;
   updateSelectedDeleteList: (selectedRowKeys: any) => void;
 };
 
-type TState = {
+export type TState = {
   editId: number | null,
   inputValue: string,
   filtered: boolean,
   filterDropdownVisible: boolean,
-  searchText: string,
+  searchText: string | null,
   filterData: IMedicament[],
 };
 
@@ -31,11 +31,10 @@ export class MedicamentTable extends React.Component<TProps, TState> {
     editId: null,
     inputValue: "",
     filterData: [],
-    searchText: "",
+    searchText: null,
     filtered: false,
     filterDropdownVisible: false,
   };
-  searchInput: any;
 
   componentDidUpdate(prevProp: TProps) {
     if (prevProp.medicamentList !== this.props.medicamentList && this.state.filtered) {
@@ -45,11 +44,6 @@ export class MedicamentTable extends React.Component<TProps, TState> {
 
   onEditClick = (record: any) => {
     if (record.medicamentId === this.state.editId) {
-      console.log("onEditClick", record);
-      
-      const { editId, inputValue } = this.state;
-      this.props.addToEditList(editId, inputValue);
-
       this.setState({
         editId: null,
         inputValue: "",
@@ -66,11 +60,6 @@ export class MedicamentTable extends React.Component<TProps, TState> {
       editId: null,
       inputValue: "",
     });
-
-    this.props.addToEditList(
-      Number.parseInt(e.target.getAttribute("data-id"), 10),
-      e.target.value
-    );
   }
 
   addNewMedicament = () => {
@@ -78,112 +67,44 @@ export class MedicamentTable extends React.Component<TProps, TState> {
     this.setState({ editId: this.props.lastCreateIndex });
   }
 
-  onChangeCell = (e: any) => {
-    this.setState({
-      inputValue: e.target.value,
-    });
-  }
   onInputChange = (e: any) => {
     this.setState({ searchText: e.target.value });
   }
-  onSearch = () => {
-    const { searchText } = this.state;
-    const reg = new RegExp(searchText, "gi");
-    this.setState({
-      filterDropdownVisible: false,
-      filtered: !!searchText,
-      filterData: this.props.medicamentList.filter((record: IMedicament) => !!record.name.match(reg)),
-    });
+
+  onSearch = (e?: any) => {
+    const searchText = e ? e.target.value : this.state.searchText;
+    if (searchText) {
+      const reg = new RegExp(searchText, "gi");
+      this.setState({
+        searchText: e.target.value,
+        filterDropdownVisible: false,
+        filtered: !!searchText,
+        filterData: this.props.medicamentList.filter((record: IMedicament) => !!record.name.match(reg)),
+      });
+    } else {
+      this.setState({
+        searchText: null,
+      });
+    }
+  }
+
+  onFilterDropdownVisibleChange = (visible: any) => {
+    // this.setState({
+    //   filterDropdownVisible: visible,
+    // }, () => this.searchInput ? this.searchInput.focus() : "");
   }
 
   render() {
     const { medicamentList } = this.props;
-    const { filtered, filterData, searchText, filterDropdownVisible } = this.state;
+    const { filtered, filterData } = this.state;
 
-    const columns = [{
-      title: "Наименование",
-      dataIndex: "name",
-      render: (value: any, record: IMedicament) => record.medicamentId === this.state.editId
-        ? <Input
-          data-id={record.medicamentId}
-          defaultValue={value}
-          onChange={this.onChangeCell}
-          onPressEnter={this.onPressEnter}
-        />
-        : value,
-      filterDropdown: (
-        <div className="custom-filter-dropdown">
-          <Input
-            ref={ele => this.searchInput = ele}
-            placeholder="Search name"
-            value={searchText}
-            onChange={this.onInputChange}
-            onPressEnter={this.onSearch}
-          />
-          <Button
-            type="primary"
-            onClick={this.onSearch}
-          >
-            Search
-          </Button>
-        </div>
-      ),
-      filterIcon: (
-        <Icon
-          type="filter"
-          style={{ color: filtered ? "#108ee9" : "#aaa" }}
-        />
-      ),
-      filterDropdownVisible: filterDropdownVisible,
-      onFilterDropdownVisibleChange: (visible: any) => {
-        console.log("onFilterDropdownVisibleChange");
-
-        this.setState({
-          filterDropdownVisible: visible,
-        }, () => this.searchInput ? this.searchInput.focus() : "")
-      },
-    }, {
-      title: "Количество",
-      dataIndex: "count",
-      render: (value: any, record: IMedicament) => record.medicamentId === this.state.editId
-        ? <Input
-          data-id={record.medicamentId}
-          defaultValue={value}
-          onChange={this.onChangeCell}
-          onPressEnter={this.onPressEnter}
-        />
-        : value,
-    }, {
-      title: "Дата",
-      dataIndex: "expirationDate",
-      render: (value: any, record: IMedicament) => record.medicamentId === this.state.editId
-        ? <Input
-          data-id={record.medicamentId}
-          defaultValue={value}
-          onChange={this.onChangeCell}
-          onPressEnter={this.onPressEnter}
-        />
-        : value,
-    }, {
-      title: "Пометка",
-      dataIndex: "comment",
-      render: (value: any, record: IMedicament) => record.medicamentId === this.state.editId
-        ? <Input
-          data-id={record.medicamentId}
-          defaultValue={value}
-          onChange={this.onChangeCell}
-          onPressEnter={this.onPressEnter}
-        />
-        : value,
-    }, {
-      title: "Действие",
-      width: "12%",
-      render: (_text: any, record: IMedicament) => (
-        <span>
-          <Button onClick={() => this.onEditClick(record)}>Изменить/Принять</Button>
-        </span>
-      ),
-    }];
+    const columns = GetTableColumns(
+      this.state,
+      this.onPressEnter,
+      this.onSearch,
+      this.onFilterDropdownVisibleChange,
+      this.onEditClick
+    );
 
     const rowSelection = {
       onChange: this.props.updateSelectedDeleteList,

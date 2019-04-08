@@ -61,6 +61,7 @@ export type TIcons =
 
   /* Medicament */
   | "filter"
+  | "calendar"
   /* END Medicament */
   ;
 
@@ -122,6 +123,8 @@ export const getIconAsync = async (type: TIcons) => {
     /* Medicament */
     case "filter":
       return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/FilterOutline")).default;
+    case "calendar":
+      return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/CalendarOutline")).default;
     /* END Medicament */
 
     default:
