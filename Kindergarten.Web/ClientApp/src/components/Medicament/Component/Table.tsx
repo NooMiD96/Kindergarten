@@ -7,6 +7,7 @@ import { IMedicament } from "../State";
 
 export type TProps = {
   addNewMedicament: Function;
+  updateChangeMedicamentList: (medicament: IMedicament) => void;
   enableChange: Boolean;
   changeMedicamentList: () => void;
   enableDelete: Boolean;
@@ -42,13 +43,14 @@ export class MedicamentTable extends React.Component<TProps, TState> {
     }
   }
 
-  onEditClick = (record: any) => {
+  onEditClick = (record: IMedicament) => {
     if (record.medicamentId === this.state.editId) {
       this.setState({
         editId: null,
         inputValue: "",
       });
     } else {
+      this.props.updateChangeMedicamentList(record);
       this.setState({
         editId: record.medicamentId,
       });

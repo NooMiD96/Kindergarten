@@ -43,9 +43,9 @@ namespace MyMedicine.Controllers
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteMedicamentList([FromBody] List<int> deleteList)
+        public async Task<IActionResult> DeleteMedicamentList([FromBody] List<int> medicamentIdList)
         {
-            await _context.DeleteMedicamentListAsync(deleteList);
+            await _context.DeleteMedicamentListAsync(medicamentIdList);
 
             return Success(true);
         }

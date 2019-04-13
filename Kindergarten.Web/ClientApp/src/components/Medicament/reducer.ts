@@ -23,7 +23,10 @@ export const reducer: Reducer<IMedicamentState> = (state: IMedicamentState = unl
       return <IMedicamentState>{
         ...state,
         pending: false,
-        medicamentList: action.medicamentList,
+        medicamentList: action.medicamentList.map(x => {
+          x.expirationDate = new Date(x.expirationDate);
+          return x;
+        }),
       };
 
     case t.DELETE_MEDICAMENT_LIST_REQUEST_ERROR:

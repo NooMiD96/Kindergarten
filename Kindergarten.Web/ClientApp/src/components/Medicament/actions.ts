@@ -63,9 +63,10 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const actionCreators = {
-  getMedicamentList: (): AppThunkAction<t.TGetMedicamentList> => (dispatch, getState) => {
+  getMedicamentList: (): AppThunkAction<t.TGetMedicamentList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
+    dispatch(actionCreators.cleanErrorInner());
     const fetchTask = fetch("/api/Medicament/GetMedicamentList", {
       credentials: "same-origin",
       method: "GET",
@@ -116,7 +117,7 @@ export const actionCreators = {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-      body: JSON.stringify({ medicamentList }),
+      body: JSON.stringify(medicamentList),
     }).then(async (res: Response) => {
       if (res.ok) {
         return res.json();
@@ -151,7 +152,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.changeMedicamentListRequest());
   },
-  deleteMedicamentList: (medicamentList: number[]): AppThunkAction<t.TDeleteMedicamentList | t.TGetMedicamentList> => (dispatch, getState) => {
+  deleteMedicamentList: (medicamentIdList: string[]): AppThunkAction<t.TDeleteMedicamentList | t.TGetMedicamentList> => (dispatch, getState) => {
     const xptToHeader = GetXsrfToHeader(getState);
 
     const fetchTask = fetch("/api/Medicament/DeleteMedicamentList", {
@@ -161,7 +162,7 @@ export const actionCreators = {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-      body: JSON.stringify({ medicamentList }),
+      body: JSON.stringify(medicamentIdList.map(x => Number.parseInt(x, 10))),
     }).then(async (res: Response) => {
       if (res.ok) {
         return res.json();

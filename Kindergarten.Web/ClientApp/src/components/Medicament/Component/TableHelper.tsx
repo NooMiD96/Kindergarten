@@ -2,8 +2,13 @@ import * as React from "react";
 
 import { DatePicker, Input, Button, Icon } from "@core/antd";
 
+import * as moment from "moment";
 import { TProps, TState } from "./Table";
 import { IMedicament } from "../State";
+
+const emptyRequireField = () => (
+  <span style={{color: "#b60606d6"}}>Поле обязательное для заполнения</span>
+);
 
 const filterIcon = (filtered: Boolean) => (
   <Icon
@@ -56,7 +61,7 @@ const GetTableColumns = (
   return [{
     title: "Наименование",
     dataIndex: "name",
-    render: (value: any, record: IMedicament) => (
+    render: (value: string, record: IMedicament) => (
       record.medicamentId === state.editId
         ? <Input
           data-id={record.medicamentId}
@@ -64,7 +69,7 @@ const GetTableColumns = (
           onChange={(e) => record.name = e.target.value}
           onPressEnter={onPressEnter}
         />
-        : value
+        : (!!value ? value : emptyRequireField())
     ),
     filterDropdown: filterDropdown(searchText, onSearch),
     filterIcon: filterIcon(filtered),
@@ -73,28 +78,29 @@ const GetTableColumns = (
   }, {
     title: "Количество",
     dataIndex: "count",
-    render: (value: any, record: IMedicament) => (
+    render: (value: number, record: IMedicament) => (
       record.medicamentId === state.editId
         ? <Input
           data-id={record.medicamentId}
-          defaultValue={value}
+          defaultValue={value && value.toString() || ""}
           type="number"
           onChange={(e) => record.count = intParser(e)}
           onPressEnter={onPressEnter}
         />
-        : value
+        : (!!value ? value : emptyRequireField())
       ),
   }, {
     title: "Дата",
     dataIndex: "expirationDate",
-    render: (value: any, record: IMedicament) => (
+    render: (value: Date, record: IMedicament) => (
       record.medicamentId === state.editId
         ? <DatePicker
           style={fullWidthStyle}
           // popupStyle={fullWidthStyle}
           onChange={(moment: any) => record.expirationDate = moment.toDate()}
+          defaultValue={moment(value)}
         />
-        : (value ? value.toLocaleDateString() : "")
+        : (!!value ? value.toLocaleDateString() : emptyRequireField())
       ),
   }, {
     title: "Пометка",

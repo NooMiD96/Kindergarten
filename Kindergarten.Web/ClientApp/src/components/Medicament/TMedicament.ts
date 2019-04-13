@@ -15,7 +15,7 @@ export enum SendTypeEnum {
 export type TComponentState = {
     lastCreateIndex: number,
     editList: IMedicament[],
-    deleteList: number[],
+    deleteList: string[],
     lastSendedType: SendTypeEnum,
 };
 // -----------------------------

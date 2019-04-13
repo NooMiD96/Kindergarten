@@ -43,6 +43,16 @@ export class Medicament extends React.Component<TState, TComponentState> {
     }
   }
 
+  updateChangeMedicamentList = (medicament: IMedicament) => {
+    const { editList } = this.state;
+    // tslint:disable-next-line
+    if (editList.findIndex(x => x.medicamentId == medicament.medicamentId) === -1) {
+      this.setState({
+        editList: [...editList, medicament],
+      });
+    }
+  }
+
   changeMedicamentList = () => {
     this.props.changeMedicamentList(this.state.editList);
     this.setState({
@@ -50,8 +60,8 @@ export class Medicament extends React.Component<TState, TComponentState> {
     });
   }
 
-  updateSelectedDeleteList = (selectedRowKeys: any) => {
-    this.setState({ deleteList: selectedRowKeys });
+  updateSelectedDeleteList = (selectedRowIdList: string[]) => {
+    this.setState({ deleteList: selectedRowIdList });
   }
 
   deleteMedicamentList = () => {
@@ -63,14 +73,16 @@ export class Medicament extends React.Component<TState, TComponentState> {
 
   addNewMedicament = () => {
     const { lastCreateIndex } = this.state;
+    const medicament = { medicamentId: lastCreateIndex } as IMedicament;
 
-    this.props.addNewMedicament({ medicamentId: lastCreateIndex } as IMedicament);
+    this.props.addNewMedicament(medicament);
+    this.updateChangeMedicamentList(medicament);
     this.setState({ lastCreateIndex: this.state.lastCreateIndex - 1 });
   }
 
   render() {
     const { errorInner, cleanErrorInner, medicamentList, pending } = this.props;
-    const { editList, deleteList } = this.state;
+    const { editList, deleteList, lastCreateIndex } = this.state;
 
     return (
       <React.Fragment>
@@ -89,13 +101,14 @@ export class Medicament extends React.Component<TState, TComponentState> {
         >
           <Table
             addNewMedicament={this.addNewMedicament}
-            enableChange={!!this.state.editList.length}
+            updateChangeMedicamentList={this.updateChangeMedicamentList}
+            enableChange={!!editList.length}
             changeMedicamentList={this.changeMedicamentList}
-            enableDelete={!!this.state.deleteList.length}
+            enableDelete={!!deleteList.length}
             deleteMedicamentList={this.deleteMedicamentList}
 
-            lastCreateIndex={this.state.lastCreateIndex}
-            medicamentList={this.props.medicamentList}
+            lastCreateIndex={lastCreateIndex}
+            medicamentList={medicamentList}
             updateSelectedDeleteList={this.updateSelectedDeleteList}
           />
         </Spin>
