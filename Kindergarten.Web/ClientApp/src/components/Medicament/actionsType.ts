@@ -4,16 +4,16 @@ import { IMedicament } from "./State";
 export const GET_MEDICAMENT_LIST_REQUEST = "GET_MEDICAMENT_LIST_REQUEST";
 export const GET_MEDICAMENT_LIST_REQUEST_SUCCESS = "GET_MEDICAMENT_LIST_REQUEST_SUCCESS";
 export const GET_MEDICAMENT_LIST_REQUEST_ERROR = "GET_MEDICAMENT_LIST_REQUEST_ERROR";
+
 export const CHANGE_MEDICAMENT_LIST_REQUEST = "CHANGE_MEDICAMENT_LIST_REQUEST";
 export const CHANGE_MEDICAMENT_LIST_REQUEST_SUCCESS = "CHANGE_MEDICAMENT_LIST_REQUEST_SUCCESS";
 export const CHANGE_MEDICAMENT_LIST_REQUEST_ERROR = "CHANGE_MEDICAMENT_LIST_REQUEST_ERROR";
+
 export const DELETE_MEDICAMENT_LIST_REQUEST = "DELETE_MEDICAMENT_LIST_REQUEST";
 export const DELETE_MEDICAMENT_LIST_REQUEST_SUCCESS = "DELETE_MEDICAMENT_LIST_REQUEST_SUCCESS";
 export const DELETE_MEDICAMENT_LIST_REQUEST_ERROR = "DELETE_MEDICAMENT_LIST_REQUEST_ERROR";
 
 export const ADD_NEW_MEDICAMENT = "ADD_NEW_MEDICAMENT";
-export const SET_NEW_VALUE = "SET_NEW_VALUE";
-export const DELETE_MEDICAMENT = "DELETE_MEDICAMENT";
 export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
 //#endregion
 // -----------------
@@ -35,12 +35,9 @@ export interface IDeleteMedicamentListRequestErrorAction { type: typeof DELETE_M
 export type TDeleteMedicamentList = IDeleteMedicamentListRequestAction | IDeleteMedicamentListRequestSuccessAction | IDeleteMedicamentListRequestErrorAction;
 
 export interface IAddNewMedicamentAction { type: typeof ADD_NEW_MEDICAMENT; medicament: IMedicament; }
-export interface ISetNewValueAction { type: typeof SET_NEW_VALUE; medicament: IMedicament; }
-export interface IDeleteMedicamentAction { type: typeof DELETE_MEDICAMENT; medicamentId: number; }
 export interface ICleanErrorInnerAction { type: typeof CLEAN_ERROR_INNER; }
 
-type KnownAction = TGetMedicamentList | TChangeMedicamentList | TDeleteMedicamentList
-    | IAddNewMedicamentAction | ISetNewValueAction | IDeleteMedicamentAction | ICleanErrorInnerAction;
+type KnownAction = TGetMedicamentList | TChangeMedicamentList | TDeleteMedicamentList | IAddNewMedicamentAction | ICleanErrorInnerAction;
 
 export default KnownAction;
 //#endregion

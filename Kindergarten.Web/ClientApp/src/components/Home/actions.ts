@@ -6,7 +6,8 @@ import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { IPost } from "./State";
 import * as t from "./actionsType";
-import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 // ----------------
 //#region ACTIONS
@@ -30,26 +31,23 @@ export const ActionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+const controllerName = "Post";
 export const ActionCreators = {
   getPosts: (page: number, pageSize: number): AppThunkAction<t.TGetPostList> => (dispatch, getState) => {
     type ResponseDataType = { postList: IPost[]; totalCount: number; };
 
+    const apiUrl = "GetPreviewPostList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/Post/GetPreviewPostList?page=${page}&pageSize=${pageSize}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?page=${page}&pageSize=${pageSize}`, {
       method: "GET",
       credentials: "same-origin",
       headers: {
         ...xptToHeader,
       },
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((value: IResponse<ResponseDataType>) => {
+    })
+    .then(responseCatcher)
+    .then((value: IResponse<ResponseDataType>) => {
       if (value && value.error) {
         return errorCreater(value.error);
       }
@@ -59,8 +57,8 @@ export const ActionCreators = {
 
       return Promise.resolve();
     }).catch((err: Error) => errorCatcher(
-      "Post",
-      "GetPosts",
+      controllerName,
+      apiUrl,
       err,
       ActionsList.getPostListRequestError,
       dispatch

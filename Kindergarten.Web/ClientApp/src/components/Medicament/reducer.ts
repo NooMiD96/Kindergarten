@@ -44,22 +44,6 @@ export const reducer: Reducer<IMedicamentState> = (state: IMedicamentState = unl
         medicamentList: [action.medicament, ...state.medicamentList.filter(Boolean)],
       };
 
-    case t.SET_NEW_VALUE:
-      return <IMedicamentState>{
-        ...state,
-        // tslint:disable-next-line
-        medicamentList: state.medicamentList.map(item => item.medicamentId == action.medicament.medicamentId
-          ? action.medicament
-          : item
-        ),
-      };
-
-    case t.DELETE_MEDICAMENT:
-      return <IMedicamentState>{
-        ...state,
-        medicamentList: state.medicamentList.filter(item => item.medicamentId !== action.medicamentId),
-      };
-
     case t.CLEAN_ERROR_INNER:
       return <IMedicamentState>{
         ...state,

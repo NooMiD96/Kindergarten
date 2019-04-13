@@ -12,8 +12,15 @@ import { reducer as PostEditReducer } from "@components/Home/Components/Edit/red
 import { IMedicamentState } from "@components/Medicament/State";
 import { reducer as MedicamentReducer } from "@components/Medicament/reducer";
 
-import { ChatState } from "@components/Chat/State";
-import { reducer as ChatReducer } from "@components/Chat/reducer";
+import { IChildrenState } from "@components/ChildrenGroups/Components/Group/Components/Children/State";
+import { reducer as ChildrenReducer } from "@components/ChildrenGroups/Components/Group/Components/Children/reducer";
+import { IGroupState } from "@components/ChildrenGroups/Components/Group/State";
+import { reducer as GroupReducer } from "@components/ChildrenGroups/Components/Group/reducer";
+// import { IMedicamentState } from "@components/Medicament/State";
+// import { reducer as MedicamentReducer } from "@components/Medicament/reducer";
+
+// import { ChatState } from "@components/Chat/State";
+// import { reducer as ChatReducer } from "@components/Chat/reducer";
 
 export interface ApplicationState {
   router: RouterState;
@@ -26,18 +33,23 @@ export interface ApplicationState {
 
   medicament: IMedicamentState;
 
-  chat: ChatState;
+  children: IChildrenState;
+  group: IGroupState;
+  // chat: ChatState;
 }
 
 export const reducers = {
   account: AccountReducer,
+
   post: HomeReducer,
   postView: PostViewReducer,
   postEdit: PostEditReducer,
 
   medicament: MedicamentReducer,
 
-  chat: ChatReducer,
+  children: ChildrenReducer,
+  group: GroupReducer,
+  // chat: ChatReducer,
 };
 
 export interface AppThunkAction<TAction> {

@@ -6,7 +6,8 @@ import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { IMedicament } from "./State";
 import * as t from "./actionsType";
-import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 // ----------------
 //#region ACTIONS
@@ -46,14 +47,6 @@ export const actionsList = {
     type: t.ADD_NEW_MEDICAMENT,
     medicament,
   }),
-  setNewValue: (medicament: IMedicament): t.ISetNewValueAction => ({
-    type: t.SET_NEW_VALUE,
-    medicament,
-  }),
-  deleteMedicament: (medicamentId: number): t.IDeleteMedicamentAction => ({
-    type: t.DELETE_MEDICAMENT,
-    medicamentId,
-  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -61,56 +54,46 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+const controllerName = "Medicament";
 export const actionCreators = {
   getMedicamentList: (): AppThunkAction<t.TGetMedicamentList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "GetMedicamentList";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
-    const fetchTask = fetch("/api/Medicament/GetMedicamentList", {
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-    }).then(async (res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        switch (res.status) {
-          case 400:
-            return await errorCreater.createValidationError(res);
-
-          case 401:
-            return errorCreater.createAuthError();
-
-          default:
-            return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<IMedicament[]>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
         }
-      }
-    }).then((value: IResponse<IMedicament[]>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
-      }
 
-      dispatch(actionsList.getMedicamentListRequestSuccess(value.data));
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Medicament",
-      "getMedicamentList",
-      err,
-      actionsList.getMedicamentListRequestError,
-      dispatch
-    ));
+        dispatch(actionsList.getMedicamentListRequestSuccess(value.data));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getMedicamentListRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.getMedicamentListRequest());
   },
-  changeMedicamentList: (medicamentList: IMedicament[]): AppThunkAction<t.TChangeMedicamentList | t.TGetMedicamentList> => (dispatch, getState) => {
+  changeMedicamentList: (medicamentList: IMedicament[]): AppThunkAction<t.TChangeMedicamentList | t.TGetMedicamentList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "ChangeMedicamentList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch("/api/Medicament/ChangeMedicamentList", {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "PATCH",
       headers: {
@@ -118,44 +101,32 @@ export const actionCreators = {
         ...xptToHeader,
       },
       body: JSON.stringify(medicamentList),
-    }).then(async (res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        switch (res.status) {
-          case 400:
-            return await errorCreater.createValidationError(res);
-
-          case 401:
-            return errorCreater.createAuthError();
-
-          default:
-            return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<Boolean>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
         }
-      }
-    }).then((value: IResponse<Boolean>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
-      }
 
-      dispatch(actionsList.changeMedicamentListRequestSuccess());
-      actionCreators.getMedicamentList()(dispatch, getState);
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "GetPosts",
-      err,
-      actionsList.changeMedicamentListRequestError,
-      dispatch
-    ));
+        dispatch(actionsList.changeMedicamentListRequestSuccess());
+        actionCreators.getMedicamentList()(dispatch, getState);
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.changeMedicamentListRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.changeMedicamentListRequest());
   },
-  deleteMedicamentList: (medicamentIdList: string[]): AppThunkAction<t.TDeleteMedicamentList | t.TGetMedicamentList> => (dispatch, getState) => {
+  deleteMedicamentList: (medicamentIdList: string[]): AppThunkAction<t.TDeleteMedicamentList | t.TGetMedicamentList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const apiUrl = "DeleteMedicamentList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch("/api/Medicament/DeleteMedicamentList", {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "DELETE",
       headers: {
@@ -163,43 +134,28 @@ export const actionCreators = {
         ...xptToHeader,
       },
       body: JSON.stringify(medicamentIdList.map(x => Number.parseInt(x, 10))),
-    }).then(async (res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        switch (res.status) {
-          case 400:
-            return await errorCreater.createValidationError(res);
-
-          case 401:
-            return errorCreater.createAuthError();
-
-          default:
-            return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<Boolean>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
         }
-      }
-    }).then((value: IResponse<Boolean>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
-      }
 
-      dispatch(actionsList.deleteMedicamentListRequestSuccess());
-      actionCreators.getMedicamentList()(dispatch, getState);
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "GetPosts",
-      err,
-      actionsList.deleteMedicamentListRequestError,
-      dispatch
-    ));
+        dispatch(actionsList.deleteMedicamentListRequestSuccess());
+        actionCreators.getMedicamentList()(dispatch, getState);
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.deleteMedicamentListRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(actionsList.deleteMedicamentListRequest());
   },
   addNewMedicament: actionsList.addNewMedicament,
-  setNewValue: actionsList.setNewValue,
-  deleteMedicament: actionsList.deleteMedicament,
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

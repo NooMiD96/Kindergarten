@@ -3,10 +3,10 @@
 import { Reducer } from "redux";
 
 import { UserTypeEnums } from "@core/constants";
-import { AccountState, UnloadedState } from "./IAccountState";
+import { AccountState, unloadedState } from "./IAccountState";
 import KnownAction, * as t from "./actionsType";
 
-export const reducer: Reducer<AccountState> = (state: AccountState = UnloadedState, action: KnownAction) => {
+export const reducer: Reducer<AccountState> = (state: AccountState = unloadedState, action: KnownAction) => {
   switch (action.type) {
     case t.REGISTRATION_REQUEST:
     case t.AUTHENTICATION_REQUEST:
@@ -25,7 +25,7 @@ export const reducer: Reducer<AccountState> = (state: AccountState = UnloadedSta
 
     case t.LOGOUT_SUCCESS:
       return {
-        ...UnloadedState,
+        ...unloadedState,
       } as AccountState;
 
     case t.REGISTRATION_ERROR:

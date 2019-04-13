@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
@@ -16,5 +17,10 @@ namespace Model.DB
         /// </summary>
         [Required]
         public string GroupName { get; set; }
+
+        /// <summary>
+        /// Список детей относящихся к данной группе
+        /// </summary>
+        public ICollection<Children> ChildrenList { get; set; }
     }
 }

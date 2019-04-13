@@ -6,10 +6,11 @@ import { GetXsrf, XPT, GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import { TRegistrationModel, TAuthenticationModel, TUserModel } from "./TAccount";
 import * as t from "./actionsType";
-import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
+import { errorCatcher, responseCatcher, uncatchError } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 // ----------------
-// ACTIONS
+//#region ACTIONS
 export const ActionsList = {
   registrationRequest: (): t.IRegistrationRequest => ({
     type: t.REGISTRATION_REQUEST,
@@ -53,126 +54,121 @@ export const ActionsList = {
     xpt,
   }),
 };
+//#endregion
 // ----------------
-// ACTION CREATORS
-const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+//#region ACTIONS CREATORS
+const controllerName = "Account";
 export const ActionCreators = {
   registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
-    const fetchTask = fetch("/api/Account/Registration", {
+    const apiUrl = "Registration";
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=UTF-8" },
       body: JSON.stringify(data),
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then(async (value: IResponse<TUserModel>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
-      }
-      let xpt: false | XPT | undefined;
+    })
+      .then(responseCatcher)
+      .then(async (value: IResponse<TUserModel>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+        let xpt: false | XPT | undefined;
 
-      try {
-        xpt = await GetXsrf(data);
-      } catch (err) {
-        return errorCreater(err.message);
-      }
+        try {
+          xpt = await GetXsrf(data);
+        } catch (err) {
+          return errorCreater(err.message);
+        }
 
-      if (xpt) {
-        dispatch(ActionsList.registrationSuccess());
-        dispatch(ActionsList.setUser(value.data));
-        dispatch(ActionsList.setXsrf(xpt));
-      } else {
-        return errorCreater(uncatchError);
-      }
+        if (xpt) {
+          dispatch(ActionsList.registrationSuccess());
+          dispatch(ActionsList.setUser(value.data));
+          dispatch(ActionsList.setXsrf(xpt));
+        } else {
+          return errorCreater(uncatchError);
+        }
 
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Account",
-      "Registration",
-      err,
-      ActionsList.registrationError,
-      dispatch
-    ));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.registrationError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.registrationRequest());
   },
   authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
-    const fetchTask = fetch("/api/Account/Authentication", {
+    const apiUrl = "Authentication";
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=UTF-8" },
       body: JSON.stringify(data),
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then(async (value: IResponse<TUserModel>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
-      }
-      let xpt: false | XPT | undefined;
+    })
+      .then(responseCatcher)
+      .then(async (value: IResponse<TUserModel>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+        let xpt: false | XPT | undefined;
 
-      try {
-        xpt = await GetXsrf(data);
-      } catch (err) {
-        return errorCreater(err.message);
-      }
+        try {
+          xpt = await GetXsrf(data);
+        } catch (err) {
+          return errorCreater(err.message);
+        }
 
-      if (xpt) {
-        dispatch(ActionsList.authenticationSuccess());
-        dispatch(ActionsList.setUser(value.data));
-        dispatch(ActionsList.setXsrf(xpt));
-      } else {
-        return errorCreater(uncatchError);
-      }
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Account",
-      "Authentication",
-      err,
-      ActionsList.authenticationError,
-      dispatch
-    ));
+        if (xpt) {
+          dispatch(ActionsList.authenticationSuccess());
+          dispatch(ActionsList.setUser(value.data));
+          dispatch(ActionsList.setXsrf(xpt));
+        } else {
+          return errorCreater(uncatchError);
+        }
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.authenticationError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.authenticationRequest());
   },
   logout: (): AppThunkAction<t.TLogout> => (dispatch, getState) => {
+    const apiUrl = "Logout";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch("/api/Account/Logout", {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((value: IResponse<string>) => {
-      if (value && value.error) {
-        return errorCreater(value.error);
-      }
-      dispatch(ActionsList.logoutSuccess());
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Account",
-      "Logout",
-      err,
-      ActionsList.logoutError,
-      dispatch
-    ));
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<string>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+        dispatch(ActionsList.logoutSuccess());
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.logoutError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.logoutRequest());
   },
   removeErrorMessage: ActionsList.removeErrorMessage,
 };
+//#endregion

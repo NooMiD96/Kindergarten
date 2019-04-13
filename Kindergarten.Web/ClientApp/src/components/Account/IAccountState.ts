@@ -11,4 +11,4 @@ export interface AccountState {
     _xpt: XPT | null;
 }
 
-export const UnloadedState: AccountState = { userType: UserTypeEnums.Guest, _xpt: null, pending: false };
+export const unloadedState: AccountState = { userType: UserTypeEnums.Guest, _xpt: null, pending: false };

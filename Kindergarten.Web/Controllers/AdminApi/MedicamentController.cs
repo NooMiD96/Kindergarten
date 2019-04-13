@@ -10,9 +10,7 @@ using Model.DB;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Web.Controllers;
-
-namespace MyMedicine.Controllers
+namespace Web.Controllers.AdminApi
 {
     [ValidateAntiForgeryToken]
     [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]

@@ -9,7 +9,7 @@ import configureStore from "./configureStore";
 import { AppRoutes } from "@src/App";
 import initReduxForComponent from "@core/BootServerHelper";
 import { ActionsList } from "@components/Account/actions";
-import { UnloadedState } from "@components/Account/IAccountState";
+import { unloadedState } from "@components/Account/IAccountState";
 import { TUserModel } from "@components/Account/TAccount";
 import { getUrlPathnameToCheck, isUserHavePermissions } from "@core/helpers/route";
 import { routesArray } from "@core/constants";
@@ -24,7 +24,7 @@ export default createServerRenderer(params =>
     // init user model
     let userModel: TUserModel = {
       userName: "",
-      userType: UnloadedState.userType,
+      userType: unloadedState.userType,
     };
     let xpt: XPT | undefined;
     if (params.data.user) {

@@ -7,7 +7,8 @@ import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
 import * as t from "./actionsType";
-import { errorCreater, errorCatcher } from "@core/fetchHelper/errorCatcher";
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
+import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 import { IPost, IComment } from "@components/Home/State";
 
 import { ActionCreators as AuthActions } from "@components/Account/actions";
@@ -82,123 +83,115 @@ export const ActionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
+const controllerName = "Post";
 export const ActionCreators = {
   getPost: (postId: number): AppThunkAction<t.TGetPostRequest> => (dispatch, getState) => {
+    const apiUrl = "GetPost";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/post/GetPost?postId=${postId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?postId=${postId}`, {
       method: "GET",
       credentials: "same-origin",
       headers: {
         ...xptToHeader,
       },
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((res: IResponse<IPost>) => {
-      if (res && res.error) {
-        return errorCreater(res.error);
-      }
+    })
+      .then(responseCatcher)
+      .then((res: IResponse<IPost>) => {
+        if (res && res.error) {
+          return errorCreater(res.error);
+        }
 
-      res.data.commentList.forEach((comment: IComment) => comment.date = new Date(comment.date));
+        res.data.commentList.forEach((comment: IComment) => comment.date = new Date(comment.date));
 
-      dispatch(ActionsList.getPostRequestSuccess(res.data));
+        dispatch(ActionsList.getPostRequestSuccess(res.data));
 
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "GetPost",
-      err,
-      ActionsList.getPostRequestError,
-      dispatch
-    ));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.getPostRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.getPostRequest(postId));
   },
   deletePost: (postId: number): AppThunkAction<t.TDeletePostRequest | TLogout | TGetPostList> => (dispatch, getState) => {
+    const apiUrl = "DeletePost";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/post/DeletePost?postId=${postId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?postId=${postId}`, {
       method: "DELETE",
       credentials: "same-origin",
       headers: {
         ...xptToHeader,
       },
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((value: IResponse<boolean>) => {
-      if (value && value.error) {
-        if (value.error === "auth") {
-          AuthActions.logout()(dispatch, getState);
-          message.error("Need auth again");
-          return;
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<boolean>) => {
+        if (value && value.error) {
+          if (value.error === "auth") {
+            AuthActions.logout()(dispatch, getState);
+            message.error("Need auth again");
+            return;
+          }
+          return errorCreater("Произошла ошибка при удалении публикации.\n" + value.error);
         }
-        return errorCreater("Произошла ошибка при удалении публикации.\n" + value.error);
-      }
-      dispatch(ActionsList.deletePostRequestSuccess());
-      PostActions.getPosts(1, 5)(dispatch, getState);
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "DeletePost",
-      err,
-      ActionsList.deletePostRequestError,
-      dispatch
-    ));
+        dispatch(ActionsList.deletePostRequestSuccess());
+        PostActions.getPosts(1, 5)(dispatch, getState);
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.deletePostRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.deletePostRequest());
   },
 
   getCommentList: (): AppThunkAction<t.TGetCommentListRequest> => (dispatch, getState) => {
+    const apiUrl = "GetCommentList";
     const xptToHeader = GetXsrfToHeader(getState);
 
     const { postId } = getState().postView.post;
-    const fetchTask = fetch(`/api/post/GetCommentList?postId=${postId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?postId=${postId}`, {
       method: "GET",
       credentials: "same-origin",
       headers: {
         ...xptToHeader,
       },
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((value: IResponse<IComment[]>) => {
-      if (value.error) {
-        return errorCreater("Произошла ошибка при получении комментариев.\n" + value.error);
-      }
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<IComment[]>) => {
+        if (value.error) {
+          return errorCreater("Произошла ошибка при получении комментариев.\n" + value.error);
+        }
 
-      value.data.forEach((comment: IComment) => comment.date = new Date(comment.date));
+        value.data.forEach((comment: IComment) => comment.date = new Date(comment.date));
 
-      dispatch(ActionsList.getCommentListRequestSuccess(value.data));
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "GetComment",
-      err,
-      ActionsList.getCommentListRequestError,
-      dispatch
-    ));
+        dispatch(ActionsList.getCommentListRequestSuccess(value.data));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.getCommentListRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.getCommentListRequest());
   },
   sendComment: (comment: string, postId: number): AppThunkAction<t.TSendCommentRequest> => (dispatch, getState) => {
+    const apiUrl = "AddComment";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/post/AddComment?postid=${postId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?postid=${postId}`, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -206,44 +199,41 @@ export const ActionCreators = {
         ...xptToHeader,
       },
       body: comment,
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((value: IResponse<IComment>) => {
-      if (value && value.error) {
-        if (value.error === "auth") {
-          // TODO:
-          // AuthActions.LogOut()(dispatch as any, _getState);
-          // message.error("Need auth again");
-          return;
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<IComment>) => {
+        if (value && value.error) {
+          if (value.error === "auth") {
+            // TODO:
+            // AuthActions.LogOut()(dispatch as any, _getState);
+            // message.error("Need auth again");
+            return;
+          }
+          return errorCreater("Произошла ошибка при добавлении комментария.\n" + value.error);
         }
-        return errorCreater("Произошла ошибка при добавлении комментария.\n" + value.error);
-      }
 
-      value.data.date = new Date();
-      dispatch(ActionsList.sendCommentRequestSuccess(value.data));
+        value.data.date = new Date();
+        dispatch(ActionsList.sendCommentRequestSuccess(value.data));
 
-      ActionCreators.getCommentList()(dispatch as any, getState);
+        ActionCreators.getCommentList()(dispatch as any, getState);
 
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "SendComment",
-      err,
-      ActionsList.sendCommentRequestError,
-      dispatch
-    ));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.sendCommentRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.sendCommentRequest());
   },
   deleteCommentList: (postId: number, commentList: [any]): AppThunkAction<t.TDeleteCommentListRequest> => (dispatch, getState) => {
+    const apiUrl = "DeleteCommentList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/post/DeleteCommentList?postId=${postId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?postId=${postId}`, {
       method: "DELETE",
       credentials: "same-origin",
       headers: {
@@ -251,34 +241,30 @@ export const ActionCreators = {
         ...xptToHeader,
       },
       body: JSON.stringify(commentList),
-    }).then((res: Response) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return errorCreater(`${uncatchError}. Статус ошибки ${res.status}.`);
-      }
-    }).then((value: IResponse<void>) => {
-      if (value && value.error) {
-        if (value.error === "auth") {
-          // TODO:
-          // AuthActions.LogOut()(dispatch as any, _getState);
-          // message.error('Need auth again');
-          return;
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<void>) => {
+        if (value && value.error) {
+          if (value.error === "auth") {
+            // TODO:
+            // AuthActions.LogOut()(dispatch as any, _getState);
+            // message.error('Need auth again');
+            return;
+          }
+          return errorCreater("Произошла ошибка при удалении комментариев.\n" + value.error);
         }
-        return errorCreater("Произошла ошибка при удалении комментариев.\n" + value.error);
-      }
 
-      dispatch(ActionsList.deleteCommentListRequestSuccess());
-      ActionCreators.getCommentList()(dispatch as any, getState);
+        dispatch(ActionsList.deleteCommentListRequestSuccess());
+        ActionCreators.getCommentList()(dispatch as any, getState);
 
-      return Promise.resolve();
-    }).catch((err: Error) => errorCatcher(
-      "Post",
-      "DeleteCommentList",
-      err,
-      ActionsList.deleteCommentListRequestError,
-      dispatch
-    ));
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        ActionsList.deleteCommentListRequestError,
+        dispatch
+      ));
 
     addTask(fetchTask);
     dispatch(ActionsList.deleteCommentListRequest());
