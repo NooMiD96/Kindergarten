@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { Table, Input, Button, Icon } from "@core/antd";
-
+import { Table, Button } from "@core/antd";
 import { GetTableColumns } from "./TableHelper";
+
 import { IMedicament } from "../State";
 
 export type TProps = {
@@ -20,7 +20,6 @@ export type TProps = {
 
 export type TState = {
   editId: number | null,
-  inputValue: string,
   filtered: boolean,
   filterDropdownVisible: boolean,
   searchText: string | null,
@@ -30,11 +29,10 @@ export type TState = {
 export class MedicamentTable extends React.Component<TProps, TState> {
   state: TState = {
     editId: null,
-    inputValue: "",
-    filterData: [],
-    searchText: null,
     filtered: false,
     filterDropdownVisible: false,
+    searchText: null,
+    filterData: [],
   };
 
   componentDidUpdate(prevProp: TProps) {
@@ -47,7 +45,6 @@ export class MedicamentTable extends React.Component<TProps, TState> {
     if (record.medicamentId === this.state.editId) {
       this.setState({
         editId: null,
-        inputValue: "",
       });
     } else {
       this.props.updateChangeMedicamentList(record);
@@ -60,17 +57,12 @@ export class MedicamentTable extends React.Component<TProps, TState> {
   onPressEnter = (e: any) => {
     this.setState({
       editId: null,
-      inputValue: "",
     });
   }
 
   addNewMedicament = () => {
     this.props.addNewMedicament();
     this.setState({ editId: this.props.lastCreateIndex });
-  }
-
-  onInputChange = (e: any) => {
-    this.setState({ searchText: e.target.value });
   }
 
   onSearch = (e?: any) => {

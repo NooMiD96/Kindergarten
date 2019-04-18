@@ -4,9 +4,9 @@ import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
-import { IChildren } from "./State";
+import { IChildren } from "@components/Children/State";
 import * as t from "./actionsType";
-import { errorCatcher, responseCatcher, uncatchError } from "@core/fetchHelper";
+import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
 
 // ----------------
@@ -43,6 +43,10 @@ export const actionsList = {
     type: t.DELETE_CHILDREN_LIST_REQUEST_ERROR,
     errorMessage,
   }),
+  addNewChildren: (children: IChildren) => ({
+    type: t.ADD_NEW_CHILDREN,
+    children,
+  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -52,13 +56,13 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "ChildrenGroups";
 export const actionCreators = {
-  getChildrenList: (): AppThunkAction<t.TGetChildrenList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getChildrenList: (groupId: any): AppThunkAction<t.TGetChildrenList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "GetChildrenList";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?groupId=${groupId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -85,7 +89,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.getChildrenListRequest());
   },
-  changeChildren: (childrenList: IChildren[]): AppThunkAction<t.TChangeChildrenList | t.TGetChildrenList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  saveChildrenList: (groupId: any, childrenList: IChildren[]): AppThunkAction<t.TChangeChildrenList | t.TGetChildrenList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "ChangeChildrenList";
     const xptToHeader = GetXsrfToHeader(getState);
 
@@ -105,7 +109,7 @@ export const actionCreators = {
         }
 
         dispatch(actionsList.changeChildrenListRequestSuccess());
-        actionCreators.getChildrenList()(dispatch, getState);
+        actionCreators.getChildrenList(groupId)(dispatch, getState);
 
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
@@ -119,17 +123,18 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.changeChildrenListRequest());
   },
-  deleteChildren: (childrenId: string): AppThunkAction<t.TDeleteChildrenList | t.TGetChildrenList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  deleteChildrenList: (groupId: any, childrenIdList: string[]): AppThunkAction<t.TDeleteChildrenList | t.TGetChildrenList | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "DeleteChildrenList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?childrenId=${childrenId}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
       credentials: "same-origin",
       method: "DELETE",
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
+      body: JSON.stringify(childrenIdList.map(x => Number.parseInt(x, 10))),
     })
       .then(responseCatcher)
       .then((value: IResponse<Boolean>) => {
@@ -138,7 +143,7 @@ export const actionCreators = {
         }
 
         dispatch(actionsList.deleteChildrenListRequestSuccess());
-        actionCreators.getChildrenList()(dispatch, getState);
+        actionCreators.getChildrenList(groupId)(dispatch, getState);
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,
@@ -151,6 +156,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.deleteChildrenListRequest());
   },
+  addNewChildren: actionsList.addNewChildren,
   cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

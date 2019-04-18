@@ -4,6 +4,7 @@ export const routesObject = {
   "/visitation": 1,
   "/medicament": 2,
   "/chat": 3,
+  "/childrengroups": 4,
 };
 
 export const routesArray = Object.keys(routesObject);
@@ -16,6 +17,7 @@ export const allowToAllUserLocation = {
   "/visitation": false,
   "/medicament": false,
   "/chat": true,
+  "/childrengroups": false,
 };
 
 export enum UserTypeEnums {
@@ -63,6 +65,11 @@ export type TIcons =
   | "filter"
   | "calendar"
   /* END Medicament */
+
+  /* ChildrenGroups */
+  | "arrow-right"
+  | "check"
+  /* END ChildrenGroups */
   ;
 
 export const getIconAsync = async (type: TIcons) => {
@@ -126,6 +133,13 @@ export const getIconAsync = async (type: TIcons) => {
     case "calendar":
       return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/CalendarOutline")).default;
     /* END Medicament */
+
+    /* ChildrenGroups */
+    case "arrow-right":
+      return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/ArrowRightOutline")).default;
+    case "check":
+      return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/CheckOutline")).default;
+    /* END ChildrenGroups */
 
     default:
       const exhaustiveCheck: never = type;

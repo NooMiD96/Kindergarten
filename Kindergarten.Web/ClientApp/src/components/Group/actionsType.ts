@@ -1,4 +1,4 @@
-import { IChildren } from "./State";
+import { IChildren } from "@components/Children/State";
 // -----------------
 //#region ACTIONS TYPE
 export const GET_CHILDREN_LIST_REQUEST = "GET_CHILDREN_LIST_REQUEST";

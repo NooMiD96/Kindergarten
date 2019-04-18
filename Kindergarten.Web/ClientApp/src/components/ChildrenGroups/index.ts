@@ -5,12 +5,12 @@ import {
     TOwnProps,
     TMapStateToProps,
     TMapDispatchToProps,
-} from "./TGroup";
-import { Group } from "./Components/Component";
+} from "./TChildrenGroups";
+import { ChildrenGroups } from "./Component";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
-    ...state.group,
+    ...state.childrenGroups,
     ...ownProp,
 }) as TMapStateToProps;
 
@@ -21,4 +21,4 @@ const mapDispatchToProps: TMapDispatchToProps = {
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps
-)(Group as any) as any;
+)(ChildrenGroups as any) as any;

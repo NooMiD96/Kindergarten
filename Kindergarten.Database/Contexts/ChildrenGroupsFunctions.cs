@@ -8,6 +8,21 @@ namespace Database.Contexts
 {
     public partial class KindergartenContext
     {
+        #region ChildrenGroups
+        public async Task<List<Group>> GetChildrenGroupsAsync()
+        {
+            throw new NotImplementedException();
+        }
+        public async ValueTask<(bool isSuccess, string resultMessage)> ChangeChildrenGroupsAsync(List<Group> groupList)
+        {
+            throw new NotImplementedException();
+        }
+        public async ValueTask<(bool isSuccess, string resultMessage)> DeleteChildrenGroupsAsync(List<int> childrenIdList)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
         #region Group
         public async Task<Children> GetChildrenListAsync(int groupId)
         {

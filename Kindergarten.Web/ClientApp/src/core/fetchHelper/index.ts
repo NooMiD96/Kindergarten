@@ -1,4 +1,4 @@
-import { errorCreater } from "./errorCreater";
+import { errorCreater } from "./ErrorCreater";
 
 export const uncatchError = "Упс... Что-то пошло не так... Пожалуйста, повторите попытку";
 export const responseCatcher = async (res: Response) => {

@@ -1,6 +1,7 @@
 import { RouteComponentProps } from "react-router-dom";
 
-import { IGroupState, IChildren } from "./State";
+import { IGroupState } from "./State";
+import { IChildren } from "@components/Children/State";
 import { actionCreators } from "./actions";
 
 import { UserTypeEnums } from "@core/constants";
@@ -22,7 +23,7 @@ export type TComponentState = {
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IGroupState & {
     userRole: UserTypeEnums,
-} & RouteComponentProps;
+} & RouteComponentProps<{ groupId: string }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
     & TOwnProps;

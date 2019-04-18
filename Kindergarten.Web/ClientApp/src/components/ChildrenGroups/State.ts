@@ -1,32 +1,15 @@
 // -----------------
 //#region STATE
-export interface IGroupState {
-  groupId: number;
-  groupName: string;
-  childrenList: IChildren;
+import { IGroupState } from "@components/Group/State";
+
+export interface IChildrenGroupsState {
+  childrenGroupsList: IGroupState[];
+  pending: boolean;
+  errorInner: string;
 }
 
-export interface IChildren {
-  childrenId: number;
-  firstName: string;
-  lastName: string;
-}
-
-export interface Doctor {
-  Id: number;
-  FirstName: string;
-  SecondName: string;
-}
-export interface Visitor {
-  Id: number;
-  FirstName: string;
-  SecondName: string;
-  Date: Date;
-  Male: boolean;
-}
-
-export const unloadedState: IGroupState = {
-  medicamentList: [],
+export const unloadedState: IChildrenGroupsState = {
+  childrenGroupsList: [],
   pending: false,
   errorInner: "",
 };

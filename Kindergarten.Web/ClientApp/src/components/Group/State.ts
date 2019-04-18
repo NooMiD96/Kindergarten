@@ -1,6 +1,6 @@
 // -----------------
 //#region STATE
-import { IChildren } from "./Components/Children/State";
+import { IChildren } from "@components/Children/State";
 
 export interface IGroupState {
   groupId: number;
@@ -9,8 +9,6 @@ export interface IGroupState {
   pending: boolean;
   errorInner: string;
 }
-
-export { IChildren };
 
 export const unloadedState: IGroupState = {
   groupId: 0,

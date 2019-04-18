@@ -94,6 +94,14 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
           >
             Медикаменты
           </Link>
+        </Menu.Item>,
+        <Menu.Item key={routesArray[4]}>
+          <Link
+            to={routesArray[4]}
+            onClick={e => this.preventClick(e, routesArray[4])}
+          >
+            Группы
+          </Link>
         </Menu.Item>
       );
     }
