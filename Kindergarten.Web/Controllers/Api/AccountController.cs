@@ -1,8 +1,10 @@
 ﻿using Core.Constants;
 
+using Database.Contexts;
 using Database.Service;
 
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,6 +25,7 @@ namespace Web.Controllers.Api
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AccountService _service;
+        private readonly KindergartenContext _context;
         private readonly IAntiforgery _antiforgery;
         private readonly ILogger _logger;
 
@@ -31,11 +34,13 @@ namespace Web.Controllers.Api
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
+                                 KindergartenContext context,
                                  IAntiforgery antiforgery,
                                  ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
             _service = new AccountService();
             _antiforgery = antiforgery;
             _logger = logger;
@@ -150,6 +155,14 @@ namespace Web.Controllers.Api
             var userName = User.Identity.Name;
             await _signInManager.SignOutAsync();
             return Success(_service.SuccessLogOut(userName));
+        }
+
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = UserRoles.Admin + ", " + UserRoles.Employee)]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetNotify()
+        {
+            return Success(await _context.GetNotify());
         }
     }
 }

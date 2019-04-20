@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Model.Identity;
-using Model.ViewModel.PostViewModel;
 
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace Web.Controllers.Api
         private readonly KindergartenContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostController([FromServices] KindergartenContext context, [FromServices] UserManager<ApplicationUser> userManager)
+        public PostController(KindergartenContext context, [FromServices] UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;

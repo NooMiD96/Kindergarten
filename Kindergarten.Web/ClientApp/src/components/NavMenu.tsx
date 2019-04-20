@@ -2,13 +2,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RouterState } from "connected-react-router";
-import { Title } from "@core/antd/Typography";
+import { Title, Text } from "@core/antd/Typography";
 import Menu from "@core/antd/Menu";
 import Icon from "@core/antd/Icon";
+import Badge from "@core/antd/Badge";
 
 import { ApplicationState } from "@src/Store";
 import { UserTypeEnums } from "@core/constants";
-import { AccountState } from "@components/Account/IAccountState";
+import { AccountState, SectionsEnum, TNotify } from "@components/Account/IAccountState";
 import { IMouseClickEvent } from "@core/IEvents";
 
 import Account from "@components/Account";
@@ -20,6 +21,7 @@ interface IComponentState {
 }
 
 interface IComponentProps extends AccountState, RouterState { }
+const badgeColor = {backgroundColor: "#62636bb0"};
 
 export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   state: IComponentState = {
@@ -63,8 +65,25 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
     }
   }
 
+  getNotify = () => {
+    let totalCount = 0;
+    let medicamentNotifyCount = 0;
+
+    const medicamentNotify = this.props.notify.find(x => x.section === SectionsEnum.medicament);
+    if (medicamentNotify) {
+      totalCount += medicamentNotify.count;
+      medicamentNotifyCount = medicamentNotify.count;
+    }
+
+    return {
+      totalCount,
+      medicamentNotifyCount,
+    };
+  }
+
   render() {
     const { userType } = this.props;
+    const notify = this.getNotify();
 
     const NavLinks = [
       <Menu.Item key={routesArray[0]}>
@@ -84,7 +103,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             to={routesArray[1]}
             onClick={e => this.preventClick(e, routesArray[1])}
           >
-            Visitation
+            Медикаменты <Badge count={notify.medicamentNotifyCount} style={badgeColor} />
           </Link>
         </Menu.Item>,
         <Menu.Item key={routesArray[2]}>
@@ -92,33 +111,11 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             to={routesArray[2]}
             onClick={e => this.preventClick(e, routesArray[2])}
           >
-            Медикаменты
-          </Link>
-        </Menu.Item>,
-        <Menu.Item key={routesArray[4]}>
-          <Link
-            to={routesArray[4]}
-            onClick={e => this.preventClick(e, routesArray[4])}
-          >
             Группы
           </Link>
         </Menu.Item>
       );
     }
-
-    NavLinks.push(
-      // <Menu.Item key="3">
-      //   <Link to={"/SearchDisease"}>Search Disease</Link>
-      // </Menu.Item>,
-      <Menu.Item key={routesArray[3]}>
-        <Link
-          to={routesArray[3]}
-          onClick={e => this.preventClick(e, routesArray[3])}
-        >
-          Чат
-        </Link>
-      </Menu.Item>
-    );
 
     return (
       <div className="header-container">
@@ -131,16 +128,10 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
           >
             <Menu.SubMenu
               title={(
-              <React.Fragment>
-                <Icon
-                  type="caret-dow"
-                  className="header-submenu-more-icon"
-                />
-                  <Title
-                    className="main-title"
-                    level={2}
-                  >
-                    Kindergarten
+                <React.Fragment>
+                  <Icon type="caret-dow" className="header-submenu-more-icon" />
+                  <Title className="main-title" level={2}>
+                    Kindergarten <Badge count={notify.totalCount} style={badgeColor}/>
                   </Title>
                 </React.Fragment>
               )}

@@ -19,9 +19,6 @@ import { reducer as GroupReducer } from "@components/Group/reducer";
 import { IChildrenGroupsState } from "@components/ChildrenGroups/State";
 import { reducer as ChildrenGroupsReducer } from "@components/ChildrenGroups/reducer";
 
-// import { ChatState } from "@components/Chat/State";
-// import { reducer as ChatReducer } from "@components/Chat/reducer";
-
 export interface ApplicationState {
   router: RouterState;
 
@@ -36,7 +33,6 @@ export interface ApplicationState {
   children: IChildrenState;
   group: IGroupState;
   childrenGroups: IChildrenGroupsState;
-  // chat: ChatState;
 }
 
 export const reducers = {
@@ -51,7 +47,6 @@ export const reducers = {
   children: ChildrenReducer,
   group: GroupReducer,
   childrenGroups: ChildrenGroupsReducer,
-  // chat: ChatReducer,
 };
 
 export interface AppThunkAction<TAction> {

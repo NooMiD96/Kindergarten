@@ -6,7 +6,8 @@
     asp-prerender-module=@($"{StartUpVendors.ServerPhysicalPath}/{StartUpVendors.ServerFileName}")
     asp-prerender-data="new {
         user = @ViewData["user"],
-        xpt = @ViewData["xpt"]
+        xpt = @ViewData["xpt"],
+        notify = @ViewData["notify"],
     }">Loading...</div>
 
 @section scripts {

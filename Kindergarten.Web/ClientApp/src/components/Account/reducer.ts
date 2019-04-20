@@ -56,6 +56,12 @@ export const reducer: Reducer<AccountState> = (state: AccountState = unloadedSta
         _xpt: action.xpt,
       } as AccountState;
 
+    case t.SET_NOTIFY:
+      return {
+        ...state,
+        notify: action.notify,
+      } as AccountState;
+
     default:
       const exhaustiveCheck: never = action;
   }

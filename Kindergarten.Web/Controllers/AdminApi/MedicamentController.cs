@@ -19,7 +19,7 @@ namespace Web.Controllers.AdminApi
     public class MedicamentController : BaseController
     {
         private readonly KindergartenContext _context;
-        public MedicamentController([FromServices] KindergartenContext context)
+        public MedicamentController(KindergartenContext context)
         {
             _context = context;
         }

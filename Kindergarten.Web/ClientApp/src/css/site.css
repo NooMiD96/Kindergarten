@@ -101,3 +101,7 @@ body {background-color: whitesmoke}
 .warning-row {
   background-color: #d463636e;
 }
+
+.header-container .ant-menu-inline .ant-menu-item {
+  font-size: 18px;
+}

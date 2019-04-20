@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Model.DB;
+using Model.ViewModel.Notify;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +50,17 @@ namespace Database.Contexts
             await SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<Notify> GetMedicamentNotify()
+        {
+            var result = new Notify()
+            {
+                Section = SectionsEnum.Medicament,
+                Count = await Medicament.Where(x => x.ExpirationDate < DateTime.Now).CountAsync(),
+            };
+
+            return result;
         }
     }
 }

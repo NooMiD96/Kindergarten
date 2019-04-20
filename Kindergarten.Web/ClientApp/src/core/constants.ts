@@ -1,10 +1,8 @@
 //#region Route
 export const routesObject = {
   "/": 0,
-  "/visitation": 1,
-  "/medicament": 2,
-  "/chat": 3,
-  "/childrengroups": 4,
+  "/medicament": 1,
+  "/childrengroups": 2,
 };
 
 export const routesArray = Object.keys(routesObject);
@@ -14,9 +12,7 @@ export const allowToAllUserLocation = {
   "/": true,
   "/post": true,
   "/edit": false,
-  "/visitation": false,
   "/medicament": false,
-  "/chat": true,
   "/childrengroups": false,
 };
 
