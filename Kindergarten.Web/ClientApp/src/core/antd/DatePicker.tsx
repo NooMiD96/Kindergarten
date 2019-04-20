@@ -14,4 +14,10 @@ const LocaleDatePicker = (props: any) => (
     />
 );
 
+export {
+    LocaleDatePicker,
+    locale,
+    DatePicker,
+};
+
 export default LocaleDatePicker;

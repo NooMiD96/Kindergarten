@@ -18,12 +18,16 @@ import Spin from "./Spin";
 import Table from "./Table";
 import Tag from "./Tag";
 import Typography from "./Typography";
+import Checkbox from "./Checkbox";
+import CheckboxGroup from "./CheckboxGroup";
 
 export {
     Alert,
     Avatar,
     Button,
     ButtonGroup,
+    Checkbox,
+    CheckboxGroup,
     Col,
     DatePicker,
     Divider,

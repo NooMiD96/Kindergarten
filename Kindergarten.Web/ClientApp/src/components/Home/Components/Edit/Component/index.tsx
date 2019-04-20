@@ -70,13 +70,10 @@ export class Edit extends React.Component<TState, TComponentState> {
     }
   }
 
-  SumbitHandler = (e: any) => {
+  sumbitHandler = (e: any) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // this.setState({
-        //     loading: true,
-        // });
         this.props.createEditPost(
           Number.parseInt(this.props.match.params.id, 10),
           values.header,
@@ -87,7 +84,7 @@ export class Edit extends React.Component<TState, TComponentState> {
     });
   }
 
-  public render() {
+  render() {
     const { pending, errorInner, cleanErrorInner: CleanErrorInner } = this.props;
     const { isFieldTouched, getFieldError, getFieldDecorator, getFieldsError } = this.props.form;
 
@@ -107,7 +104,7 @@ export class Edit extends React.Component<TState, TComponentState> {
               onClose={CleanErrorInner}
             />
           }
-          <Form onSubmit={this.SumbitHandler}>
+          <Form onSubmit={this.sumbitHandler}>
             <Content>
               <Row>
                 <Col className="col-float-left" xs={24} sm={{ span: 10 }}>
@@ -171,7 +168,7 @@ export class Edit extends React.Component<TState, TComponentState> {
                 type="primary"
                 htmlType="submit"
                 loading={pending}
-                onClick={this.SumbitHandler}
+                onClick={this.sumbitHandler}
                 disabled={hasErrors(getFieldsError())}
               >
                 <Text>

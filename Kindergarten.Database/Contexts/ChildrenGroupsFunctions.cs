@@ -141,18 +141,50 @@ namespace Database.Contexts
         #endregion
 
         #region Children
-        public async Task<Children> GetChildrenAsync(int childrenId)
-        {
-            throw new NotImplementedException();
-        }
-
+        public async Task<Children> GetChildrenAsync(int childrenId) => await Children.Include(x => x.ChildrenInformation)
+                                                                                      .FirstOrDefaultAsync(x => x.ChildrenId == childrenId);
         public async ValueTask<(bool isSuccess, string resultMessage)> ChangeChildrenAsync(int childrenId, Children childrenData)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var record = await Children.AsNoTracking()
+                                           .FirstOrDefaultAsync(x => x.ChildrenId == childrenId);
+
+                if (record == null)
+                    return (false, "Ребёнок не найден. Повторите попытку");
+
+                Children.Update(childrenData);
+
+                await SaveChangesAsync();
+
+                return (true, null);
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
         }
 
         public async ValueTask<(bool isSuccess, string resultMessage)> DeleteChildrenAsync(int childrenId)
         {
+            try
+            {
+                var record = await Children.FirstOrDefaultAsync(x => x.ChildrenId == childrenId);
+
+                if (record == null)
+                    return (false, "Ребёнок не найден. Повторите попытку");
+
+                Children.Remove(record);
+
+                await SaveChangesAsync();
+
+                return (true, null);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             throw new NotImplementedException();
         }
         #endregion

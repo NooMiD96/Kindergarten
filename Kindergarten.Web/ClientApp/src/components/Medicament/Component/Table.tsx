@@ -110,6 +110,16 @@ export class MedicamentTable extends React.Component<TProps, TState> {
         columns={columns}
         rowSelection={rowSelection}
         rowKey={(record: IMedicament) => record.medicamentId.toString()}
+        rowClassName={(record: IMedicament) => {
+          let expirationDate = record.expirationDate;
+          if (typeof expirationDate === "string") {
+            expirationDate = new Date(expirationDate);
+          }
+
+          return new Date() > expirationDate
+            ? "warning-row"
+            : "";
+        }}
         title={() =>
           (
             <React.Fragment>

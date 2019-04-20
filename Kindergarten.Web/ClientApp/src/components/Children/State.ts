@@ -10,11 +10,12 @@ export interface IChildren {
   childrenId: number;
   firstName: string;
   secondName: string;
-  childrenInformation: IChildrenInformation;
+  childrenInformation?: IChildrenInformation;
 }
 
 export interface IChildrenInformation {
   childrenId: number;
+  fatherName: string;
   birthday: Date;
   male: boolean;
   address: string;
