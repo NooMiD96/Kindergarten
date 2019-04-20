@@ -24,7 +24,37 @@ namespace Web.Controllers.AdminApi
             _context = context;
         }
 
+        #region ChildrenGroups
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetChildrenGroups()
+        {
+            var childrenGroups = await _context.GetChildrenGroupsAsync();
 
+            return Success(childrenGroups);
+        }
+
+        [HttpPatch("[action]")]
+        public async Task<IActionResult> ChangeChildrenGroups([FromBody] List<Group> groupList)
+        {
+            (var isSuccess, var resultMessage) = await _context.ChangeChildrenGroupsAsync(groupList);
+
+            if (isSuccess)
+                return Success(true);
+            else
+                return BadRequest(resultMessage);
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteChildrenGroups([FromBody] List<int> idList)
+        {
+            (var isSuccess, var resultMessage) = await _context.DeleteChildrenGroupsAsync(idList);
+
+            if (isSuccess)
+                return Success(true);
+            else
+                return BadRequest(resultMessage);
+        }
+        #endregion
 
         #region Group
         [HttpGet("[action]")]
@@ -47,9 +77,9 @@ namespace Web.Controllers.AdminApi
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteChildrenList([FromQuery] int groupId, [FromBody] List<int> childrenIdList)
+        public async Task<IActionResult> DeleteChildrenList([FromQuery] int groupId, [FromBody] List<int> idList)
         {
-            (var isSuccess, var resultMessage) = await _context.DeleteChildrenListAsync(groupId, childrenIdList);
+            (var isSuccess, var resultMessage) = await _context.DeleteChildrenListAsync(groupId, idList);
 
             if (isSuccess)
                 return Success(true);

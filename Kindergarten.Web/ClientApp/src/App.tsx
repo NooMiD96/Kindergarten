@@ -11,8 +11,8 @@ export const AppRoutes = (
     <Route path="/Edit/:id" component={AsyncComponent(() => import(/* webpackChunkName: "Home.Post.Edit" */ "@components/Home/Components/Edit")) } />
     <Route exact path="/Medicament" component={AsyncComponent(() => import(/* webpackChunkName: "Medicament" */ "@components/Medicament"))} />
     <Route exact path="/ChildrenGroups" component={AsyncComponent(() => import(/* webpackChunkName: "ChildrenGroups" */ "@components/ChildrenGroups"))} />
-    <Route path="/ChildrenGroups/:group" component={AsyncComponent(() => import(/* webpackChunkName: "Group" */ "@components/Group"))} />
-    <Route path="/ChildrenGroups/:children" component={AsyncComponent(() => import(/* webpackChunkName: "Children" */ "@components/Children"))} />
+    <Route path="/Group/:groupId" component={AsyncComponent(() => import(/* webpackChunkName: "Group" */ "@components/Group"))} />
+    <Route path="/Children/:childrenId" component={AsyncComponent(() => import(/* webpackChunkName: "Children" */ "@components/Children"))} />
     <Route exact path="/Chat" component={AsyncComponent(() => import(/* webpackChunkName: "Chat" */ "@components/_Chat"))} />
   </Layout>
 );

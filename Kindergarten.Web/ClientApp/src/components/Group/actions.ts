@@ -93,7 +93,7 @@ export const actionCreators = {
     const apiUrl = "ChangeChildrenList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?groupId=${groupId}`, {
       credentials: "same-origin",
       method: "PATCH",
       headers: {
@@ -127,7 +127,7 @@ export const actionCreators = {
     const apiUrl = "DeleteChildrenList";
     const xptToHeader = GetXsrfToHeader(getState);
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?groupId=${groupId}`, {
       credentials: "same-origin",
       method: "DELETE",
       headers: {

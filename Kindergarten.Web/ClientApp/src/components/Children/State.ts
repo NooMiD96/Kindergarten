@@ -17,6 +17,9 @@ export interface IChildrenInformation {
   childrenId: number;
   birthday: Date;
   male: boolean;
+  address: string;
+  phoneNumber: string;
+  phoneNumber2: string;
 }
 
 export const unloadedState: IChildrenState = {

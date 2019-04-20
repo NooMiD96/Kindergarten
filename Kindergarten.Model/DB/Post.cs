@@ -69,16 +69,6 @@ namespace Model.DB
         /// </summary>
         public ICollection<Comment> CommentList { get; set; } = new List<Comment>();
 
-        public bool Equals(Post item)
-        {
-            if (this.PostId == item.PostId)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool Equals(Post item) => this.PostId == item.PostId ? true : false;
     }
 }

@@ -52,13 +52,13 @@ export const actionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "ChildrenGroups";
 export const actionCreators = {
-  getChildren: (): AppThunkAction<t.TGetChildren | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+  getChildren: (childrenId: string): AppThunkAction<t.TGetChildren | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const apiUrl = "GetChildren";
     const xptToHeader = GetXsrfToHeader(getState);
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}?childrenId=${childrenId}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -105,7 +105,7 @@ export const actionCreators = {
         }
 
         dispatch(actionsList.changeChildrenRequestSuccess());
-        actionCreators.getChildren()(dispatch, getState);
+        actionCreators.getChildren(children.childrenId.toString())(dispatch, getState);
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,
@@ -137,7 +137,7 @@ export const actionCreators = {
         }
 
         dispatch(actionsList.deleteChildrenRequestSuccess());
-        actionCreators.getChildren()(dispatch, getState);
+        actionCreators.getChildren(childrenId)(dispatch, getState);
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,

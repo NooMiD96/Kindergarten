@@ -60,7 +60,7 @@ const GetTableColumns = (
         record.childrenId > 0
           ? (
             <NavLink
-              to={`/group?group=${record.childrenId}`}
+              to={`/children/${record.childrenId}`}
               className="float-right"
             >
               Перейти <Icon type="arrow-right" />

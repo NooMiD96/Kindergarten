@@ -7,7 +7,7 @@ namespace Model.DB
     /// <summary>
     /// Модель единицы препоратов
     /// </summary>
-    public class Medicament
+    public class Medicament : IEquatable<Medicament>
     {
         /// <summary>
         /// Идентификатор
@@ -34,5 +34,7 @@ namespace Model.DB
         /// Примечание
         /// </summary>
         public string Comment { get; set; }
+
+        public bool Equals(Medicament item) => this.MedicamentId == item.MedicamentId ? true : false;
     }
 }

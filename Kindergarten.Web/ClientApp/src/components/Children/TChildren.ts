@@ -6,20 +6,13 @@ import { actionCreators } from "./actions";
 import { UserTypeEnums } from "@core/constants";
 // -----------------------------
 // STATE OF COMPONENT
-export enum SendTypeEnum {
-    Edit,
-    Delete,
-    Default,
-}
-
 export type TComponentState = {
-    lastSendedType: SendTypeEnum,
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
 export type TStateToProps = IChildrenState & {
     userRole: UserTypeEnums,
-} & RouteComponentProps;
+} & RouteComponentProps<{ childrenId: string }>;
 export type TOwnProps = {};
 export type TMapStateToProps = TStateToProps
     & TOwnProps;

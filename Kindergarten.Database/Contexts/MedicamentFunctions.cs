@@ -39,12 +39,11 @@ namespace Database.Contexts
 
         public async ValueTask<bool> DeleteMedicamentListAsync(List<int> medicamentIdList)
         {
-            var contextSymptoms = Medicament
-                .Where(x => medicamentIdList.Contains(x.MedicamentId))
-                .AsNoTracking()
-                .AsEnumerable();
+            var recordList = Medicament.Where(x => medicamentIdList.Contains(x.MedicamentId))
+                                       .AsNoTracking()
+                                       .AsEnumerable();
 
-            Medicament.RemoveRange(contextSymptoms);
+            Medicament.RemoveRange(recordList);
 
             await SaveChangesAsync();
 

@@ -84,7 +84,7 @@ export class Group extends React.Component<TState, TComponentState> {
   }
 
   render() {
-    const { errorInner, cleanErrorInner, childrenList, pending, history } = this.props;
+    const { errorInner, cleanErrorInner, childrenList, pending } = this.props;
     const { editList, deleteList, lastCreateIndex } = this.state;
 
     return (

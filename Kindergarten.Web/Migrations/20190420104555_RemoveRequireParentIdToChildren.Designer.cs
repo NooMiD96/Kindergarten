@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(KindergartenContext))]
-    partial class KindergartenContextModelSnapshot : ModelSnapshot
+    [Migration("20190420104555_RemoveRequireParentIdToChildren")]
+    partial class RemoveRequireParentIdToChildren
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,20 +136,9 @@ namespace Web.Migrations
                 {
                     b.Property<int>("ChildrenId");
 
-                    b.Property<string>("Address")
-                        .IsRequired();
-
                     b.Property<DateTime>("Birthday");
 
-                    b.Property<string>("FatherName")
-                        .IsRequired();
-
                     b.Property<bool>("Male");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired();
-
-                    b.Property<string>("PhoneNumber2");
 
                     b.HasKey("ChildrenId");
 
@@ -363,6 +354,11 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Model.DB.Children", b =>
                 {
+                    b.HasOne("Model.DB.ChildrenInformation", "ChildrenInformation")
+                        .WithOne("Children")
+                        .HasForeignKey("Model.DB.Children", "ChildrenId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Model.DB.Group", "Group")
                         .WithMany("ChildrenList")
                         .HasForeignKey("GroupId")
@@ -371,14 +367,6 @@ namespace Web.Migrations
                     b.HasOne("Model.Identity.ApplicationUser", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId");
-                });
-
-            modelBuilder.Entity("Model.DB.ChildrenInformation", b =>
-                {
-                    b.HasOne("Model.DB.Children", "Children")
-                        .WithOne("ChildrenInformation")
-                        .HasForeignKey("Model.DB.ChildrenInformation", "ChildrenId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Model.DB.Comment", b =>

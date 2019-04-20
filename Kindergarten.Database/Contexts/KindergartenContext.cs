@@ -30,11 +30,6 @@ namespace Database.Contexts
                 .HasOne(x => x.User)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<ChildrenInformation>()
-                .HasOne(x => x.Children)
-                .WithOne(x => x.ChildrenInformation)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

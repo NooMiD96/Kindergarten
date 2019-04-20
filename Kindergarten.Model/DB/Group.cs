@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model.DB
 {
-    public class Group
+    public class Group : IEquatable<Group>
     {
         /// <summary>
         /// Номер группы
@@ -22,5 +23,7 @@ namespace Model.DB
         /// Список детей относящихся к данной группе
         /// </summary>
         public ICollection<Children> ChildrenList { get; set; }
+
+        public bool Equals(Group item) => this.GroupId == item.GroupId ? true : false;
     }
 }
