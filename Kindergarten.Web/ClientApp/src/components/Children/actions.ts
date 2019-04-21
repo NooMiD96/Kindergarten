@@ -3,6 +3,7 @@ import { fetch, addTask } from "domain-task";
 import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
+import { ActionCreators as AccountActions } from "@components/Account/actions";
 
 import { IChildren } from "./State";
 import * as t from "./actionsType";
@@ -106,6 +107,8 @@ export const actionCreators = {
 
         dispatch(actionsList.changeChildrenRequestSuccess());
         actionCreators.getChildren(children.childrenId.toString())(dispatch, getState);
+        AccountActions.getNotify()(dispatch as any, getState);
+
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,
@@ -138,6 +141,8 @@ export const actionCreators = {
 
         dispatch(actionsList.deleteChildrenRequestSuccess());
         actionCreators.getChildren(childrenId)(dispatch, getState);
+        AccountActions.getNotify()(dispatch as any, getState);
+
         return Promise.resolve();
       }).catch((err: Error) => errorCatcher(
         controllerName,

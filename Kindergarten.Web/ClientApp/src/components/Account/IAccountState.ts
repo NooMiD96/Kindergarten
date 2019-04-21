@@ -5,6 +5,7 @@ import { XPT } from "@core/helpers/auth/xsrf";
 
 export enum SectionsEnum {
     medicament,
+    vaccination,
 }
 
 export type TNotify = {

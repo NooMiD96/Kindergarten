@@ -12,6 +12,7 @@ namespace Database.Contexts
             var result = new List<Notify>()
             {
                 await GetMedicamentNotify(),
+                await GetVaccinationNotify(),
             };
 
             return result;

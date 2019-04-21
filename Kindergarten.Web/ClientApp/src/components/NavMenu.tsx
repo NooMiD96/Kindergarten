@@ -68,16 +68,25 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   getNotify = () => {
     let totalCount = 0;
     let medicamentNotifyCount = 0;
+    let vaccinationNotifyCount = 0;
+    const { notify } = this.props;
 
-    const medicamentNotify = this.props.notify.find(x => x.section === SectionsEnum.medicament);
+    const medicamentNotify = notify.find(x => x.section === SectionsEnum.medicament);
     if (medicamentNotify) {
       totalCount += medicamentNotify.count;
       medicamentNotifyCount = medicamentNotify.count;
     }
 
+    const vaccinationNotify = notify.find(x => x.section === SectionsEnum.vaccination);
+    if (vaccinationNotify) {
+      totalCount += vaccinationNotify.count;
+      vaccinationNotifyCount = vaccinationNotify.count;
+    }
+
     return {
       totalCount,
       medicamentNotifyCount,
+      vaccinationNotifyCount,
     };
   }
 
@@ -111,7 +120,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             to={routesArray[2]}
             onClick={e => this.preventClick(e, routesArray[2])}
           >
-            Группы
+            Группы <Badge count={notify.vaccinationNotifyCount} style={badgeColor} />
           </Link>
         </Menu.Item>
       );

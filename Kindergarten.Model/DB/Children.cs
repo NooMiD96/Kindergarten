@@ -52,6 +52,26 @@ namespace Model.DB
         [Phone]
         public string PhoneNumber2 { get; set; }
 
+        [Required]
+        public bool FirstVaccination { get; set; }
+        [Required]
+        public bool ApproveFirstVaccination { get; set; }
+
+        [Required]
+        public bool SecondVaccination { get; set; }
+        [Required]
+        public bool ApproveSecondVaccination { get; set; }
+
+        [Required]
+        public bool ThirdVaccination { get; set; }
+        [Required]
+        public bool ApproveThirdVaccination { get; set; }
+
+        [Required]
+        public bool FourthVaccination { get; set; }
+        [Required]
+        public bool ApproveFourthVaccination { get; set; }
+
         [JsonIgnore]
         public Children Children { get; set; }
     }

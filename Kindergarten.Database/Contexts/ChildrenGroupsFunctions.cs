@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.LINQ;
+
+using Microsoft.EntityFrameworkCore;
 
 using Model.DB;
+using Model.ViewModel.Notify;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Database.Contexts
@@ -186,6 +190,43 @@ namespace Database.Contexts
                 throw;
             }
             throw new NotImplementedException();
+        }
+
+
+
+        public async Task<Notify> GetVaccinationNotify()
+        {
+            //В 3 года и 1 месяц
+            const int firstDate = 395;
+            //В 3 года и 2 месяца
+            const int secondDate = 425;
+            //В 3 года и 3 месяца
+            const int thirdDate = 455;
+            //В 6 лет
+            const int fourthDate = 2190;
+
+            var dateTimeNow = DateTime.Now;
+            Expression<Func<ChildrenInformation, bool>> first = x => !x.FirstVaccination
+                                                                     && x.ApproveFirstVaccination
+                                                                     && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > firstDate;
+            Expression<Func<ChildrenInformation, bool>> second = x => !x.SecondVaccination
+                                                                      && x.ApproveSecondVaccination
+                                                                      && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > secondDate;
+            Expression<Func<ChildrenInformation, bool>> third = x => !x.ThirdVaccination
+                                                                     && x.ApproveThirdVaccination
+                                                                     && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > thirdDate;
+            Expression<Func<ChildrenInformation, bool>> fourth = x => !x.ApproveFourthVaccination
+                                                                      && x.ApproveFourthVaccination
+                                                                      && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > fourthDate;
+
+
+            var count = await ChildrenInformation.Where(first.Or(second).Or(third).Or(fourth)).CountAsync();
+
+            return new Notify()
+            {
+                Section = SectionsEnum.Vaccination,
+                Count = count,
+            };
         }
         #endregion
 

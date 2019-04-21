@@ -21,6 +21,19 @@ export interface IChildrenInformation {
   address: string;
   phoneNumber: string;
   phoneNumber2: string;
+
+  firstVaccination: boolean;
+  approveFirstVaccination: boolean;
+
+  secondVaccination: boolean;
+  approveSecondVaccination: boolean;
+
+  thirdVaccination: boolean;
+  approveThirdVaccination: boolean;
+
+  fourthVaccination: boolean;
+  approveFourthVaccination: boolean;
+
 }
 
 export const unloadedState: IChildrenState = {

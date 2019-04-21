@@ -54,6 +54,14 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
       male = true,
       phoneNumber = "",
       phoneNumber2 = "",
+      firstVaccination = false,
+      approveFirstVaccination = false,
+      secondVaccination = false,
+      approveSecondVaccination = false,
+      thirdVaccination = false,
+      approveThirdVaccination = false,
+      fourthVaccination = false,
+      approveFourthVaccination = false,
     } = childrenInformation;
 
     form.setFieldsValue({
@@ -64,6 +72,14 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
       male,
       phoneNumber,
       phoneNumber2,
+      firstVaccination,
+      approveFirstVaccination,
+      secondVaccination,
+      approveSecondVaccination,
+      thirdVaccination,
+      approveThirdVaccination,
+      fourthVaccination,
+      approveFourthVaccination,
     });
   }
 
@@ -93,6 +109,14 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
     const maleError = isFieldTouched("male") && getFieldError("male");
     const phoneNumberError = isFieldTouched("phoneNumber") && getFieldError("phoneNumber");
     const phoneNumber2Error = isFieldTouched("phoneNumber2") && getFieldError("phoneNumber2");
+    const firstVaccinationError = isFieldTouched("firstVaccination") && getFieldError("firstVaccination");
+    const approveFirstVaccinationError = isFieldTouched("approveFirstVaccination") && getFieldError("approveFirstVaccination");
+    const secondVaccinationError = isFieldTouched("secondVaccination") && getFieldError("secondVaccination");
+    const approveSecondVaccinationError = isFieldTouched("approveSecondVaccination") && getFieldError("approveSecondVaccination");
+    const thirdVaccinationError = isFieldTouched("thirdVaccination") && getFieldError("thirdVaccination");
+    const approveThirdVaccinationError = isFieldTouched("approveThirdVaccination") && getFieldError("approveThirdVaccination");
+    const fourthVaccinationError = isFieldTouched("fourthVaccination") && getFieldError("fourthVaccination");
+    const approveFourthVaccinationError = isFieldTouched("approveFourthVaccination") && getFieldError("approveFourthVaccination");
 
     return (
       <React.Fragment>
@@ -190,6 +214,91 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               />
             )}
           </FormItem>
+
+          <FormItem
+            validateStatus={firstVaccinationError ? "error" : undefined}
+            label={text.firstVaccination}
+          >
+            {getFieldDecorator("firstVaccination", {
+              rules: [{ required: true, message: placeholderText.firstVaccination }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+          <FormItem
+            validateStatus={approveFirstVaccinationError ? "error" : undefined}
+            label={text.approveFirstVaccination}
+          >
+            {getFieldDecorator("approveFirstVaccination", {
+              rules: [{ required: true, message: placeholderText.approveFirstVaccination }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+
+          <FormItem
+            validateStatus={secondVaccinationError ? "error" : undefined}
+            label={text.secondVaccination}
+          >
+            {getFieldDecorator("secondVaccination", {
+              rules: [{ required: true, message: placeholderText.male }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+          <FormItem
+            validateStatus={approveSecondVaccinationError ? "error" : undefined}
+            label={text.approveSecondVaccination}
+          >
+            {getFieldDecorator("approveSecondVaccination", {
+              rules: [{ required: true, message: placeholderText.male }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+
+          <FormItem
+            validateStatus={thirdVaccinationError ? "error" : undefined}
+            label={text.thirdVaccination}
+          >
+            {getFieldDecorator("thirdVaccination", {
+              rules: [{ required: true, message: placeholderText.male }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+          <FormItem
+            validateStatus={approveThirdVaccinationError ? "error" : undefined}
+            label={text.approveThirdVaccination}
+          >
+            {getFieldDecorator("approveThirdVaccination", {
+              rules: [{ required: true, message: placeholderText.male }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+
+          <FormItem
+            validateStatus={fourthVaccinationError ? "error" : undefined}
+            label={text.fourthVaccination}
+          >
+            {getFieldDecorator("fourthVaccination", {
+              rules: [{ required: true, message: placeholderText.male }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+          <FormItem
+            validateStatus={approveFourthVaccinationError ? "error" : undefined}
+            label={text.approveFourthVaccination}
+          >
+            {getFieldDecorator("approveFourthVaccination", {
+              rules: [{ required: true, message: placeholderText.male }],
+            })(
+              <Checkbox />
+            )}
+          </FormItem>
+
           <Button
             type="primary"
             htmlType="submit"

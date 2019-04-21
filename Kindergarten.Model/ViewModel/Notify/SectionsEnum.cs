@@ -3,5 +3,6 @@
     public enum SectionsEnum
     {
         Medicament,
+        Vaccination,
     }
 }
