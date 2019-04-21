@@ -21,7 +21,7 @@ export class Layout extends React.Component<{}, {}> {
           <Header className="antd-header">
             <NavMenu />
           </Header>
-          <Content>
+          <Content className="main-content-wrapper">
             <AccountControlComponent>
               <ConfigProvider renderEmpty={customizeRenderEmpty}>
                 {this.props.children}

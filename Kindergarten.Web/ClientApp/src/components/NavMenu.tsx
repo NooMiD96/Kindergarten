@@ -122,7 +122,15 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
           >
             Группы <Badge count={notify.vaccinationNotifyCount} style={badgeColor} />
           </Link>
-        </Menu.Item>
+        </Menu.Item>,
+        <Menu.Item key={routesArray[3]}>
+          <Link
+            to={routesArray[3]}
+            onClick={e => this.preventClick(e, routesArray[3])}
+          >
+            Поиск <Badge count={notify.vaccinationNotifyCount} style={badgeColor} />
+        </Link>
+      </Menu.Item>
       );
     }
 

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export default styled.div`
-    padding: 15px;
-
     h1 {
         margin: 5px 0 10px 20px;
         display: inline-block;

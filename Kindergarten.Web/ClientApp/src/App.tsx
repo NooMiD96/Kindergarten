@@ -13,5 +13,6 @@ export const AppRoutes = (
     <Route exact path="/ChildrenGroups" component={AsyncComponent(() => import(/* webpackChunkName: "ChildrenGroups" */ "@components/ChildrenGroups"))} />
     <Route path="/Group/:groupId" component={AsyncComponent(() => import(/* webpackChunkName: "Group" */ "@components/Group"))} />
     <Route path="/Children/:childrenId" component={AsyncComponent(() => import(/* webpackChunkName: "Children" */ "@components/Children"))} />
+    <Route path="/Search" component={AsyncComponent(() => import(/* webpackChunkName: "Search" */ "@components/Search"))} />
   </Layout>
 );

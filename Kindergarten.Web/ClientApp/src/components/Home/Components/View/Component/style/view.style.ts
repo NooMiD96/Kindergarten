@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export default styled.div`
-    padding: 15px;
-
     @media (max-width: 768px) {
         .ant-layout-header, .ant-layout-footer {
             padding: 0;

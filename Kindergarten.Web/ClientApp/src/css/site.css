@@ -105,3 +105,11 @@ body {background-color: whitesmoke}
 .header-container .ant-menu-inline .ant-menu-item {
   font-size: 18px;
 }
+
+.main-content-wrapper {
+  padding: 15px;
+}
+
+.input-icon {
+  color: rgba(0,0,0,.25);
+}
