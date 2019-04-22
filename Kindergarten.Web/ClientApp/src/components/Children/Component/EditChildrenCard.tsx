@@ -23,22 +23,41 @@ const FormItem = Form.Item;
 type TProp = {
   children: IChildren | null;
   submitChange: (children: IChildren) => void;
+  cancelEdit: () => void;
 } & FormComponentProps;
 
 export class ChildrenCard extends React.PureComponent<TProp, {}> {
-  componentDidMount() {
-    this.updateForm();
+  sumbitHandler = (e: any) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.submitChange({
+          firstName: values.firstName,
+          secondName: values.secondName,
+          childrenInformation: { ...values },
+        } as IChildren);
+      }
+    });
   }
 
-  componentDidUpdate(prevProps: TProp) {
-    if (prevProps.children === null && this.props.children !== null) {
-      this.updateForm();
-    }
-  }
+  render() {
+    const { form, cancelEdit } = this.props;
 
-  updateForm = () => {
     const {
-      form,
+      isFieldTouched,
+      getFieldError,
+      getFieldDecorator,
+      getFieldsError,
+    } = form;
+
+    const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
+    const secondNameError = isFieldTouched("secondName") && getFieldError("secondName");
+    const fatherNameError = isFieldTouched("fatherName") && getFieldError("fatherName");
+    const addressError = isFieldTouched("address") && getFieldError("address");
+    const birthdayError = isFieldTouched("birthday") && getFieldError("birthday");
+    const phoneNumberError = isFieldTouched("phoneNumber") && getFieldError("phoneNumber");
+
+    const {
       children = {} as IChildren,
     } = this.props;
 
@@ -49,6 +68,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
     } = children!;
 
     const {
+      fatherName = "",
       address = "",
       birthday = new Date(),
       male = true,
@@ -64,60 +84,6 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
       approveFourthVaccination = false,
     } = childrenInformation;
 
-    form.setFieldsValue({
-      firstName,
-      secondName,
-      address,
-      birthday: moment(birthday),
-      male,
-      phoneNumber,
-      phoneNumber2,
-      firstVaccination,
-      approveFirstVaccination,
-      secondVaccination,
-      approveSecondVaccination,
-      thirdVaccination,
-      approveThirdVaccination,
-      fourthVaccination,
-      approveFourthVaccination,
-    });
-  }
-
-  sumbitHandler = (e: any) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.props.submitChange(values);
-      }
-    });
-  }
-
-  render() {
-    const { form } = this.props;
-
-    const {
-      isFieldTouched,
-      getFieldError,
-      getFieldDecorator,
-      getFieldsError,
-    } = form;
-
-    const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
-    const secondNameError = isFieldTouched("secondName") && getFieldError("secondName");
-    const addressError = isFieldTouched("address") && getFieldError("address");
-    const birthdayError = isFieldTouched("birthday") && getFieldError("birthday");
-    const maleError = isFieldTouched("male") && getFieldError("male");
-    const phoneNumberError = isFieldTouched("phoneNumber") && getFieldError("phoneNumber");
-    const phoneNumber2Error = isFieldTouched("phoneNumber2") && getFieldError("phoneNumber2");
-    const firstVaccinationError = isFieldTouched("firstVaccination") && getFieldError("firstVaccination");
-    const approveFirstVaccinationError = isFieldTouched("approveFirstVaccination") && getFieldError("approveFirstVaccination");
-    const secondVaccinationError = isFieldTouched("secondVaccination") && getFieldError("secondVaccination");
-    const approveSecondVaccinationError = isFieldTouched("approveSecondVaccination") && getFieldError("approveSecondVaccination");
-    const thirdVaccinationError = isFieldTouched("thirdVaccination") && getFieldError("thirdVaccination");
-    const approveThirdVaccinationError = isFieldTouched("approveThirdVaccination") && getFieldError("approveThirdVaccination");
-    const fourthVaccinationError = isFieldTouched("fourthVaccination") && getFieldError("fourthVaccination");
-    const approveFourthVaccinationError = isFieldTouched("approveFourthVaccination") && getFieldError("approveFourthVaccination");
-
     return (
       <React.Fragment>
         <Form onSubmit={this.sumbitHandler}>
@@ -126,6 +92,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
             label={text.firstName}
           >
             {getFieldDecorator("firstName", {
+              initialValue: firstName,
               rules: [{ required: true, message: placeholderText.firstName }],
             })(
               <Input
@@ -140,6 +107,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
             label={text.secondName}
           >
             {getFieldDecorator("secondName", {
+              initialValue: secondName,
               rules: [{ required: true, message: placeholderText.secondName }],
             })(
               <Input
@@ -150,10 +118,26 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
           </FormItem>
 
           <FormItem
+            validateStatus={fatherNameError ? "error" : undefined}
+            label={text.fatherName}
+          >
+            {getFieldDecorator("fatherName", {
+              initialValue: fatherName,
+              rules: [{ required: true, message: placeholderText.fatherName }],
+            })(
+              <Input
+                placeholder={placeholderText.fatherName}
+                prefix={<Icon type="tag" className="input-icon" />}
+              />
+            )}
+          </FormItem>
+
+          <FormItem
             validateStatus={addressError ? "error" : undefined}
             label={text.address}
           >
             {getFieldDecorator("address", {
+              initialValue: address,
               rules: [{ required: true, message: placeholderText.address }],
             })(
               <Input
@@ -168,6 +152,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
             label={text.birthday}
           >
             {getFieldDecorator("birthday", {
+              initialValue: moment(birthday),
               rules: [{ required: true, message: placeholderText.birthday }],
             })(
               <DatePicker
@@ -177,11 +162,11 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
           </FormItem>
 
           <FormItem
-            validateStatus={maleError ? "error" : undefined}
             label={text.male}
           >
             {getFieldDecorator("male", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: male,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
@@ -192,6 +177,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
             label={text.phoneNumber}
           >
             {getFieldDecorator("phoneNumber", {
+              initialValue: phoneNumber,
               rules: [{ required: true, message: placeholderText.phoneNumber }],
             })(
               <Input
@@ -202,11 +188,10 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
           </FormItem>
 
           <FormItem
-            validateStatus={phoneNumber2Error ? "error" : undefined}
             label={text.phoneNumber2}
           >
             {getFieldDecorator("phoneNumber2", {
-              rules: [{ required: true, message: placeholderText.phoneNumber2 }],
+              initialValue: phoneNumber2,
             })(
               <Input
                 placeholder={placeholderText.phoneNumber2}
@@ -216,84 +201,84 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
           </FormItem>
 
           <FormItem
-            validateStatus={firstVaccinationError ? "error" : undefined}
             label={text.firstVaccination}
           >
             {getFieldDecorator("firstVaccination", {
-              rules: [{ required: true, message: placeholderText.firstVaccination }],
+              initialValue: firstVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
           <FormItem
-            validateStatus={approveFirstVaccinationError ? "error" : undefined}
             label={text.approveFirstVaccination}
           >
             {getFieldDecorator("approveFirstVaccination", {
-              rules: [{ required: true, message: placeholderText.approveFirstVaccination }],
+              initialValue: approveFirstVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
 
           <FormItem
-            validateStatus={secondVaccinationError ? "error" : undefined}
             label={text.secondVaccination}
           >
             {getFieldDecorator("secondVaccination", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: secondVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
           <FormItem
-            validateStatus={approveSecondVaccinationError ? "error" : undefined}
             label={text.approveSecondVaccination}
           >
             {getFieldDecorator("approveSecondVaccination", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: approveSecondVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
 
           <FormItem
-            validateStatus={thirdVaccinationError ? "error" : undefined}
             label={text.thirdVaccination}
           >
             {getFieldDecorator("thirdVaccination", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: thirdVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
           <FormItem
-            validateStatus={approveThirdVaccinationError ? "error" : undefined}
             label={text.approveThirdVaccination}
           >
             {getFieldDecorator("approveThirdVaccination", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: approveThirdVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
 
           <FormItem
-            validateStatus={fourthVaccinationError ? "error" : undefined}
             label={text.fourthVaccination}
           >
             {getFieldDecorator("fourthVaccination", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: fourthVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
           </FormItem>
           <FormItem
-            validateStatus={approveFourthVaccinationError ? "error" : undefined}
             label={text.approveFourthVaccination}
           >
             {getFieldDecorator("approveFourthVaccination", {
-              rules: [{ required: true, message: placeholderText.male }],
+              initialValue: approveFourthVaccination,
+              valuePropName: "checked",
             })(
               <Checkbox />
             )}
@@ -306,8 +291,15 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
             disabled={hasErrors(getFieldsError())}
           >
             <Text>
-              Опубликовать
-              </Text>
+              Сохранить
+            </Text>
+          </Button>
+          <Button
+            onClick={cancelEdit}
+          >
+            <Text>
+              Закончить
+            </Text>
           </Button>
         </Form>
       </React.Fragment>

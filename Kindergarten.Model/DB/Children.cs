@@ -28,7 +28,6 @@ namespace Model.DB
         [JsonIgnore]
         public ApplicationUser Parent { get; set; }
 
-        [JsonIgnore]
         public ChildrenInformation ChildrenInformation { get; set; }
 
         public bool Equals(Children item) => this.ChildrenId == item.ChildrenId ? true : false;

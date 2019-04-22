@@ -151,13 +151,19 @@ namespace Database.Contexts
         {
             try
             {
-                var record = await Children.AsNoTracking()
+                var record = await Children.Include(x => x.ChildrenInformation)
                                            .FirstOrDefaultAsync(x => x.ChildrenId == childrenId);
 
                 if (record == null)
                     return (false, "Ребёнок не найден. Повторите попытку");
 
-                Children.Update(childrenData);
+                record.FirstName = childrenData.FirstName;
+                record.SecondName = childrenData.SecondName;
+
+                if (record.ChildrenInformation == null)
+                    record.ChildrenInformation = childrenData.ChildrenInformation;
+                else if (childrenData.ChildrenInformation != null)
+                    this.Entry(record).Reference(x => x.ChildrenInformation).CurrentValue = childrenData.ChildrenInformation;
 
                 await SaveChangesAsync();
 
@@ -168,7 +174,6 @@ namespace Database.Contexts
                 return (false, ex.Message);
             }
         }
-
         public async ValueTask<(bool isSuccess, string resultMessage)> DeleteChildrenAsync(int childrenId)
         {
             try
@@ -192,8 +197,6 @@ namespace Database.Contexts
             throw new NotImplementedException();
         }
 
-
-
         public async Task<Notify> GetVaccinationNotify()
         {
             //В 3 года и 1 месяц
@@ -208,17 +211,16 @@ namespace Database.Contexts
             var dateTimeNow = DateTime.Now;
             Expression<Func<ChildrenInformation, bool>> first = x => !x.FirstVaccination
                                                                      && x.ApproveFirstVaccination
-                                                                     && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > firstDate;
+                                                                     && EF.Functions.DateDiffDay(x.Birthday, dateTimeNow) > firstDate;
             Expression<Func<ChildrenInformation, bool>> second = x => !x.SecondVaccination
                                                                       && x.ApproveSecondVaccination
-                                                                      && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > secondDate;
+                                                                      && EF.Functions.DateDiffDay(x.Birthday, dateTimeNow) > secondDate;
             Expression<Func<ChildrenInformation, bool>> third = x => !x.ThirdVaccination
                                                                      && x.ApproveThirdVaccination
-                                                                     && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > thirdDate;
+                                                                     && EF.Functions.DateDiffDay(x.Birthday, dateTimeNow) > thirdDate;
             Expression<Func<ChildrenInformation, bool>> fourth = x => !x.ApproveFourthVaccination
                                                                       && x.ApproveFourthVaccination
-                                                                      && EF.Functions.DateDiffDay(dateTimeNow, x.Birthday) > fourthDate;
-
+                                                                      && EF.Functions.DateDiffDay(x.Birthday, dateTimeNow) > fourthDate;
 
             var count = await ChildrenInformation.Where(first.Or(second).Or(third).Or(fourth)).CountAsync();
 

@@ -25,8 +25,17 @@ export class Children extends React.Component<TState, TComponentState> {
     });
   }
 
+  viewChildren = () => {
+    this.setState({
+      isEdit: false,
+    });
+  }
+
   submitChange = (children: IChildren) => {
-    this.props.changeChildren(children);
+    this.props.changeChildren({
+      ...children,
+      childrenId: this.props.children!.childrenId,
+    });
   }
 
   render() {
@@ -50,8 +59,13 @@ export class Children extends React.Component<TState, TComponentState> {
         >
           {
             isEdit
-            ? <EditChildrenCard children={children} submitChange={this.submitChange} />
-            : (
+            ? (
+              <EditChildrenCard
+                children={children}
+                submitChange={this.submitChange}
+                cancelEdit={this.viewChildren}
+              />
+            ) : (
               <React.Fragment>
                 <Button onClick={this.editChildren}>
                   Редактировать

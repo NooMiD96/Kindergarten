@@ -72,6 +72,9 @@ export const actionCreators = {
         if (value && value.error) {
           return errorCreater(value.error);
         }
+        if (value.data.childrenInformation) {
+          value.data.childrenInformation.birthday = new Date(value.data.childrenInformation.birthday);
+        }
 
         dispatch(actionsList.getChildrenRequestSuccess(value.data));
         return Promise.resolve();
