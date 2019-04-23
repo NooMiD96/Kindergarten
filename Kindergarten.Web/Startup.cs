@@ -47,7 +47,11 @@ namespace Web
             InitializeDb(serviceProvider, Configuration);
 
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    //Посмотреть что и зачем
+                    options.EnableEndpointRouting = false;
+                })
                 .AddNewtonsoftJson(jsonConfig =>
                 {
                     jsonConfig.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
