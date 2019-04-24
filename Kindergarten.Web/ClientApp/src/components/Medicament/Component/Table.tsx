@@ -24,6 +24,7 @@ export type TState = {
   filterDropdownVisible: boolean,
   searchText: string | null,
   filterData: IMedicament[],
+  showOnlyExpired: boolean;
 };
 
 export class MedicamentTable extends React.Component<TProps, TState> {
@@ -33,6 +34,7 @@ export class MedicamentTable extends React.Component<TProps, TState> {
     filterDropdownVisible: false,
     searchText: null,
     filterData: [],
+    showOnlyExpired: false,
   };
 
   componentDidUpdate(prevProp: TProps) {
@@ -88,10 +90,80 @@ export class MedicamentTable extends React.Component<TProps, TState> {
     // }, () => this.searchInput ? this.searchInput.focus() : "");
   }
 
-  render() {
-    const { medicamentList } = this.props;
-    const { filtered, filterData } = this.state;
+  rowClassName = (record: IMedicament) => {
+    let expirationDate = record.expirationDate;
+    if (typeof expirationDate === "string") {
+      expirationDate = new Date(expirationDate);
+    }
+    return new Date() > expirationDate
+      ? "warning-row"
+      : "";
+  }
 
+  showOnlyExpiredTrigger = () => {
+    this.setState({
+      showOnlyExpired: !this.state.showOnlyExpired,
+    });
+  }
+
+  getRecords = () => {
+    const { showOnlyExpired, filtered, filterData } = this.state;
+    const dataSource = filtered ? filterData : this.props.medicamentList;
+
+    if (showOnlyExpired) {
+      return dataSource.filter(x => {
+        let expirationDate = x.expirationDate;
+        if (typeof expirationDate === "string") {
+          expirationDate = new Date(expirationDate);
+        }
+        return expirationDate < new Date();
+      });
+    }
+
+    return dataSource;
+  }
+
+  getTableTitle = () => (
+    <React.Fragment>
+      <Button
+        onClick={this.addNewMedicament}
+      >
+        Добавить
+      </Button>
+      <Button
+        onClick={this.props.changeMedicamentList}
+        disabled={!this.props.enableChange}
+      >
+        Сохранить изменённое
+      </Button>
+      <Button
+        onClick={this.props.deleteMedicamentList}
+        disabled={!this.props.enableDelete}
+      >
+        Удалить выбранные
+      </Button>
+      {
+        this.state.showOnlyExpired
+        ? (
+          <Button
+            onClick={this.showOnlyExpiredTrigger}
+            type="primary"
+          >
+            Показать все
+          </Button>
+        ) : (
+          <Button
+            onClick={this.showOnlyExpiredTrigger}
+            type="default"
+          >
+            Показать только просроченные
+          </Button>
+        )
+      }
+    </React.Fragment>
+  )
+
+  render() {
     const columns = GetTableColumns(
       this.state,
       this.onPressEnter,
@@ -104,45 +176,25 @@ export class MedicamentTable extends React.Component<TProps, TState> {
       onChange: this.props.updateSelectedDeleteList,
     };
 
+    const dataSource = this.getRecords();
+
+    const pagination = {
+      defaultCurrent: 1,
+      defaultPageSize: 5,
+      pageSize: 5,
+      total: dataSource.length,
+      hideOnSinglePage: true,
+    };
+
     return (
       <Table
-        dataSource={filtered ? filterData : medicamentList}
+        dataSource={dataSource}
         columns={columns}
         rowSelection={rowSelection}
         rowKey={(record: IMedicament) => record.medicamentId.toString()}
-        rowClassName={(record: IMedicament) => {
-          let expirationDate = record.expirationDate;
-          if (typeof expirationDate === "string") {
-            expirationDate = new Date(expirationDate);
-          }
-
-          return new Date() > expirationDate
-            ? "warning-row"
-            : "";
-        }}
-        title={() =>
-          (
-            <React.Fragment>
-              <Button
-                onClick={this.addNewMedicament}
-              >
-                Добавить
-              </Button>
-              <Button
-                onClick={this.props.changeMedicamentList}
-                disabled={!this.props.enableChange}
-              >
-                Сохранить изменённое
-              </Button>
-              <Button
-                onClick={this.props.deleteMedicamentList}
-                disabled={!this.props.enableDelete}
-              >
-                Удалить выбранные
-              </Button>
-            </React.Fragment>
-          )
-        }
+        pagination={pagination}
+        rowClassName={this.rowClassName}
+        title={this.getTableTitle}
       />
     );
   }

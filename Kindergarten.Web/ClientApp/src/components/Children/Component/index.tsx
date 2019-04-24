@@ -67,7 +67,7 @@ export class Children extends React.Component<TState, TComponentState> {
               />
             ) : (
               <React.Fragment>
-                <Button onClick={this.editChildren}>
+                <Button onClick={this.editChildren} className="edit-button">
                   Редактировать
                 </Button>
                 <ChildrenCard children={children} />

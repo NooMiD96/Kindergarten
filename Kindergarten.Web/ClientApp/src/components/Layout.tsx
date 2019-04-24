@@ -28,8 +28,8 @@ export class Layout extends React.Component<{}, {}> {
               </ConfigProvider>
             </AccountControlComponent>
           </Content>
-          <Footer>
-            Footer
+          <Footer className="footer">
+            2019
           </Footer>
         </AntdLayout>
         <div

@@ -2,25 +2,45 @@ import * as React from "react";
 import { NavLink } from "react-router-dom";
 
 import Alert from "@src/core/components/Alert";
-import { Spin, Input, List, Icon } from "@core/antd";
+import { Spin, Input, List, Icon, Divider, Button, Row, Col } from "@core/antd";
 
 import { TState, TComponentState } from "@components/Search/TSearch";
 import { IChildren } from "@components/Children/State";
 
 export class Medicament extends React.Component<TState, TComponentState> {
-  state: TComponentState = {};
+  state: TComponentState = {
+    showSearchChildren: true,
+  };
 
   searchChildrens = (e: any) => {
-    const searchString = e.target.value ? e.target.value.trim() : "";
+    let searchString = "";
+    if (e) {
+      searchString = e.target.value ? e.target.value.trim() : "";
+    } else {
+      const reactInput = this.refs.input as any;
+      if (reactInput.input) {
+        searchString = reactInput.input.value ? reactInput.input.value.trim() : "";
+      }
+    }
 
     if (searchString) {
       this.props.searchChildrenList(searchString);
+      this.setState({
+        showSearchChildren: true,
+      });
     }
+  }
+
+  searchChildrenWithoutVaccination = () => {
+    this.props.getChildrenWithoutVaccination();
+    this.setState({
+      showSearchChildren: false,
+    });
   }
 
   render() {
     const { errorInner, cleanErrorInner, pending, childrenList } = this.props;
-
+    const { showSearchChildren } = this.state;
     const navLinkCreator = (id: number) => (
       <NavLink
         to={`/children/${id}`}
@@ -45,7 +65,22 @@ export class Medicament extends React.Component<TState, TComponentState> {
         <Spin
           spinning={pending}
         >
-          <Input onPressEnter={this.searchChildrens} />
+          <Row>
+            <Col xs={24} sm={12} lg={6}>
+              <Input onPressEnter={this.searchChildrens} placeholder="Введите имя и/или фамилию ребёнка" ref="input" />
+            </Col>
+            <Col xs={24} sm={{span: 1, offset: 1}}>
+            {
+              showSearchChildren
+              ? (
+                <Button onClick={this.searchChildrenWithoutVaccination}>Показать детей без прививок</Button>
+              ) : (
+                <Button onClick={() => this.searchChildrens(undefined)}>Найти детей</Button>
+              )
+            }
+            </Col>
+          </Row>
+          <Divider />
           <List
             itemLayout="horizontal"
             dataSource={childrenList}
@@ -55,7 +90,6 @@ export class Medicament extends React.Component<TState, TComponentState> {
               </List.Item>
             )}
           />
-          {/* button to show all children without vaccination */}
         </Spin>
       </React.Fragment>
     );

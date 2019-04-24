@@ -7,12 +7,14 @@ import KnownAction, * as t from "./actionsType";
 
 export const reducer: Reducer<ISearchState> = (state: ISearchState = unloadedState, action: KnownAction) => {
   switch (action.type) {
+    case t.GET_CHILDREN_WITHOUT_VACCINATION_REQUEST:
     case t.SEARCH_CHILDREN_LIST_REQUEST:
       return <ISearchState>{
         ...state,
         pending: true,
       };
 
+    case t.GET_CHILDREN_WITHOUT_VACCINATION_REQUEST_SUCCESS:
     case t.SEARCH_CHILDREN_LIST_REQUEST_SUCCESS:
       return <ISearchState>{
         ...state,
@@ -20,6 +22,7 @@ export const reducer: Reducer<ISearchState> = (state: ISearchState = unloadedSta
         childrenList: action.childrenList,
       };
 
+    case t.GET_CHILDREN_WITHOUT_VACCINATION_REQUEST_ERROR:
     case t.SEARCH_CHILDREN_LIST_REQUEST_ERROR:
       return <ISearchState>{
         ...state,

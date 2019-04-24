@@ -8,6 +8,8 @@ import {
   Icon,
   Typography,
   Checkbox,
+  Row,
+  Col,
 } from "@core/antd";
 
 import { DatePicker } from "@core/antd/DatePicker";
@@ -25,6 +27,15 @@ type TProp = {
   submitChange: (children: IChildren) => void;
   cancelEdit: () => void;
 } & FormComponentProps;
+
+const firstFormItemProps = {
+  xs: 24,
+  sm: { span: 11 },
+};
+const secondFormItemProps = {
+  xs: 24,
+  sm: { span: 11, offset: 2 },
+};
 
 export class ChildrenCard extends React.PureComponent<TProp, {}> {
   sumbitHandler = (e: any) => {
@@ -62,227 +73,266 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
     } = this.props;
 
     const {
-      firstName = "",
-      secondName = "",
+      firstName,
+      secondName,
       childrenInformation = {} as IChildrenInformation,
     } = children!;
 
     const {
-      fatherName = "",
-      address = "",
+      fatherName,
+      address,
       birthday = new Date(),
       male = true,
-      phoneNumber = "",
-      phoneNumber2 = "",
+      phoneNumber,
+      phoneNumber2,
       firstVaccination = false,
-      approveFirstVaccination = false,
+      approveFirstVaccination = true,
       secondVaccination = false,
-      approveSecondVaccination = false,
+      approveSecondVaccination = true,
       thirdVaccination = false,
-      approveThirdVaccination = false,
+      approveThirdVaccination = true,
       fourthVaccination = false,
-      approveFourthVaccination = false,
+      approveFourthVaccination = true,
     } = childrenInformation;
 
     return (
       <React.Fragment>
         <Form onSubmit={this.sumbitHandler}>
-          <FormItem
-            validateStatus={firstNameError ? "error" : undefined}
-            label={text.firstName}
-          >
-            {getFieldDecorator("firstName", {
-              initialValue: firstName,
-              rules: [{ required: true, message: placeholderText.firstName }],
-            })(
-              <Input
-                placeholder={placeholderText.firstName}
-                prefix={<Icon type="tag" className="input-icon" />}
-              />
-            )}
-          </FormItem>
 
-          <FormItem
-            validateStatus={secondNameError ? "error" : undefined}
-            label={text.secondName}
-          >
-            {getFieldDecorator("secondName", {
-              initialValue: secondName,
-              rules: [{ required: true, message: placeholderText.secondName }],
-            })(
-              <Input
-                placeholder={placeholderText.secondName}
-                prefix={<Icon type="tag" className="input-icon" />}
-              />
-            )}
-          </FormItem>
+          <Row>
+            <Col {...firstFormItemProps}>
+              <FormItem
+                validateStatus={firstNameError ? "error" : undefined}
+                label={text.firstName}
+              >
+                {getFieldDecorator("firstName", {
+                  initialValue: firstName,
+                  rules: [{ required: true, message: placeholderText.firstName }],
+                })(
+                  <Input
+                    placeholder={placeholderText.firstName}
+                    prefix={<Icon type="tag" className="input-icon" />}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            validateStatus={fatherNameError ? "error" : undefined}
-            label={text.fatherName}
-          >
-            {getFieldDecorator("fatherName", {
-              initialValue: fatherName,
-              rules: [{ required: true, message: placeholderText.fatherName }],
-            })(
-              <Input
-                placeholder={placeholderText.fatherName}
-                prefix={<Icon type="tag" className="input-icon" />}
-              />
-            )}
-          </FormItem>
+            <Col {...secondFormItemProps}>
+              <FormItem
+                validateStatus={secondNameError ? "error" : undefined}
+                label={text.secondName}
+              >
+                {getFieldDecorator("secondName", {
+                  initialValue: secondName,
+                  rules: [{ required: true, message: placeholderText.secondName }],
+                })(
+                  <Input
+                    placeholder={placeholderText.secondName}
+                    prefix={<Icon type="tag" className="input-icon" />}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            validateStatus={addressError ? "error" : undefined}
-            label={text.address}
-          >
-            {getFieldDecorator("address", {
-              initialValue: address,
-              rules: [{ required: true, message: placeholderText.address }],
-            })(
-              <Input
-                placeholder={placeholderText.address}
-                prefix={<Icon type="tag" className="input-icon" />}
-              />
-            )}
-          </FormItem>
+            <Col {...firstFormItemProps}>
+              <FormItem
+                validateStatus={fatherNameError ? "error" : undefined}
+                label={text.fatherName}
+              >
+                {getFieldDecorator("fatherName", {
+                  initialValue: fatherName,
+                  rules: [{ required: true, message: placeholderText.fatherName }],
+                })(
+                  <Input
+                    placeholder={placeholderText.fatherName}
+                    prefix={<Icon type="tag" className="input-icon" />}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            validateStatus={birthdayError ? "error" : undefined}
-            label={text.birthday}
-          >
-            {getFieldDecorator("birthday", {
-              initialValue: moment(birthday),
-              rules: [{ required: true, message: placeholderText.birthday }],
-            })(
-              <DatePicker
-                placeholder={placeholderText.birthday}
-              />
-            )}
-          </FormItem>
+            <Col {...secondFormItemProps}>
+              <FormItem
+                validateStatus={addressError ? "error" : undefined}
+                label={text.address}
+              >
+                {getFieldDecorator("address", {
+                  initialValue: address,
+                  rules: [{ required: true, message: placeholderText.address }],
+                })(
+                  <Input
+                    placeholder={placeholderText.address}
+                    prefix={<Icon type="tag" className="input-icon" />}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            label={text.male}
-          >
-            {getFieldDecorator("male", {
-              initialValue: male,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
+            <Col {...firstFormItemProps}>
+              <FormItem
+                validateStatus={birthdayError ? "error" : undefined}
+                label={text.birthday}
+              >
+                {getFieldDecorator("birthday", {
+                  initialValue: moment(birthday),
+                  rules: [{ required: true, message: placeholderText.birthday }],
+                })(
+                  <DatePicker
+                    placeholder={placeholderText.birthday}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            validateStatus={phoneNumberError ? "error" : undefined}
-            label={text.phoneNumber}
-          >
-            {getFieldDecorator("phoneNumber", {
-              initialValue: phoneNumber,
-              rules: [{ required: true, message: placeholderText.phoneNumber }],
-            })(
-              <Input
-                placeholder={placeholderText.phoneNumber}
-                prefix={<Icon type="tag" className="input-icon" />}
-              />
-            )}
-          </FormItem>
+            <Col {...secondFormItemProps}>
+              <FormItem
+                label={text.male}
+              >
+                {getFieldDecorator("male", {
+                  initialValue: male,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            label={text.phoneNumber2}
-          >
-            {getFieldDecorator("phoneNumber2", {
-              initialValue: phoneNumber2,
-            })(
-              <Input
-                placeholder={placeholderText.phoneNumber2}
-                prefix={<Icon type="tag" className="input-icon" />}
-              />
-            )}
-          </FormItem>
+            <Col {...firstFormItemProps}>
+              <FormItem
+                validateStatus={phoneNumberError ? "error" : undefined}
+                label={text.phoneNumber}
+              >
+                {getFieldDecorator("phoneNumber", {
+                  initialValue: phoneNumber,
+                  rules: [{ required: true, message: placeholderText.phoneNumber }],
+                })(
+                  <Input
+                    placeholder={placeholderText.phoneNumber}
+                    prefix={<Icon type="tag" className="input-icon" />}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            label={text.firstVaccination}
-          >
-            {getFieldDecorator("firstVaccination", {
-              initialValue: firstVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
-          <FormItem
-            label={text.approveFirstVaccination}
-          >
-            {getFieldDecorator("approveFirstVaccination", {
-              initialValue: approveFirstVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
+            <Col {...secondFormItemProps}>
+              <FormItem
+                label={text.phoneNumber2}
+              >
+                {getFieldDecorator("phoneNumber2", {
+                  initialValue: phoneNumber2,
+                })(
+                  <Input
+                    placeholder={placeholderText.phoneNumber2}
+                    prefix={<Icon type="tag" className="input-icon" />}
+                  />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            label={text.secondVaccination}
-          >
-            {getFieldDecorator("secondVaccination", {
-              initialValue: secondVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
-          <FormItem
-            label={text.approveSecondVaccination}
-          >
-            {getFieldDecorator("approveSecondVaccination", {
-              initialValue: approveSecondVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
+            <Col {...firstFormItemProps}>
+              <FormItem
+                label={text.firstVaccination}
+              >
+                {getFieldDecorator("firstVaccination", {
+                  initialValue: firstVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            label={text.thirdVaccination}
-          >
-            {getFieldDecorator("thirdVaccination", {
-              initialValue: thirdVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
-          <FormItem
-            label={text.approveThirdVaccination}
-          >
-            {getFieldDecorator("approveThirdVaccination", {
-              initialValue: approveThirdVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
+            <Col {...secondFormItemProps}>
+              <FormItem
+                label={text.approveFirstVaccination}
+              >
+                {getFieldDecorator("approveFirstVaccination", {
+                  initialValue: approveFirstVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
 
-          <FormItem
-            label={text.fourthVaccination}
-          >
-            {getFieldDecorator("fourthVaccination", {
-              initialValue: fourthVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
-          <FormItem
-            label={text.approveFourthVaccination}
-          >
-            {getFieldDecorator("approveFourthVaccination", {
-              initialValue: approveFourthVaccination,
-              valuePropName: "checked",
-            })(
-              <Checkbox />
-            )}
-          </FormItem>
+            <Col {...firstFormItemProps}>
+              <FormItem
+                label={text.secondVaccination}
+              >
+                {getFieldDecorator("secondVaccination", {
+                  initialValue: secondVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+
+            <Col {...secondFormItemProps}>
+              <FormItem
+                label={text.approveSecondVaccination}
+              >
+                {getFieldDecorator("approveSecondVaccination", {
+                  initialValue: approveSecondVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+
+            <Col {...firstFormItemProps}>
+              <FormItem
+                label={text.thirdVaccination}
+              >
+                {getFieldDecorator("thirdVaccination", {
+                  initialValue: thirdVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+
+            <Col {...secondFormItemProps}>
+              <FormItem
+                label={text.approveThirdVaccination}
+              >
+                {getFieldDecorator("approveThirdVaccination", {
+                  initialValue: approveThirdVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+
+            <Col {...firstFormItemProps}>
+              <FormItem
+                label={text.fourthVaccination}
+              >
+                {getFieldDecorator("fourthVaccination", {
+                  initialValue: fourthVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+
+            <Col {...secondFormItemProps}>
+              <FormItem
+                label={text.approveFourthVaccination}
+              >
+                {getFieldDecorator("approveFourthVaccination", {
+                  initialValue: approveFourthVaccination,
+                  valuePropName: "checked",
+                })(
+                  <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+          </Row>
 
           <Button
             type="primary"
@@ -297,9 +347,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
           <Button
             onClick={cancelEdit}
           >
-            <Text>
-              Закончить
-            </Text>
+            <Text>Закончить</Text>
           </Button>
         </Form>
       </React.Fragment>

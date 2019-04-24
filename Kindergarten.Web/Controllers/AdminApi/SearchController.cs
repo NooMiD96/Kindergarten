@@ -27,6 +27,16 @@ namespace Web.Controllers.AdminApi
         {
             (var isSuccess, var childrenList, var errorMessage) = await _context.SearchChildrenListAsync(searchString);
 
+            if (isSuccess)
+                return Success(childrenList);
+            else
+                return BadRequest(errorMessage);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetChildrenWithoutVaccination()
+        {
+            (var isSuccess, var childrenList, var errorMessage) = await _context.GetChildrenWithoutVaccinationAsync();
 
             if (isSuccess)
                 return Success(childrenList);

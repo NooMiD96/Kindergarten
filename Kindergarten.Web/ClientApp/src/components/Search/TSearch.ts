@@ -7,6 +7,7 @@ import { UserTypeEnums } from "@core/constants";
 // -----------------------------
 // STATE OF COMPONENT
 export type TComponentState = {
+    showSearchChildren: Boolean;
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT

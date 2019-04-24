@@ -50,9 +50,8 @@ namespace Database.Contexts
             return new PostViewModel(post);
         }
 
-        public IEnumerable<Post> GetAllPost() => Post
-            .Include(p => p.CommentList)
-            .AsEnumerable();
+        public IEnumerable<Post> GetAllPost() => Post.Include(p => p.CommentList)
+                                                     .AsEnumerable();
 
         private async Task<IEnumerable<Comment>> GetCommentListAsync(int postId)
         {
@@ -61,9 +60,8 @@ namespace Database.Contexts
             if (post == null)
                 return null;
 
-            await Entry(post)
-                .Collection(p => p.CommentList)
-                .LoadAsync();
+            await Entry(post).Collection(p => p.CommentList)
+                             .LoadAsync();
 
             return post.CommentList.ToList();
         }
@@ -75,11 +73,10 @@ namespace Database.Contexts
             if (post == null)
                 return null;
 
-            await Entry(post)
-                .Collection(p => p.CommentList)
-                .Query()
-                .Include(x => x.User)
-                .LoadAsync();
+            await Entry(post).Collection(p => p.CommentList)
+                             .Query()
+                             .Include(x => x.User)
+                             .LoadAsync();
 
             return post.CommentList.Select(x => new CommentViewModel(x));
         }

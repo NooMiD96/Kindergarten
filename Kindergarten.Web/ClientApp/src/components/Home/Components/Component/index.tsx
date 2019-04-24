@@ -13,7 +13,7 @@ export class Home extends React.Component<TState, TComponentState> {
     this.props.getPosts(1, 5);
   }
 
-  PageChangeHandler = (page: any, pageSize: any) => {
+  pageChangeHandler = (page: any, pageSize: any) => {
     this.props.getPosts(page, pageSize);
   }
 
@@ -44,7 +44,7 @@ export class Home extends React.Component<TState, TComponentState> {
           defaultPageSize: 5,
           pageSize: 5,
           total: totalCount,
-          onChange: this.PageChangeHandler,
+          onChange: this.pageChangeHandler,
           hideOnSinglePage: true,
         }}
         dataSource={postList}

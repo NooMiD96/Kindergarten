@@ -41,5 +41,27 @@ namespace Database.Contexts
                 return (false, null, ex.Message);
             }
         }
+
+        public async ValueTask<(bool isSuccess, IEnumerable<Children>, string errorMessage)> GetChildrenWithoutVaccinationAsync()
+        {
+            try
+            {
+                var childrenInformationList = await ChildrenInformation.Include(x => x.Children)
+                                                                       .Where(_childrenWithoutFirstVaccination
+                                                                          .Or(_childrenWithoutSecondVaccination)
+                                                                          .Or(_childrenWithoutThirdVaccination)
+                                                                          .Or(_childrenWithoutFourthVaccination)
+                                                                       )
+                                                                       .ToListAsync();
+
+                var childrenList = childrenInformationList.Select(x => x.Children);
+
+                return (true, childrenList, null);
+            }
+            catch (Exception ex)
+            {
+                return (false, null, ex.Message);
+            }
+        }
     }
 }
