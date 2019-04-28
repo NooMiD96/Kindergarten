@@ -129,6 +129,14 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
             onClick={e => this.preventClick(e, routesArray[3])}
           >
             Дети <Badge count={notify.vaccinationNotifyCount} style={badgeColor} />
+          </Link>
+        </Menu.Item>,
+        <Menu.Item key={routesArray[4]}>
+        <Link
+          to={routesArray[4]}
+          onClick={e => this.preventClick(e, routesArray[4])}
+        >
+          Посещаемость
         </Link>
       </Menu.Item>
       );

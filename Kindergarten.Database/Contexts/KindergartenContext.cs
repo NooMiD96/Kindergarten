@@ -18,6 +18,7 @@ namespace Database.Contexts
         public DbSet<Children> Children { get; set; }
         public DbSet<ChildrenInformation> ChildrenInformation { get; set; }
         public DbSet<Medicament> Medicament { get; set; }
+        public DbSet<Visitation> Visitation { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

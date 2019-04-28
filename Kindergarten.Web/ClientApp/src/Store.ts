@@ -22,6 +22,9 @@ import { reducer as ChildrenGroupsReducer } from "@components/ChildrenGroups/red
 import { ISearchState } from "@components/Search/State";
 import { reducer as SearchReducer } from "@components/Search/reducer";
 
+import { IVisitationState } from "@components/Visitation/State";
+import { reducer as VisitationReducer } from "@components/Visitation/reducer";
+
 export interface ApplicationState {
   router: RouterState;
 
@@ -38,6 +41,8 @@ export interface ApplicationState {
   childrenGroups: IChildrenGroupsState;
 
   search: ISearchState;
+
+  visitation: IVisitationState;
 }
 
 export const reducers = {
@@ -54,6 +59,8 @@ export const reducers = {
   childrenGroups: ChildrenGroupsReducer,
 
   search: SearchReducer,
+
+  visitation: VisitationReducer,
 };
 
 export interface AppThunkAction<TAction> {
