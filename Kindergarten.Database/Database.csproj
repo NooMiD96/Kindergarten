@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Service\DiseaseFunctions.cs" />
-    <Compile Remove="Service\UserService.cs" />
-    <Compile Remove="Service\VisitationFuncttions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

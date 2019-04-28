@@ -70,6 +70,10 @@ export type TIcons =
   | "arrow-right"
   | "check"
   /* END ChildrenGroups */
+
+  /* Visitation */
+  | "search"
+  /* END Visitation */
   ;
 
 export const getIconAsync = async (type: TIcons) => {
@@ -136,10 +140,15 @@ export const getIconAsync = async (type: TIcons) => {
 
     /* ChildrenGroups */
     case "arrow-right":
-      return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/ArrowRightOutline")).default;
+      return (await import(/* webpackChunkName: "ChildrenGroups.icons" */ "@antdSvgs/ArrowRightOutline")).default;
     case "check":
-      return (await import(/* webpackChunkName: "Medicament.icons" */ "@antdSvgs/CheckOutline")).default;
+      return (await import(/* webpackChunkName: "ChildrenGroups.icons" */ "@antdSvgs/CheckOutline")).default;
     /* END ChildrenGroups */
+
+    /* Visitation */
+    case "search":
+        return (await import(/* webpackChunkName: "Visitation.icons" */ "@antdSvgs/SearchOutline")).default;
+    /* END Visitation */
 
     default:
       const exhaustiveCheck: never = type;

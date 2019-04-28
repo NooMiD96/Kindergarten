@@ -17,6 +17,7 @@ import Row from "./Row";
 import Spin from "./Spin";
 import Table from "./Table";
 import Tag from "./Tag";
+import Transfer from "./Transfer";
 import Typography from "./Typography";
 import Checkbox from "./Checkbox";
 import CheckboxGroup from "./CheckboxGroup";
@@ -43,5 +44,6 @@ export {
     Spin,
     Table,
     Tag,
+    Transfer,
     Typography,
 };

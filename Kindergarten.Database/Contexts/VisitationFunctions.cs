@@ -13,26 +13,12 @@ namespace Database.Contexts
 {
     public partial class KindergartenContext
     {
-        public async Task<IEnumerable<Visitation>> GetVisitationListAsync()
+        public async Task<IEnumerable<Visitation>> GetVisitationListAsync(DateTime? date)
         {
-            var dateTimeNow = DateTime.Now.GetToday();
+            var dateTimeNow = date ?? DateTime.Now.GetToday();
 
-            var visitationList = await Children.Select(x => new Visitation()
-                                             {
-                                                    ChildrenId = x.ChildrenId,
-                                                    Children = x,
-                                                    Date = dateTimeNow,
-                                                    Visited = false,
-                                             })
-                                             .ToListAsync();
-
-            return visitationList;
-        }
-
-        public async Task<IEnumerable<Visitation>> GetVisitationListAsync(DateTime date)
-        {
             var visitationList = await Visitation.Include(x => x.Children)
-                                                 .Where(x => x.Date.Equals(date))
+                                                 .Where(x => x.Date.Equals(dateTimeNow))
                                                  .ToListAsync();
 
             var existingChildrenIdList = visitationList.Select(x => x.ChildrenId)
@@ -43,7 +29,7 @@ namespace Database.Contexts
                                                 {
                                                     ChildrenId = x.ChildrenId,
                                                     Children = x,
-                                                    Date = date,
+                                                    Date = dateTimeNow,
                                                     Visited = false,
                                                 })
                                                 .ToListAsync();
@@ -53,7 +39,7 @@ namespace Database.Contexts
             return visitationList;
         }
 
-        public async ValueTask<(bool isSuccess, string errorMessage)> SaveVisitationListAsync(List<Visitation> visitationList)
+        public async ValueTask<(bool isSuccess, string errorMessage)> SaveVisitationListAsync(List<VisitationBase> visitationList)
         {
             try
             {
@@ -66,21 +52,28 @@ namespace Database.Contexts
 
                 var contextVisitationList = await Visitation.AsNoTracking()
                                                             .Where(x => x.Date.Equals(dateTimeNow))
+                                                            .Select(x => x as VisitationBase)
                                                             .ToListAsync();
 
                 foreach (var visitation in visitationList)
                 {
+                    visitation.Date = visitation.Date.GetToday();
                     var index = contextVisitationList.IndexOf(visitation);
 
                     if (index != -1)
                     {
-                        visitation.VisitationId = contextVisitationList[index].VisitationId;
-                        Visitation.Update(visitation);
+                        var newVisitation = contextVisitationList[index] as Visitation;
+                        if (newVisitation.Visited != visitation.Visited)
+                        {
+                            newVisitation.Visited = visitation.Visited;
+                            Visitation.Update(newVisitation);
+                        }
                     }
                     else
                     {
-                        visitation.VisitationId = 0;
-                        Visitation.Add(visitation);
+                        var newVisitation = new Visitation(visitation);
+                        newVisitation.Date = dateTimeNow;
+                        Visitation.Add(newVisitation);
                     }
                 }
 

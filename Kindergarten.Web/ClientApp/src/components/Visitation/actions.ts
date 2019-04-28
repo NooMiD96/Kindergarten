@@ -34,6 +34,10 @@ export const actionsList = {
     type: t.SAVE_VISITATION_LIST_REQUEST_ERROR,
     errorMessage,
   }),
+  changeTargetList: (targetKeys: string[]): t.IChangeTargetList => ({
+    type: t.CHANGE_TARGET_LIST,
+    targetKeys,
+  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -49,7 +53,7 @@ export const actionCreators = {
 
     dispatch(actionCreators.cleanErrorInner());
 
-    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}${date ? `?searchString=${date}` : ""}`, {
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}${date ? `?date=${date}` : ""}`, {
       credentials: "same-origin",
       method: "GET",
       headers: {
@@ -119,5 +123,6 @@ export const actionCreators = {
     dispatch(actionsList.saveVisitationListRequest());
   },
   cleanErrorInner: actionsList.cleanErrorInner,
+  changeTargetList: actionsList.changeTargetList,
 };
 //#endregion

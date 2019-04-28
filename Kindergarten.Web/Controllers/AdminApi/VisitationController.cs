@@ -29,18 +29,13 @@ namespace Web.Controllers.AdminApi
         [HttpGet("[action]")]
         public async Task<IActionResult> GetVisitationList([FromQuery] DateTime? date)
         {
-            IEnumerable<Visitation> visitationList;
-
-            if (date.HasValue)
-                visitationList = await _context.GetVisitationListAsync(date.Value);
-            else
-                visitationList = await _context.GetVisitationListAsync();
+            var visitationList = await _context.GetVisitationListAsync(date);
 
             return Success(visitationList);
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> SaveVisitationList([FromBody] List<Visitation> visitationList)
+        public async Task<IActionResult> SaveVisitationList([FromBody] List<VisitationBase> visitationList)
         {
             (var isSuccess, var errorMessage) = await _context.SaveVisitationListAsync(visitationList);
 

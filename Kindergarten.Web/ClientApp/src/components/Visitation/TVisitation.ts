@@ -1,8 +1,10 @@
 import { IVisitationState } from "./State";
 import { actionCreators } from "./actions";
+import { Moment } from "moment";
 // -----------------------------
 // STATE OF COMPONENT
 export type TComponentState = {
+    date: Moment;
 };
 // -----------------------------
 // REDUX STATE OF COMPONENT
