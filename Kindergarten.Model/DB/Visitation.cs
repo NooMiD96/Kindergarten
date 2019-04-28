@@ -14,6 +14,7 @@ namespace Model.DB
             this.ChildrenId = visitation.ChildrenId;
             this.Date = visitation.Date;
             this.Visited = visitation.Visited;
+            this.Diseased = visitation.Diseased;
         }
         public Children Children { get; set; }
     }
@@ -28,6 +29,9 @@ namespace Model.DB
 
         [Required]
         public bool Visited { get; set; }
+
+        [Required]
+        public bool Diseased { get; set; }
 
         [Required, ForeignKey(nameof(Children))]
         public int ChildrenId { get; set; }

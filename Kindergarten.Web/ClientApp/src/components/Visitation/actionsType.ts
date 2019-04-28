@@ -10,6 +10,7 @@ export const SAVE_VISITATION_LIST_REQUEST_SUCCESS = "SAVE_VISITATION_LIST_REQUES
 export const SAVE_VISITATION_LIST_REQUEST_ERROR = "SAVE_VISITATION_LIST_REQUEST_ERROR";
 
 export const CHANGE_TARGET_LIST = "CHANGE_TARGET_LIST";
+export const CHANGE_DISEASED_TARGET_LIST = "CHANGE_DISEASED_TARGET_LIST";
 export const CLEAN_ERROR_INNER = "CLEAN_ERROR_INNER";
 //#endregion
 // -----------------
@@ -26,9 +27,11 @@ export interface ISaveVisitationListRequestErrorAction { type: typeof SAVE_VISIT
 export type TSaveVisitationList = ISaveVisitationListRequestAction | ISaveVisitationListRequestSuccessAction | ISaveVisitationListRequestErrorAction;
 
 export interface IChangeTargetList { type: typeof CHANGE_TARGET_LIST; targetKeys: string[]; }
+export interface IChangeDiseasedTargetList { type: typeof CHANGE_DISEASED_TARGET_LIST; targetKeys: string[]; }
 export interface ICleanErrorInnerAction { type: typeof CLEAN_ERROR_INNER; }
 
-type KnownAction = TGetVisitationList | TSaveVisitationList | IChangeTargetList | ICleanErrorInnerAction;
+type KnownAction = TGetVisitationList | TSaveVisitationList
+    | IChangeTargetList | IChangeDiseasedTargetList | ICleanErrorInnerAction;
 
 export default KnownAction;
 //#endregion

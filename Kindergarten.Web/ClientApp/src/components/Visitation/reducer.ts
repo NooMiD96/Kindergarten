@@ -17,16 +17,20 @@ export const reducer: Reducer<IVisitationState> = (state: IVisitationState = unl
 
     case t.GET_VISITATION_LIST_REQUEST_SUCCESS:
       const transferData: TransferItem[] = [];
-      const targetKeys: string[] = [];
+      const targetVisitationKeys: string[] = [];
+      const targetDiseasedKeys: string[] = [];
 
       action.visitationList.forEach(x => {
-        transferData.push({
+        const data = {
           key: x.childrenId.toString(),
           title: `${x.children.secondName} ${x.children.firstName}`,
-        });
+        };
 
+        transferData.push(data);
         if (x.visited) {
-          targetKeys.push(x.childrenId.toString());
+          targetVisitationKeys.push(data.key);
+        } else if (x.diseased) {
+          targetDiseasedKeys.push(data.key);
         }
       });
 
@@ -35,7 +39,10 @@ export const reducer: Reducer<IVisitationState> = (state: IVisitationState = unl
         pending: false,
         visitationList: action.visitationList,
         transferData,
-        targetKeys,
+        transferVisitationData: transferData.filter(x => !targetDiseasedKeys.includes(x.key)),
+        targetVisitationKeys,
+        transferDiseasedData: transferData.filter(x => !targetVisitationKeys.includes(x.key)),
+        targetDiseasedKeys,
       };
 
     case t.SAVE_VISITATION_LIST_REQUEST_SUCCESS:
@@ -55,7 +62,15 @@ export const reducer: Reducer<IVisitationState> = (state: IVisitationState = unl
     case t.CHANGE_TARGET_LIST:
       return <IVisitationState>{
         ...state,
-        targetKeys: action.targetKeys,
+        targetVisitationKeys: action.targetKeys,
+        transferDiseasedData: state.transferData.filter(x => !action.targetKeys.includes(x.key)),
+      };
+
+    case t.CHANGE_DISEASED_TARGET_LIST:
+      return <IVisitationState>{
+        ...state,
+        targetDiseasedKeys: action.targetKeys,
+        transferVisitationData: state.transferData.filter(x => !action.targetKeys.includes(x.key)),
       };
 
     case t.CLEAN_ERROR_INNER:

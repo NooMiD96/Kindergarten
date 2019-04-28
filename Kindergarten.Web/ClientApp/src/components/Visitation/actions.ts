@@ -38,6 +38,10 @@ export const actionsList = {
     type: t.CHANGE_TARGET_LIST,
     targetKeys,
   }),
+  changeDiseasedTargetList: (targetKeys: string[]): t.IChangeDiseasedTargetList => ({
+    type: t.CHANGE_DISEASED_TARGET_LIST,
+    targetKeys,
+  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -122,7 +126,8 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.saveVisitationListRequest());
   },
-  cleanErrorInner: actionsList.cleanErrorInner,
   changeTargetList: actionsList.changeTargetList,
+  changeDiseasedTargetList: actionsList.changeDiseasedTargetList,
+  cleanErrorInner: actionsList.cleanErrorInner,
 };
 //#endregion

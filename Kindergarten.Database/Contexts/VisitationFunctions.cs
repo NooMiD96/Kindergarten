@@ -31,6 +31,7 @@ namespace Database.Contexts
                                                     Children = x,
                                                     Date = dateTimeNow,
                                                     Visited = false,
+                                                    Diseased = false,
                                                 })
                                                 .ToListAsync();
 
@@ -63,9 +64,10 @@ namespace Database.Contexts
                     if (index != -1)
                     {
                         var newVisitation = contextVisitationList[index] as Visitation;
-                        if (newVisitation.Visited != visitation.Visited)
+                        if (newVisitation.Visited != visitation.Visited || newVisitation.Diseased != visitation.Diseased)
                         {
                             newVisitation.Visited = visitation.Visited;
+                            newVisitation.Diseased = visitation.Diseased;
                             Visitation.Update(newVisitation);
                         }
                     }

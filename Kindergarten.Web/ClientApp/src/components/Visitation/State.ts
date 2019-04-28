@@ -6,8 +6,11 @@ import { Moment } from "moment";
 
 export interface IVisitationState {
   visitationList: IVisitation[];
-  transferData: TransferItem[],
-  targetKeys: string[],
+  transferData: TransferItem[];
+  transferVisitationData: TransferItem[];
+  targetVisitationKeys: string[];
+  transferDiseasedData: TransferItem[];
+  targetDiseasedKeys: string[];
   pending: boolean;
   errorInner: string;
 }
@@ -16,6 +19,7 @@ export interface IVisitation {
   visitationId: Number;
   date: Moment;
   visited: Boolean;
+  diseased: Boolean;
   childrenId: Number;
   children: IChildren;
 }
@@ -23,7 +27,10 @@ export interface IVisitation {
 export const unloadedState: IVisitationState = {
   visitationList: [],
   transferData: [],
-  targetKeys: [],
+  transferVisitationData: [],
+  targetVisitationKeys: [],
+  transferDiseasedData: [],
+  targetDiseasedKeys: [],
   pending: false,
   errorInner: "",
 };
