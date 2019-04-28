@@ -7,7 +7,7 @@ import { Spin, Input, List, Icon, Divider, Button, Row, Col } from "@core/antd";
 import { TState, TComponentState } from "@components/Search/TSearch";
 import { IChildren } from "@components/Children/State";
 
-export class Medicament extends React.Component<TState, TComponentState> {
+export class Search extends React.Component<TState, TComponentState> {
   state: TComponentState = {
     showSearchChildren: true,
   };

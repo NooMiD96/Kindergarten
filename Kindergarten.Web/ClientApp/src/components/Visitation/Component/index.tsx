@@ -11,7 +11,7 @@ import { IVisitation } from "@components/Visitation/State";
 import VisitationWrapper from "./style/Visitation.style";
 import { Text } from "@src/core/antd/Typography";
 
-export class Medicament extends React.PureComponent<TState, TComponentState> {
+export class Visitation extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
     date: moment(),
   };

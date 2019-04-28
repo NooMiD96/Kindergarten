@@ -6,7 +6,7 @@ import {
     TMapStateToProps,
     TMapDispatchToProps,
 } from "./TVisitation";
-import { Medicament } from "./Component";
+import { Visitation } from "./Component";
 import { ApplicationState } from "@src/Store";
 
 const mapStateToProps = (state: ApplicationState, ownProp: TOwnProps): TMapStateToProps => ({
@@ -21,4 +21,4 @@ const mapDispatchToProps: TMapDispatchToProps = {
 export default connect<TMapStateToProps, TMapDispatchToProps, TOwnProps, ApplicationState>(
     mapStateToProps,
     mapDispatchToProps
-)(Medicament as any) as any;
+)(Visitation as any) as any;
