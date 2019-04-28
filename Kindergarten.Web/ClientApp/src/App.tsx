@@ -15,5 +15,6 @@ export const AppRoutes = (
     <Route path="/Children/:childrenId" component={AsyncComponent(() => import(/* webpackChunkName: "Children" */ "@components/Children"))} />
     <Route path="/Search" component={AsyncComponent(() => import(/* webpackChunkName: "Search" */ "@components/Search"))} />
     <Route path="/Visitation" component={AsyncComponent(() => import(/* webpackChunkName: "Visitation" */ "@components/Visitation"))} />
+    <Route path="/Report" component={AsyncComponent(() => import(/* webpackChunkName: "Report" */ "@components/Report"))} />
   </Layout>
 );

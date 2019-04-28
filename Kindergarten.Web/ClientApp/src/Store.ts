@@ -25,6 +25,9 @@ import { reducer as SearchReducer } from "@components/Search/reducer";
 import { IVisitationState } from "@components/Visitation/State";
 import { reducer as VisitationReducer } from "@components/Visitation/reducer";
 
+import { IReportState } from "@components/Report/State";
+import { reducer as ReportReducer } from "@components/Report/reducer";
+
 export interface ApplicationState {
   router: RouterState;
 
@@ -43,6 +46,8 @@ export interface ApplicationState {
   search: ISearchState;
 
   visitation: IVisitationState;
+
+  report: IReportState;
 }
 
 export const reducers = {
@@ -61,6 +66,8 @@ export const reducers = {
   search: SearchReducer,
 
   visitation: VisitationReducer,
+
+  report: ReportReducer,
 };
 
 export interface AppThunkAction<TAction> {

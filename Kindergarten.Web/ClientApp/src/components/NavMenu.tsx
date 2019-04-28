@@ -21,7 +21,7 @@ interface IComponentState {
 }
 
 interface IComponentProps extends AccountState, RouterState { }
-const badgeColor = {backgroundColor: "#62636bb0"};
+const badgeColor = { backgroundColor: "#62636bb0" };
 
 export class NavMenu extends React.Component<IComponentProps, IComponentState> {
   state: IComponentState = {
@@ -132,13 +132,21 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
           </Link>
         </Menu.Item>,
         <Menu.Item key={routesArray[4]}>
-        <Link
-          to={routesArray[4]}
-          onClick={e => this.preventClick(e, routesArray[4])}
-        >
-          Посещаемость
-        </Link>
-      </Menu.Item>
+          <Link
+            to={routesArray[4]}
+            onClick={e => this.preventClick(e, routesArray[4])}
+          >
+            Посещаемость
+          </Link>
+        </Menu.Item>,
+        <Menu.Item key={routesArray[5]}>
+          <Link
+            to={routesArray[5]}
+            onClick={e => this.preventClick(e, routesArray[5])}
+          >
+            Отчёты
+          </Link>
+        </Menu.Item>
       );
     }
 
@@ -156,7 +164,7 @@ export class NavMenu extends React.Component<IComponentProps, IComponentState> {
                 <React.Fragment>
                   <Icon type="caret-dow" className="header-submenu-more-icon" />
                   <Title className="main-title" level={2}>
-                    Kindergarten <Badge count={notify.totalCount} style={badgeColor}/>
+                    Kindergarten <Badge count={notify.totalCount} style={badgeColor} />
                   </Title>
                 </React.Fragment>
               )}
