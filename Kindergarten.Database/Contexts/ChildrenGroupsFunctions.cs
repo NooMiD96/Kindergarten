@@ -49,7 +49,12 @@ namespace Database.Contexts
                                                                                              && EF.Functions.DateDiffDay(x.Birthday, DateTime.Now) > _fourthVaccinationDate;
 
         #region ChildrenGroups
-        public async Task<List<Group>> GetChildrenGroupsAsync() => await Group.ToListAsync();
+        public async Task<IEnumerable<Group>> GetChildrenGroupsAsync()
+        {
+            var result = await Group.ToListAsync();
+
+            return result.OrderBy(x => x.GroupName);
+        }
         public async ValueTask<(bool isSuccess, string resultMessage)> ChangeChildrenGroupsAsync(List<Group> groupList)
         {
             try
@@ -76,7 +81,7 @@ namespace Database.Contexts
 
                 return (true, null);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return (false, ex.Message);
             }
@@ -105,11 +110,10 @@ namespace Database.Contexts
         #region Group
         public async Task<IEnumerable<Children>> GetChildrenListAsync(int groupId)
         {
-            var group = await Group
-                .Include(x => x.ChildrenList)
-                .FirstOrDefaultAsync(x => x.GroupId == groupId);
+            var group = await Group.Include(x => x.ChildrenList)
+                                   .FirstOrDefaultAsync(x => x.GroupId == groupId);
 
-            return group?.ChildrenList ?? new List<Children>();
+            return group?.ChildrenList.OrderBy(x => x.SecondName).ThenBy(x => x.FirstName).ToList() ?? new List<Children>();
         }
         public async ValueTask<(bool isSuccess, string resultMessage)> ChangeChildrenListAsync(int groupId, List<Children> childrenList)
         {

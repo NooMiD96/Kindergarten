@@ -86,7 +86,7 @@ export class Search extends React.Component<TState, TComponentState> {
             dataSource={childrenList}
             renderItem={(item: IChildren) => (
               <List.Item actions={[navLinkCreator(item.childrenId)]}>
-                <List.Item.Meta title={`${item.firstName} ${item.secondName}`}/>
+                <List.Item.Meta title={`${item.secondName} ${item.firstName}`}/>
               </List.Item>
             )}
           />

@@ -12,7 +12,12 @@ namespace Database.Contexts
 {
     public partial class KindergartenContext
     {
-        public async Task<List<Medicament>> GetMedicamentListAsync() => await Medicament.ToListAsync();
+        public async Task<IEnumerable<Medicament>> GetMedicamentListAsync()
+        {
+            var list = await Medicament.ToListAsync();
+
+            return list.OrderBy(x => x.Name).ThenBy(x => x.ExpirationDate);
+        }
 
         public async ValueTask<bool> ChangeMedicamentListAsync(List<Medicament> medicamentList)
         {

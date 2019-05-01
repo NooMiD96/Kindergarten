@@ -53,7 +53,7 @@ namespace Database.Contexts
                                                           .GroupBy(x => x.Date)
                                                           .Select(x => x.Count())
                                                           .ToList();
-                    report.VisitedCount = visitationPerDay.Count == 0 
+                    report.VisitedCount = visitationPerDay.Count == 0
                         ? 0
                         : visitationPerDay.Average();
                     report.VisitedCountPercent = report.VisitedCount / totalChildren * 100;
@@ -73,7 +73,7 @@ namespace Database.Contexts
                                                           .GroupBy(x => x.Date)
                                                           .Select(x => x.Count())
                                                           .ToList();
-                    report.NotVisitedCount = visitationPerDay.Count == 0 || dayCount == 0 
+                    report.NotVisitedCount = visitationPerDay.Count == 0 || dayCount == 0
                         ? 0
                         : visitationPerDay.Sum() / dayCount;
                     report.NotVisitedCountPercent = report.NotVisitedCount / totalChildren * 100;

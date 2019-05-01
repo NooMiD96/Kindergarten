@@ -12,7 +12,9 @@ import {
   Col,
 } from "@core/antd";
 
-import { DatePicker } from "@core/antd/DatePicker";
+import { DatePicker, locale } from "@core/antd/DatePicker";
+import "moment/locale/ru";
+
 import { hasErrors } from "@core/antd/Form";
 import { text, placeholderText } from "./Text";
 
@@ -179,6 +181,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
                 })(
                   <DatePicker
                     placeholder={placeholderText.birthday}
+                    locale={locale}
                   />
                 )}
               </FormItem>

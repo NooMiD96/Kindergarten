@@ -34,7 +34,7 @@ namespace Database.Contexts
 
                 var childrenList = await Children.Where(combineExpressions).ToListAsync();
 
-                return (true, childrenList, null);
+                return (true, childrenList.OrderBy(x => x.SecondName).ThenBy(x => x.FirstName), null);
             }
             catch (Exception ex)
             {

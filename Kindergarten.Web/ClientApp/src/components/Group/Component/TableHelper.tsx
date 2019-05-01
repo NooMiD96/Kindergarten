@@ -15,19 +15,6 @@ const GetTableColumns = (
   onPressEnter: (e: any) => void,
   onEditClick: (e: any) => void
 ) => [{
-  title: "Имя",
-  dataIndex: "firstName",
-  render: (value: string, record: IChildren) => (
-    record.childrenId === editId
-      ? <Input
-        data-id={record.childrenId}
-        defaultValue={value}
-        onChange={(e) => record.firstName = e.target.value}
-        onPressEnter={onPressEnter}
-      />
-      : (!!value ? value : emptyRequireField())
-  ),
-}, {
   title: "Фамилия",
   dataIndex: "secondName",
   render: (value: string, record: IChildren) => (
@@ -36,6 +23,19 @@ const GetTableColumns = (
         data-id={record.childrenId}
         defaultValue={value}
         onChange={(e) => record.secondName = e.target.value}
+        onPressEnter={onPressEnter}
+      />
+      : (!!value ? value : emptyRequireField())
+  ),
+}, {
+  title: "Имя",
+  dataIndex: "firstName",
+  render: (value: string, record: IChildren) => (
+    record.childrenId === editId
+      ? <Input
+        data-id={record.childrenId}
+        defaultValue={value}
+        onChange={(e) => record.firstName = e.target.value}
         onPressEnter={onPressEnter}
       />
       : (!!value ? value : emptyRequireField())

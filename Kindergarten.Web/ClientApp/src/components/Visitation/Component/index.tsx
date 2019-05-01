@@ -5,6 +5,7 @@ import { Spin, Button, Row, Col } from "@core/antd";
 import Transfer from "@core/antd/Transfer";
 import { LocaleDatePicker } from "@core/antd/DatePicker";
 import * as moment from "moment";
+import "moment/locale/ru";
 
 import { TState, TComponentState } from "@components/Visitation/TVisitation";
 import { IVisitation } from "@components/Visitation/State";
