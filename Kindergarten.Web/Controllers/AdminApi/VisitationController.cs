@@ -44,5 +44,16 @@ namespace Web.Controllers.AdminApi
             else
                 return BadRequest(errorMessage);
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetVisitationReport()
+        {
+            (var isSuccess, var result, var errorMessage) = await _context.GetVisitationReportAsync();
+
+            if (isSuccess)
+                return Success(result);
+            else
+                return BadRequest(errorMessage);
+        }
     }
 }

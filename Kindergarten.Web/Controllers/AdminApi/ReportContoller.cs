@@ -20,5 +20,22 @@ namespace Web.Controllers.AdminApi
     [ApiController]
     public class ReportContoller : BaseController
     {
+        private readonly KindergartenContext _context;
+
+        public ReportContoller(KindergartenContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetVisitationReport()
+        {
+            (var isSuccess, var result, var errorMessage) = await _context.GetVisitationReportAsync();
+
+            if (isSuccess)
+                return Success(result);
+            else
+                return BadRequest(errorMessage);
+        }
     }
 }

@@ -15,7 +15,11 @@ export class Report extends React.PureComponent<TState, TComponentState> {
   getJsxReport = (selectedReport: ReportTypeEnum) => {
     switch (selectedReport) {
       case ReportTypeEnum.visitation:
-        return <VisitationReport />;
+        return (
+          <VisitationReport
+            report={this.props.visitationReport}
+          />
+        );
 
       case ReportTypeEnum.vaccination:
         return <VaccinationReport />;
@@ -27,6 +31,7 @@ export class Report extends React.PureComponent<TState, TComponentState> {
   }
 
   onVisitationReport = () => {
+    this.props.getVisitationReport();
     this.setState({
       selectedReport: ReportTypeEnum.visitation,
     });
