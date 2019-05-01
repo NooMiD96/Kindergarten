@@ -54,7 +54,7 @@ export class Search extends React.Component<TState, TComponentState> {
       <React.Fragment>
         {
           errorInner && <Alert
-            message="Error"
+            message="Ошибка"
             description={errorInner}
             type="error"
             closable

@@ -8,6 +8,7 @@ import KnownAction, * as t from "./actionsType";
 export const reducer: Reducer<IReportState> = (state: IReportState = unloadedState, action: KnownAction) => {
   switch (action.type) {
     case t.GET_VISITATION_REPORT_REQUEST:
+    case t.GET_VACCINATION_REPORT_REQUEST:
       return <IReportState>{
         ...state,
         pending: true,
@@ -20,7 +21,15 @@ export const reducer: Reducer<IReportState> = (state: IReportState = unloadedSta
         visitationReport: action.visitationReport,
       };
 
+    case t.GET_VACCINATION_REPORT_REQUEST_SUCCESS:
+      return <IReportState>{
+        ...state,
+        pending: false,
+        vaccinationReport: action.vaccinationReport,
+      };
+
     case t.GET_VISITATION_REPORT_REQUEST_ERROR:
+    case t.GET_VACCINATION_REPORT_REQUEST_ERROR:
       return <IReportState>{
         ...state,
         pending: false,

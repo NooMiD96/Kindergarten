@@ -77,7 +77,7 @@ export class Visitation extends React.PureComponent<TState, TComponentState> {
       <VisitationWrapper>
         {
           errorInner && <Alert
-            message="Error"
+            message="Ошибка"
             description={errorInner}
             type="error"
             closable

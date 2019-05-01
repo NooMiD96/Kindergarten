@@ -4,7 +4,7 @@ import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
-import { IVisitationReport } from "./State";
+import { IVisitationReport, IVaccinationReport } from "./State";
 import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
@@ -23,6 +23,17 @@ export const actionsList = {
     type: t.GET_VISITATION_REPORT_REQUEST_ERROR,
     errorMessage,
   }),
+  getVaccinationReportRequest: (): t.IGetVaccinationReportRequestAction => ({
+    type: t.GET_VACCINATION_REPORT_REQUEST,
+  }),
+  getVaccinationReportRequestSuccess: (vaccinationReport: IVaccinationReport): t.IGetVaccinationReportRequestSuccessAction => ({
+    type: t.GET_VACCINATION_REPORT_REQUEST_SUCCESS,
+    vaccinationReport,
+  }),
+  getVaccinationReportRequestError: (errorMessage: string): t.IGetVaccinationReportRequestErrorAction => ({
+    type: t.GET_VACCINATION_REPORT_REQUEST_ERROR,
+    errorMessage,
+  }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
     type: t.CLEAN_ERROR_INNER,
   }),
@@ -30,7 +41,6 @@ export const actionsList = {
 //#endregion
 // ----------------
 //#region ACTIONS CREATORS
-const controllerName = "Visitation";
 export const actionCreators = {
   getVisitationReport: (): AppThunkAction<t.TGetVisitationReport | t.ICleanErrorInnerAction> => (dispatch, getState) => {
     const controllerName = "Visitation";
@@ -43,7 +53,6 @@ export const actionCreators = {
       credentials: "same-origin",
       method: "GET",
       headers: {
-        // "Content-Type": "application/json; charset=UTF-8",
         ...xptToHeader,
       },
     })
@@ -66,6 +75,40 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getVisitationReportRequest());
+  },
+  getVaccinationReport: (): AppThunkAction<t.TGetVaccinationReport | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const controllerName = "ChildrenGroups";
+    const apiUrl = "GetVaccinationReport";
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    dispatch(actionCreators.cleanErrorInner());
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        ...xptToHeader,
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<IVaccinationReport>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.getVaccinationReportRequestSuccess(value.data));
+
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getVaccinationReportRequestError,
+        dispatch
+      ));
+
+    addTask(fetchTask);
+    dispatch(actionsList.getVaccinationReportRequest());
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };

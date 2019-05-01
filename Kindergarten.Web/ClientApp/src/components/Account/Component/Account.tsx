@@ -77,7 +77,7 @@ export class Account extends React.Component<TState, TComponentState> {
           >
             {
               errorMessage && <Alert
-                message="Error"
+                message="Ошибка"
                 description={errorMessage}
                 type="error"
                 closable={false}

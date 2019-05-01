@@ -22,7 +22,11 @@ export class Report extends React.PureComponent<TState, TComponentState> {
         );
 
       case ReportTypeEnum.vaccination:
-        return <VaccinationReport />;
+        return (
+          <VaccinationReport
+            report={this.props.vaccinationReport}
+          />
+        );
 
       case ReportTypeEnum.default:
       default:
@@ -37,6 +41,7 @@ export class Report extends React.PureComponent<TState, TComponentState> {
     });
   }
   onVaccinationReport = () => {
+    this.props.getVaccinationReport();
     this.setState({
       selectedReport: ReportTypeEnum.vaccination,
     });
@@ -52,7 +57,7 @@ export class Report extends React.PureComponent<TState, TComponentState> {
       <React.Fragment>
         {
           errorInner && <Alert
-            message="Error"
+            message="Ошибка"
             description={errorInner}
             type="error"
             closable

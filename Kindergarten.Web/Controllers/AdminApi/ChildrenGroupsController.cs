@@ -119,5 +119,17 @@ namespace Web.Controllers.AdminApi
                 return BadRequest(resultMessage);
         }
         #endregion
+
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetVaccinationReport()
+        {
+            (var isSuccess, var result, var errorMessage) = await _context.GetVaccinationReportAsync();
+
+            if (isSuccess)
+                return Success(result);
+            else
+                return BadRequest(errorMessage);
+        }
     }
 }

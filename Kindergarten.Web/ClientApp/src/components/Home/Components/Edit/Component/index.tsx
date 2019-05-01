@@ -96,7 +96,7 @@ export class Edit extends React.Component<TState, TComponentState> {
         <Layout>
           {
             errorInner && <Alert
-              message="Error"
+              message="Ошибка"
               description={errorInner}
               type="error"
               closable

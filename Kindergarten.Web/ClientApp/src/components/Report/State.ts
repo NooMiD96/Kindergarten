@@ -5,20 +5,30 @@ export interface IReportState {
   pending: boolean;
   errorInner: string;
   visitationReport?: IVisitationReport;
+  vaccinationReport?: IVaccinationReport;
 }
 export interface IVisitationReport {
   visitationPerMonthReportRecordList: IVisitationPerMonthReport[];
-  healthIndex: Number;
+  healthIndex: number;
 }
 
 export interface IVisitationPerMonthReport {
   month: string;
-  visitedCount: Number;
-  visitedCountPercent: Number;
-  diseasedCount: Number;
-  diseasedCountPercent: Number;
-  notVisitedCount: Number;
-  notVisitedCountPercent: Number;
+  visitedCount: number;
+  visitedCountPercent: number;
+  diseasedCount: number;
+  diseasedCountPercent: number;
+  notVisitedCount: number;
+  notVisitedCountPercent: number;
+}
+
+export interface IVaccinationReport {
+  vaccinationPerTypeReport: IVaccinationPerTypeReport[];
+}
+
+export interface IVaccinationPerTypeReport {
+  type: string;
+  percent: number;
 }
 
 export const unloadedState: IReportState = {

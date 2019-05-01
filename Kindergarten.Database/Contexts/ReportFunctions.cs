@@ -100,6 +100,7 @@ namespace Database.Contexts
                 perMonthReportList.Add(averageReport);
                 #endregion
 
+                #region Индекс здоровья
                 var visitationForEachChild = new List<(int count, int childrenId)>();
 
                 using (var command = Database.GetDbConnection().CreateCommand())
@@ -125,6 +126,109 @@ namespace Database.Contexts
                 }
 
                 result.HealthIndex = visitationForEachChild.Where(x => x.count == totalDays).Count() / (double)totalChildren * 100.0;
+                #endregion
+
+                return (true, result, null);
+            }
+            catch (Exception ex)
+            {
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async ValueTask<(bool isSuccess, VaccinationReportRecord, string errorMessage)> GetVaccinationReportAsync()
+        {
+
+            try
+            {
+                var vaccinationPerTypeList = new List<VaccinationPerTypeReport>();
+                var result = new VaccinationReportRecord()
+                {
+                    VaccinationPerTypeReport = vaccinationPerTypeList,
+                };
+
+                VaccinationPerTypeReport report;
+                double childWhichCanVaccinat;
+                double childWithoutVaccinat;
+
+                //Первый набор
+                report = new VaccinationPerTypeReport()
+                {
+                    Type = "Набор первых прививок",
+                };
+
+                childWhichCanVaccinat = await ChildrenInformation.Where(x => x.ApproveFirstVaccination
+                                                                         && EF.Functions.DateDiffDay(x.Birthday, DateTime.Now) > _firstVaccinationDate
+                                                                         || !x.ApproveFirstVaccination)
+                                                           .CountAsync();
+
+                childWithoutVaccinat = await ChildrenInformation.Where(_childrenWithoutFirstVaccination)
+                                                          .CountAsync();
+                if (childWhichCanVaccinat == 0)
+                    report.Percent = 100;
+                else
+                    report.Percent = 100 - childWithoutVaccinat / childWhichCanVaccinat * 100;
+                vaccinationPerTypeList.Add(report);
+
+                //Второй набор
+                report = new VaccinationPerTypeReport()
+                {
+                    Type = "Набор вторых прививок",
+                };
+
+                childWhichCanVaccinat = await ChildrenInformation.Where(x => x.ApproveSecondVaccination
+                                                                       && EF.Functions.DateDiffDay(x.Birthday, DateTime.Now) > _secondVaccinationDate
+                                                                       || !x.ApproveSecondVaccination)
+                                                           .CountAsync();
+
+                childWithoutVaccinat = await ChildrenInformation.Where(_childrenWithoutSecondVaccination)
+                                                          .CountAsync();
+
+                if (childWhichCanVaccinat == 0)
+                    report.Percent = 100;
+                else
+                    report.Percent = 100 - childWithoutVaccinat / childWhichCanVaccinat * 100;
+                vaccinationPerTypeList.Add(report);
+
+                //Третий набор
+                report = new VaccinationPerTypeReport()
+                {
+                    Type = "Набор третьих прививок",
+                };
+
+                childWhichCanVaccinat = await ChildrenInformation.Where(x => x.ApproveThirdVaccination
+                                                                       && EF.Functions.DateDiffDay(x.Birthday, DateTime.Now) > _thirdVaccinationDate
+                                                                       || !x.ApproveThirdVaccination)
+                                                           .CountAsync();
+
+                childWithoutVaccinat = await ChildrenInformation.Where(_childrenWithoutThirdVaccination)
+                                                          .CountAsync();
+
+                if (childWhichCanVaccinat == 0)
+                    report.Percent = 100;
+                else
+                    report.Percent = 100 - childWithoutVaccinat / childWhichCanVaccinat * 100;
+                vaccinationPerTypeList.Add(report);
+
+                //Четвёртый набор
+                report = new VaccinationPerTypeReport()
+                {
+                    Type = "Набор четвёртых прививок",
+                };
+
+                childWhichCanVaccinat = await ChildrenInformation.Where(x => x.ApproveFourthVaccination
+                                                                       && EF.Functions.DateDiffDay(x.Birthday, DateTime.Now) > _fourthVaccinationDate
+                                                                       || !x.ApproveFourthVaccination)
+                                                           .CountAsync();
+
+                childWithoutVaccinat = await ChildrenInformation.Where(_childrenWithoutFourthVaccination)
+                                                          .CountAsync();
+
+                if (childWhichCanVaccinat == 0)
+                    report.Percent = 100;
+                else
+                    report.Percent = 100 - childWithoutVaccinat / childWhichCanVaccinat * 100;
+                vaccinationPerTypeList.Add(report);
 
                 return (true, result, null);
             }
