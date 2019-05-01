@@ -10,6 +10,7 @@ import {
   Checkbox,
   Row,
   Col,
+  Select,
 } from "@core/antd";
 
 import { DatePicker, locale } from "@core/antd/DatePicker";
@@ -109,7 +110,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               >
                 {getFieldDecorator("firstName", {
                   initialValue: firstName,
-                  rules: [{ required: true, message: placeholderText.firstName }],
+                  rules: [{ required: true, message: placeholderText.firstName, pattern: /^[a-zA-Zа-яА-ЯёЁ]*$/ }],
                 })(
                   <Input
                     placeholder={placeholderText.firstName}
@@ -126,7 +127,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               >
                 {getFieldDecorator("secondName", {
                   initialValue: secondName,
-                  rules: [{ required: true, message: placeholderText.secondName }],
+                  rules: [{ required: true, message: placeholderText.secondName, pattern: /^[a-zA-Zа-яА-ЯёЁ]*$/ }],
                 })(
                   <Input
                     placeholder={placeholderText.secondName}
@@ -143,7 +144,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               >
                 {getFieldDecorator("fatherName", {
                   initialValue: fatherName,
-                  rules: [{ required: true, message: placeholderText.fatherName }],
+                  rules: [{ required: true, message: placeholderText.fatherName, pattern: /^[a-zA-Zа-яА-ЯёЁ]*$/ }],
                 })(
                   <Input
                     placeholder={placeholderText.fatherName}
@@ -189,13 +190,15 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
 
             <Col {...secondFormItemProps}>
               <FormItem
-                label={text.male}
+                label={"Пол"}
               >
                 {getFieldDecorator("male", {
                   initialValue: male,
-                  valuePropName: "checked",
                 })(
-                  <Checkbox />
+                  <Select placeholder="Выберите пол">
+                    <Select.Option value={true}>Мальчик</Select.Option>
+                    <Select.Option value={false}>Девочка</Select.Option>
+                  </Select>
                 )}
               </FormItem>
             </Col>
@@ -207,7 +210,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               >
                 {getFieldDecorator("phoneNumber", {
                   initialValue: phoneNumber,
-                  rules: [{ required: true, message: placeholderText.phoneNumber }],
+                  rules: [{ required: true, message: placeholderText.phoneNumber, pattern: /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/ }],
                 })(
                   <Input
                     placeholder={placeholderText.phoneNumber}
@@ -223,6 +226,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               >
                 {getFieldDecorator("phoneNumber2", {
                   initialValue: phoneNumber2,
+                  rules: [{ message: placeholderText.phoneNumber, pattern: /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/ }],
                 })(
                   <Input
                     placeholder={placeholderText.phoneNumber2}

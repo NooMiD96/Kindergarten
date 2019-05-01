@@ -22,7 +22,11 @@ const GetTableColumns = (
       ? <Input
         data-id={record.childrenId}
         defaultValue={value}
-        onChange={(e) => record.secondName = e.target.value}
+        onChange={(e) => {
+          if (e.target.value.match("^[a-zA-Zа-яА-ЯёЁ]*$")) {
+            record.secondName = e.target.value;
+          }
+        }}
         onPressEnter={onPressEnter}
       />
       : (!!value ? value : emptyRequireField())
@@ -35,7 +39,11 @@ const GetTableColumns = (
       ? <Input
         data-id={record.childrenId}
         defaultValue={value}
-        onChange={(e) => record.firstName = e.target.value}
+        onChange={(e) => {
+          if (e.target.value.match("^[a-zA-Zа-яА-ЯёЁ]*$")) {
+            record.firstName = e.target.value;
+          }
+        }}
         onPressEnter={onPressEnter}
       />
       : (!!value ? value : emptyRequireField())

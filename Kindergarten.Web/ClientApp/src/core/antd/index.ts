@@ -14,6 +14,7 @@ import Menu from "./Menu";
 import Modal from "./Modal";
 import Pagination from "./Pagination";
 import Row from "./Row";
+import Select from "./Select";
 import Spin from "./Spin";
 import Table from "./Table";
 import Tag from "./Tag";
@@ -41,6 +42,7 @@ export {
     Modal,
     Pagination,
     Row,
+    Select,
     Spin,
     Table,
     Tag,
