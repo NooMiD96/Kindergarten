@@ -183,6 +183,7 @@ namespace Database.Contexts
 
         #region Children
         public async Task<Children> GetChildrenAsync(int childrenId) => await Children.Include(x => x.ChildrenInformation)
+                                                                                      .ThenInclude(x => x.HealthGroup)
                                                                                       .FirstOrDefaultAsync(x => x.ChildrenId == childrenId);
         public async ValueTask<(bool isSuccess, string resultMessage)> ChangeChildrenAsync(int childrenId, Children childrenData)
         {

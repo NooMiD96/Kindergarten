@@ -21,6 +21,8 @@ export interface IChildrenInformation {
   address: string;
   phoneNumber: string;
   phoneNumber2: string;
+  healthGroupId: number;
+  healthGroup: IHealthGroup;
 
   firstVaccination: boolean;
   approveFirstVaccination: boolean;
@@ -34,6 +36,12 @@ export interface IChildrenInformation {
   fourthVaccination: boolean;
   approveFourthVaccination: boolean;
 
+  info: string;
+}
+
+export interface IHealthGroup {
+  number: number;
+  description: string;
 }
 
 export const unloadedState: IChildrenState = {

@@ -4,14 +4,16 @@ using Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(KindergartenContext))]
-    partial class KindergartenContextModelSnapshot : ModelSnapshot
+    [Migration("20190503123007_TableCreateHealthGroup")]
+    partial class TableCreateHealthGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,10 +156,6 @@ namespace Web.Migrations
 
                     b.Property<bool>("FourthVaccination");
 
-                    b.Property<int>("HealthGroupId");
-
-                    b.Property<string>("Info");
-
                     b.Property<bool>("Male");
 
                     b.Property<string>("PhoneNumber")
@@ -170,8 +168,6 @@ namespace Web.Migrations
                     b.Property<bool>("ThirdVaccination");
 
                     b.HasKey("ChildrenId");
-
-                    b.HasIndex("HealthGroupId");
 
                     b.ToTable("ChildrenInformation");
                 });
@@ -468,11 +464,6 @@ namespace Web.Migrations
                         .WithOne("ChildrenInformation")
                         .HasForeignKey("Model.DB.ChildrenInformation", "ChildrenId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Model.DB.HealthGroup", "HealthGroup")
-                        .WithMany()
-                        .HasForeignKey("HealthGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Model.DB.Comment", b =>

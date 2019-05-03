@@ -21,6 +21,7 @@ import { text, placeholderText } from "./Text";
 
 import { IChildren, IChildrenInformation } from "@components/Children/State";
 import { FormComponentProps } from "@core/antd/Form";
+import { TextArea } from "@src/core/antd/Input";
 
 const { Text } = Typography;
 const FormItem = Form.Item;
@@ -88,6 +89,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
       male = true,
       phoneNumber,
       phoneNumber2,
+      healthGroupId = 2,
       firstVaccination = false,
       approveFirstVaccination = true,
       secondVaccination = false,
@@ -96,6 +98,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
       approveThirdVaccination = true,
       fourthVaccination = false,
       approveFourthVaccination = true,
+      info = "",
     } = childrenInformation;
 
     return (
@@ -171,7 +174,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               </FormItem>
             </Col>
 
-            <Col {...firstFormItemProps}>
+            <Col xs={24} sm={{ span: 5 }}>
               <FormItem
                 validateStatus={birthdayError ? "error" : undefined}
                 label={text.birthday}
@@ -188,7 +191,7 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
               </FormItem>
             </Col>
 
-            <Col {...secondFormItemProps}>
+            <Col xs={24} sm={{ span: 5, offset: 8 }}>
               <FormItem
                 label={"Пол"}
               >
@@ -198,6 +201,24 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
                   <Select placeholder="Выберите пол">
                     <Select.Option value={true}>Мальчик</Select.Option>
                     <Select.Option value={false}>Девочка</Select.Option>
+                  </Select>
+                )}
+              </FormItem>
+            </Col>
+
+            <Col xs={24} sm={{ span: 5, offset: 1 }}>
+              <FormItem
+                label={"Группа здоровья"}
+              >
+                {getFieldDecorator("healthGroupId", {
+                  initialValue: healthGroupId,
+                })(
+                  <Select placeholder="Выберите группу здоровья">
+                    <Select.Option value={1}>I</Select.Option>
+                    <Select.Option value={2}>II</Select.Option>
+                    <Select.Option value={3}>III</Select.Option>
+                    <Select.Option value={4}>IV</Select.Option>
+                    <Select.Option value={5}>V</Select.Option>
                   </Select>
                 )}
               </FormItem>
@@ -336,6 +357,20 @@ export class ChildrenCard extends React.PureComponent<TProp, {}> {
                   valuePropName: "checked",
                 })(
                   <Checkbox />
+                )}
+              </FormItem>
+            </Col>
+
+            <Col xs={24} sm={24}>
+              <FormItem
+                label={"Дополнительная информация"}
+              >
+                {getFieldDecorator("info", {
+                  initialValue: info,
+                })(
+                  <TextArea
+                    autosize={{ minRows: 4, maxRows: 14 }}
+                  />
                 )}
               </FormItem>
             </Col>

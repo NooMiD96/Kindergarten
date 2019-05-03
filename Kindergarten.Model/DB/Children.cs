@@ -71,7 +71,14 @@ namespace Model.DB
         [Required]
         public bool ApproveFourthVaccination { get; set; }
 
+        public string Info { get; set; }
+
         [JsonIgnore]
         public Children Children { get; set; }
+
+        [Required, ForeignKey(nameof(HealthGroup))]
+        public int HealthGroupId { get; set; }
+
+        public HealthGroup HealthGroup { get; set; }
     }
 }

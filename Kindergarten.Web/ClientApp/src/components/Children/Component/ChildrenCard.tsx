@@ -43,6 +43,7 @@ export class ChildrenCard extends React.Component<TProp, {}> {
       birthday,
       fatherName,
       male,
+      healthGroup,
       phoneNumber,
       phoneNumber2,
       firstVaccination,
@@ -53,6 +54,7 @@ export class ChildrenCard extends React.Component<TProp, {}> {
       approveThirdVaccination,
       fourthVaccination,
       approveFourthVaccination,
+      info,
     } = childrenInformation;
 
     return (
@@ -83,6 +85,10 @@ export class ChildrenCard extends React.Component<TProp, {}> {
 
                 <Col {...labelProps}><Text>Пол: </Text></Col>
                 <Col {...valueProps}><Text>{male ? "М" : "Ж"}</Text></Col>
+                <Divider />
+
+                <Col {...labelProps}><Text>Группа здоровья: </Text></Col>
+                <Col {...valueProps}><Text>{healthGroup.description}</Text></Col>
                 <Divider />
 
                 <Col {...labelProps}><Text>Телефон: </Text></Col>
@@ -128,6 +134,10 @@ export class ChildrenCard extends React.Component<TProp, {}> {
 
                 <Col {...labelProps}><Text>Четвёртая прививка разрешена: </Text></Col>
                 <Col {...valueProps}><Text>{this.boolValueParser(approveFourthVaccination)}</Text></Col>
+                <Divider />
+
+                <Col {...labelProps}><Text>Дополнительная информация: </Text></Col>
+                <Col {...valueProps}><Text>{info}</Text></Col>
               </React.Fragment>
             )
           }
