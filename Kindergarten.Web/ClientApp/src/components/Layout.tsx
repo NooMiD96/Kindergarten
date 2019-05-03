@@ -2,7 +2,7 @@ import * as React from "react";
 import AntdLayout from "@core/antd/Layout";
 const { Header, Content, Footer } = AntdLayout;
 import { ConfigProvider, Empty } from "antd";
-import { Text } from "@core/antd/Typography";
+import { Text, Paragraph } from "@core/antd/Typography";
 
 import AccountControlComponent from "@core/HOC/AccountControlComponent";
 import NavMenu from "./NavMenu";
@@ -29,7 +29,16 @@ export class Layout extends React.Component<{}, {}> {
             </AccountControlComponent>
           </Content>
           <Footer className="footer">
-            2019
+            <Paragraph>
+              Адрес: г. Тула, ул. Эн, 0
+            </Paragraph>
+            <Paragraph>
+              Телефон: 8 (4872) 00-00-00
+            </Paragraph>
+            <Paragraph>
+              E-mail: med.sister@gmail.com
+            </Paragraph>
+            © 2019
           </Footer>
         </AntdLayout>
         <div

@@ -77,7 +77,7 @@ const CommentInput = ({
         {form.getFieldDecorator("comment", {
           rules: [
             { required: true, message: "Введите комментарий" },
-            { max: 50, message: "Максимальная длинна комментария - 50 символов!" },
+            // { max: 250, message: "Максимальная длинна комментария - 250 символов!" },
           ],
         })(
           <Input
@@ -121,13 +121,13 @@ const CommentList = ({
   const AdminCommentListRender = (item: IComment) => (
     <List.Item
       key={item.commentId}
-      actions={[
+      extra={(
         <Checkbox
           value={item.commentId}
           key={item.commentId}
           onChange={onChangeChecker}
-        />,
-      ]}
+        />
+      )}
     >
       <List.Item.Meta
         avatar={(
@@ -138,10 +138,10 @@ const CommentList = ({
             {item.author}
           </Avatar>
         )}
-        title={<p>{item.author}</p>}
+        title={item.author}
         description={item.date.toLocaleString()}
       />
-      <div className="comment-inner">{item.content}</div>
+      {item.content}
     </List.Item>
   );
 
@@ -156,10 +156,10 @@ const CommentList = ({
             {item.author}
           </Avatar>
         )}
-        title={<p>{item.author}</p>}
+        title={item.author}
         description={item.date.toLocaleString()}
       />
-      <div className="comment-inner">{item.content}</div>
+      {item.content}
     </List.Item>
   );
 
@@ -193,7 +193,7 @@ const CommentList = ({
       <List
         locale={{emptyText: "Комментарии отсутствуют..."}}
         className="comment-list"
-        itemLayout="horizontal"
+        itemLayout="vertical"
         loading={pending}
         footer={footer}
         dataSource={commentList}

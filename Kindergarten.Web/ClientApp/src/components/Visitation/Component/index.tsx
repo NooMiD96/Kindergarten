@@ -101,6 +101,7 @@ export class Visitation extends React.PureComponent<TState, TComponentState> {
               <LocaleDatePicker
                 defaultValue={date}
                 onChange={this.changeVisitationDate}
+                allowClear={false}
               />
             </Col>
 
@@ -118,6 +119,7 @@ export class Visitation extends React.PureComponent<TState, TComponentState> {
                   maxWidth: "15%",
                 }}
                 showSearch
+                titles={["Отсутствовали", "Присутствовали"]}
                 operations={["Присутствовали", "Отсутствовали"]}
                 locale={{
                   itemUnit: "",
@@ -141,6 +143,7 @@ export class Visitation extends React.PureComponent<TState, TComponentState> {
                 operationStyle={{
                   maxWidth: "15%",
                 }}
+                titles={["Отсутствовали", "Болели"]}
                 operations={["Болели", "Отсутствовали"]}
                 locale={{
                   itemUnit: "",

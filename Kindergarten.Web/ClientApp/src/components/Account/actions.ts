@@ -64,7 +64,7 @@ export const ActionsList = {
 //#region ACTIONS CREATORS
 const controllerName = "Account";
 export const ActionCreators = {
-  registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
+  registration: (data: TRegistrationModel): AppThunkAction<t.TRegistration | t.ISetUser | t.ISetXPTAction> => (dispatch, getState) => {
     const apiUrl = "Registration";
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
@@ -89,6 +89,7 @@ export const ActionCreators = {
           dispatch(ActionsList.registrationSuccess());
           dispatch(ActionsList.setUser(value.data));
           dispatch(ActionsList.setXsrf(xpt));
+          ActionCreators.getNotify()(dispatch as any, getState);
         } else {
           return errorCreater(uncatchError);
         }
@@ -105,7 +106,7 @@ export const ActionCreators = {
     addTask(fetchTask);
     dispatch(ActionsList.registrationRequest());
   },
-  authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, _getState) => {
+  authentication: (data: TAuthenticationModel): AppThunkAction<t.TAuthentication | t.ISetUser | t.ISetXPTAction> => (dispatch, getState) => {
     const apiUrl = "Authentication";
 
     const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
@@ -130,6 +131,7 @@ export const ActionCreators = {
           dispatch(ActionsList.authenticationSuccess());
           dispatch(ActionsList.setUser(value.data));
           dispatch(ActionsList.setXsrf(xpt));
+          ActionCreators.getNotify()(dispatch as any, getState);
         } else {
           return errorCreater(uncatchError);
         }
