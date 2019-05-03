@@ -35,7 +35,7 @@ const filterDropdown = (
       onClick={onSearch}
     >
       Поиск
-  </Button>
+    </Button>
   </div>
 );
 
@@ -92,16 +92,22 @@ const GetTableColumns = (
   }, {
     title: "Дата",
     dataIndex: "expirationDate",
-    render: (value: Date, record: IMedicament) => (
-      record.medicamentId === state.editId
-        ? <DatePicker
-          style={fullWidthStyle}
-          // popupStyle={fullWidthStyle}
-          onChange={(moment: any) => record.expirationDate = moment.toDate()}
-          defaultValue={moment(value)}
-        />
-        : (!!value ? value.toLocaleDateString() : emptyRequireField())
-      ),
+    render: (value: Date, record: IMedicament) => {
+      if (!record.expirationDate) {
+        record.expirationDate = moment().toDate();
+      }
+
+      return (
+        record.medicamentId === state.editId
+          ? <DatePicker
+            style={fullWidthStyle}
+            // popupStyle={fullWidthStyle}
+            onChange={(moment: any) => record.expirationDate = moment.toDate()}
+            defaultValue={moment(value)}
+          />
+          : (!!value ? value.toLocaleDateString() : emptyRequireField())
+      );
+    },
   }, {
     title: "Пометка",
     dataIndex: "comment",
