@@ -4,7 +4,7 @@ import { AppThunkAction } from "@src/Store";
 import { IResponse } from "@core/fetchHelper/IResponse";
 import { GetXsrfToHeader } from "@core/helpers/auth/xsrf";
 
-import { IVisitationReport, IVaccinationReport } from "./State";
+import { IVisitationReport, IVaccinationReport, IHealthGroupReport } from "./State";
 import * as t from "./actionsType";
 import { errorCatcher, responseCatcher } from "@core/fetchHelper";
 import { errorCreater } from "@core/fetchHelper/ErrorCreater";
@@ -32,6 +32,17 @@ export const actionsList = {
   }),
   getVaccinationReportRequestError: (errorMessage: string): t.IGetVaccinationReportRequestErrorAction => ({
     type: t.GET_VACCINATION_REPORT_REQUEST_ERROR,
+    errorMessage,
+  }),
+  getHealthGroupReportRequest: (): t.IGetHealthGroupReportRequestAction => ({
+    type: t.GET_HEALTH_GROUP_REPORT_REQUEST,
+  }),
+  getHealthGroupReportRequestSuccess: (healthGroupReport: IHealthGroupReport): t.IGetHealthGroupReportRequestSuccessAction => ({
+    type: t.GET_HEALTH_GROUP_REPORT_REQUEST_SUCCESS,
+    healthGroupReport,
+  }),
+  getHealthGroupReportRequestError: (errorMessage: string): t.IGetHealthGroupReportRequestErrorAction => ({
+    type: t.GET_HEALTH_GROUP_REPORT_REQUEST_ERROR,
     errorMessage,
   }),
   cleanErrorInner: (): t.ICleanErrorInnerAction => ({
@@ -109,6 +120,40 @@ export const actionCreators = {
 
     addTask(fetchTask);
     dispatch(actionsList.getVaccinationReportRequest());
+  },
+  getHealthGroupReport: (): AppThunkAction<t.TGetHealthGroupReport | t.ICleanErrorInnerAction> => (dispatch, getState) => {
+    const controllerName = "ChildrenGroups";
+    const apiUrl = "GetHealthGroupReport";
+    const xptToHeader = GetXsrfToHeader(getState);
+
+    dispatch(actionCreators.cleanErrorInner());
+
+    const fetchTask = fetch(`/api/${controllerName}/${apiUrl}`, {
+      credentials: "same-origin",
+      method: "GET",
+      headers: {
+        ...xptToHeader,
+      },
+    })
+      .then(responseCatcher)
+      .then((value: IResponse<IHealthGroupReport>) => {
+        if (value && value.error) {
+          return errorCreater(value.error);
+        }
+
+        dispatch(actionsList.getHealthGroupReportRequestSuccess(value.data));
+
+        return Promise.resolve();
+      }).catch((err: Error) => errorCatcher(
+        controllerName,
+        apiUrl,
+        err,
+        actionsList.getHealthGroupReportRequestError,
+        dispatch
+      ));
+
+    addTask(fetchTask);
+    dispatch(actionsList.getHealthGroupReportRequest());
   },
   cleanErrorInner: actionsList.cleanErrorInner,
 };

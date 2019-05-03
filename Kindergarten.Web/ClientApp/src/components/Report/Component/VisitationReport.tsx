@@ -14,7 +14,7 @@ type TState = {
 
 };
 
-export default class Medicament extends React.PureComponent<TProps, TState> {
+export default class VisitationReport extends React.PureComponent<TProps, TState> {
   state: TState = {
   };
 

@@ -131,5 +131,16 @@ namespace Web.Controllers.AdminApi
             else
                 return BadRequest(errorMessage);
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetHealthGroupReport()
+        {
+            (var isSuccess, var result, var errorMessage) = await _context.GetHealthGroupReportAsync();
+
+            if (isSuccess)
+                return Success(result);
+            else
+                return BadRequest(errorMessage);
+        }
     }
 }

@@ -6,6 +6,7 @@ export enum ReportTypeEnum {
     default,
     visitation,
     vaccination,
+    healthGroup,
 }
 export type TComponentState = {
     selectedReport: ReportTypeEnum;

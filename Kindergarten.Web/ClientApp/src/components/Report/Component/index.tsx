@@ -6,6 +6,7 @@ import { Spin, Button } from "@core/antd";
 import { TState, TComponentState, ReportTypeEnum } from "@components/Report/TReport";
 import VaccinationReport from "./VaccinationReport";
 import VisitationReport from "./VisitationReport";
+import HealthGroupReport from "./HealthGroupReport";
 
 export class Report extends React.PureComponent<TState, TComponentState> {
   state: TComponentState = {
@@ -28,6 +29,13 @@ export class Report extends React.PureComponent<TState, TComponentState> {
           />
         );
 
+      case ReportTypeEnum.healthGroup:
+        return (
+          <HealthGroupReport
+            report={this.props.healthGroupReport}
+          />
+        );
+
       case ReportTypeEnum.default:
       default:
         return <div />;
@@ -44,6 +52,12 @@ export class Report extends React.PureComponent<TState, TComponentState> {
     this.props.getVaccinationReport();
     this.setState({
       selectedReport: ReportTypeEnum.vaccination,
+    });
+  }
+  onHealthGroupReport = () => {
+    this.props.getHealthGroupReport();
+    this.setState({
+      selectedReport: ReportTypeEnum.healthGroup,
     });
   }
 
@@ -70,6 +84,7 @@ export class Report extends React.PureComponent<TState, TComponentState> {
         >
           <Button onClick={this.onVisitationReport}>Отчёт посещаемости</Button>
           <Button onClick={this.onVaccinationReport}>Отчёт прививок</Button>
+          <Button onClick={this.onHealthGroupReport}>Группы здоровья</Button>
           {report}
         </Spin>
       </React.Fragment>

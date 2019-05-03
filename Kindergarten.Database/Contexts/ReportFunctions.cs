@@ -138,7 +138,6 @@ namespace Database.Contexts
 
         public async ValueTask<(bool isSuccess, VaccinationReportRecord, string errorMessage)> GetVaccinationReportAsync()
         {
-
             try
             {
                 var vaccinationPerTypeList = new List<VaccinationPerTypeReport>();
@@ -229,6 +228,54 @@ namespace Database.Contexts
                 else
                     report.Percent = 100 - childWithoutVaccinat / childWhichCanVaccinat * 100;
                 vaccinationPerTypeList.Add(report);
+
+                return (true, result, null);
+            }
+            catch (Exception ex)
+            {
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async ValueTask<(bool isSuccess, HealthGroupReportRecord, string errorMessage)> GetHealthGroupReportAsync()
+        {
+            try
+            {
+                var perHealthGroup = new List<PerHealthGroupRecord>();
+                var result = new HealthGroupReportRecord()
+                {
+                    HealthGroupList = await HealthGroup.ToListAsync(),
+                    PerHealthGroupRecordList = perHealthGroup,
+                };
+
+                var childrenInfoList = await ChildrenInformation.Include(x => x.Children)
+                                                                .ToListAsync();
+
+                var group1 = childrenInfoList.Where(x => x.HealthGroupId == 1).OrderBy(x => x.Children.SecondName).ThenBy(x => x.Children.FirstName).ToList();
+                var group2 = childrenInfoList.Where(x => x.HealthGroupId == 2).OrderBy(x => x.Children.SecondName).ThenBy(x => x.Children.FirstName).ToList();
+                var group3 = childrenInfoList.Where(x => x.HealthGroupId == 3).OrderBy(x => x.Children.SecondName).ThenBy(x => x.Children.FirstName).ToList();
+                var group4 = childrenInfoList.Where(x => x.HealthGroupId == 4).OrderBy(x => x.Children.SecondName).ThenBy(x => x.Children.FirstName).ToList();
+                var group5 = childrenInfoList.Where(x => x.HealthGroupId == 5).OrderBy(x => x.Children.SecondName).ThenBy(x => x.Children.FirstName).ToList();
+
+                var maxCount = new int[] { group1.Count, group2.Count, group3.Count, group4.Count, group5.Count };
+
+                for (int i = 0; i < maxCount.Max(); i++)
+                {
+                    var item1 = group1.ElementAtOrDefault(i);
+                    var item2 = group2.ElementAtOrDefault(i);
+                    var item3 = group3.ElementAtOrDefault(i);
+                    var item4 = group4.ElementAtOrDefault(i);
+                    var item5 = group5.ElementAtOrDefault(i);
+
+                    perHealthGroup.Add(new PerHealthGroupRecord()
+                    {
+                        Group1 = item1 != null ? $"{item1.Children.SecondName} {item1.Children.FirstName}" : null,
+                        Group2 = item2 != null ? $"{item2.Children.SecondName} {item2.Children.FirstName}" : null,
+                        Group3 = item3 != null ? $"{item3.Children.SecondName} {item3.Children.FirstName}" : null,
+                        Group4 = item4 != null ? $"{item4.Children.SecondName} {item4.Children.FirstName}" : null,
+                        Group5 = item5 != null ? $"{item5.Children.SecondName} {item5.Children.FirstName}" : null,
+                    });
+                }
 
                 return (true, result, null);
             }

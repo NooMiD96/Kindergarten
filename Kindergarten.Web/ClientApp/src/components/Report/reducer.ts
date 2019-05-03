@@ -9,6 +9,7 @@ export const reducer: Reducer<IReportState> = (state: IReportState = unloadedSta
   switch (action.type) {
     case t.GET_VISITATION_REPORT_REQUEST:
     case t.GET_VACCINATION_REPORT_REQUEST:
+    case t.GET_HEALTH_GROUP_REPORT_REQUEST:
       return <IReportState>{
         ...state,
         pending: true,
@@ -28,8 +29,19 @@ export const reducer: Reducer<IReportState> = (state: IReportState = unloadedSta
         vaccinationReport: action.vaccinationReport,
       };
 
+    case t.GET_HEALTH_GROUP_REPORT_REQUEST_SUCCESS:
+      return <IReportState>{
+        ...state,
+        pending: false,
+        healthGroupReport: {
+          healthGroupList: action.healthGroupReport.healthGroupList,
+          perHealthGroupRecordList: action.healthGroupReport.perHealthGroupRecordList,
+        },
+      };
+
     case t.GET_VISITATION_REPORT_REQUEST_ERROR:
     case t.GET_VACCINATION_REPORT_REQUEST_ERROR:
+    case t.GET_HEALTH_GROUP_REPORT_REQUEST_ERROR:
       return <IReportState>{
         ...state,
         pending: false,
