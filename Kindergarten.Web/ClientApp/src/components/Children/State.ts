@@ -1,3 +1,5 @@
+import { IGroupState } from "@components/Group/State";
+
 // -----------------
 //#region STATE
 export interface IChildrenState {
@@ -11,6 +13,7 @@ export interface IChildren {
   firstName: string;
   secondName: string;
   childrenInformation?: IChildrenInformation;
+  group: IGroupState;
 }
 
 export interface IChildrenInformation {

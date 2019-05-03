@@ -18,13 +18,15 @@ namespace Database.Contexts
             var dateTimeNow = date ?? DateTime.Now.GetToday();
 
             var visitationList = await Visitation.Include(x => x.Children)
+                                                 .ThenInclude(x => x.Group)
                                                  .Where(x => x.Date.Equals(dateTimeNow))
                                                  .ToListAsync();
 
             var existingChildrenIdList = visitationList.Select(x => x.ChildrenId)
                                                        .ToList();
 
-            var missingChildren = await Children.Where(x => !existingChildrenIdList.Contains(x.ChildrenId))
+            var missingChildren = await Children.Include(x => x.Group)
+                                                .Where(x => !existingChildrenIdList.Contains(x.ChildrenId))
                                                 .Select(x => new Visitation()
                                                 {
                                                     ChildrenId = x.ChildrenId,

@@ -34,6 +34,10 @@ export const actionsList = {
     type: t.SAVE_VISITATION_LIST_REQUEST_ERROR,
     errorMessage,
   }),
+  changeGroup: (groupId: number): t.IChangeGroup => ({
+    type: t.CHANGE_GROUP,
+    groupId,
+  }),
   changeTargetList: (targetKeys: string[]): t.IChangeTargetList => ({
     type: t.CHANGE_TARGET_LIST,
     targetKeys,
@@ -126,6 +130,7 @@ export const actionCreators = {
     addTask(fetchTask);
     dispatch(actionsList.saveVisitationListRequest());
   },
+  changeGroup: actionsList.changeGroup,
   changeTargetList: actionsList.changeTargetList,
   changeDiseasedTargetList: actionsList.changeDiseasedTargetList,
   cleanErrorInner: actionsList.cleanErrorInner,

@@ -15,7 +15,7 @@ export const reducer: Reducer<IVisitationState> = (state: IVisitationState = unl
         pending: true,
       };
 
-    case t.GET_VISITATION_LIST_REQUEST_SUCCESS:
+    case t.GET_VISITATION_LIST_REQUEST_SUCCESS: {
       const transferData: TransferItem[] = [];
       const targetVisitationKeys: string[] = [];
       const targetDiseasedKeys: string[] = [];
@@ -43,7 +43,9 @@ export const reducer: Reducer<IVisitationState> = (state: IVisitationState = unl
         targetVisitationKeys,
         transferDiseasedData: transferData.filter(x => !targetVisitationKeys.includes(x.key)),
         targetDiseasedKeys,
+        selectedGroup: 0,
       };
+    }
 
     case t.SAVE_VISITATION_LIST_REQUEST_SUCCESS:
       return <IVisitationState>{
@@ -72,6 +74,70 @@ export const reducer: Reducer<IVisitationState> = (state: IVisitationState = unl
         targetDiseasedKeys: action.targetKeys,
         transferVisitationData: state.transferData.filter(x => !action.targetKeys.includes(x.key)),
       };
+
+    case t.CHANGE_GROUP: {
+      if (action.groupId !== 0) {
+        const transferData: TransferItem[] = [];
+        const targetVisitationKeys: string[] = [];
+        const targetDiseasedKeys: string[] = [];
+
+        state.visitationList.forEach(x => {
+          if (x.children.group.groupId !== action.groupId) {
+            return;
+          }
+
+          const data: TransferItem = {
+            key: x.childrenId.toString(),
+            title: `${x.children.secondName} ${x.children.firstName}`,
+          };
+
+          transferData.push(data);
+          if (x.visited) {
+            targetVisitationKeys.push(data.key);
+          } else if (x.diseased) {
+            targetDiseasedKeys.push(data.key);
+          }
+        });
+
+        return <IVisitationState>{
+          ...state,
+          transferData,
+          transferVisitationData: transferData.filter(x => !targetDiseasedKeys.includes(x.key)),
+          targetVisitationKeys,
+          transferDiseasedData: transferData.filter(x => !targetVisitationKeys.includes(x.key)),
+          targetDiseasedKeys,
+          selectedGroup: action.groupId,
+        };
+      }
+
+      const transferData: TransferItem[] = [];
+      const targetVisitationKeys: string[] = [];
+      const targetDiseasedKeys: string[] = [];
+
+      state.visitationList.forEach(x => {
+        const data: TransferItem = {
+          key: x.childrenId.toString(),
+          title: `${x.children.secondName} ${x.children.firstName}`,
+        };
+
+        transferData.push(data);
+        if (x.visited) {
+          targetVisitationKeys.push(data.key);
+        } else if (x.diseased) {
+          targetDiseasedKeys.push(data.key);
+        }
+      });
+
+      return <IVisitationState>{
+        ...state,
+        transferData,
+        transferVisitationData: transferData.filter(x => !targetDiseasedKeys.includes(x.key)),
+        targetVisitationKeys,
+        transferDiseasedData: transferData.filter(x => !targetVisitationKeys.includes(x.key)),
+        targetDiseasedKeys,
+        selectedGroup: 0,
+      };
+    }
 
     case t.CLEAN_ERROR_INNER:
       return <IVisitationState>{

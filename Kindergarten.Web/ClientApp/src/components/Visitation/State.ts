@@ -11,6 +11,7 @@ export interface IVisitationState {
   targetVisitationKeys: string[];
   transferDiseasedData: TransferItem[];
   targetDiseasedKeys: string[];
+  selectedGroup: number;
   pending: boolean;
   errorInner: string;
 }
@@ -31,6 +32,7 @@ export const unloadedState: IVisitationState = {
   targetVisitationKeys: [],
   transferDiseasedData: [],
   targetDiseasedKeys: [],
+  selectedGroup: 0,
   pending: false,
   errorInner: "",
 };

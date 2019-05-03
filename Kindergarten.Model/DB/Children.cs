@@ -18,9 +18,9 @@ namespace Model.DB
         [Required]
         public string SecondName { get; set; }
 
-        [Required, ForeignKey(nameof(Group)), JsonIgnore]
+        [Required, ForeignKey(nameof(Group))]
         public int GroupId { get; set; }
-        [JsonIgnore]
+        
         public Group Group { get; set; }
 
         [ForeignKey(nameof(ApplicationUser)), JsonIgnore]
